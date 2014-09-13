@@ -1,0 +1,113 @@
+<?php
+/*
+ * douggr/zf-rest
+ *
+ * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @version 1.0.0
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file distributed with this source code.
+ */
+
+namespace ZfRest\Model;
+
+use ZfRest\Db;
+use ZfRest\Model\Exception\User as Exception;
+
+/**
+ * {@inheritdoc}
+ */
+class User extends Db\Table
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected $_rowClass = 'ZfRest\Model\Row\User';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $_name = 'user';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $_primary = ['id'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function loadWithPermissions($token, $context)
+    {
+        $entity = intval($context);
+        $table  = new static();
+
+        // Find users matching 3 criterias + the given token:
+        //  - if the user has access within the given context;
+        //  - if the user is a site admin within the given context;
+        //  - if the user is a system admin
+        $select = $table->select()
+            ->setIntegrityCheck(false)
+            ->from(['us' => 'vw_user'])
+            ->join(['ue' => 'user_to_entity'], 'us.id = ue.user_id', [])
+            ->join(['en' => 'entity'], 'ue.entity_id = en.id', ['en.id as entity'])
+            ->where('us.token = ?', $token)
+            ->where("en.id = ? OR us.admin = true", $entity);
+
+        $model = $table->fetchRow($select->limit(1))
+;
+        if (!$model) {
+            // user not found OR user can't access the given context
+            return null;
+        }
+
+        if ($model->admin) {
+            // can access everything…
+            $collection = [$model];
+
+        } else {
+            // filter the user against the groups he belongs to…
+            $select
+                ->join(['ug' => 'user_to_group'], 'us.id = ug.user_id', [])
+                ->join(['gr' => 'group'], 'ug.group_id = gr.id', ['gr.id as gid', 'gr.admin as gadmin'])
+                ->where('gr.entity_id = ?', $entity);
+
+            $collection = $table->fetchAll($select);
+        }
+
+        $permissions = [];
+
+        foreach ($collection as $model) {
+            if ($model->admin) {
+                break;
+            }
+
+            if (!isset($permissions[$model->entity])) {
+                $permissions[$model->entity] = [];
+            }
+
+            $permissions[$model->entity][] = [$model->gid, intval($model->gadmin)];
+        }
+
+        $model = json_decode($model->json_data);
+        $model->permissions = $permissions;
+
+        return $model;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadGroups()
+    {
+        return UserToGroup::loadGroups($this->id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadEntities()
+    {
+        return UserToEntity::loadEntities($this->id);
+    }
+}

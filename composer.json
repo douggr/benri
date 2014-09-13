@@ -1,0 +1,28 @@
+{
+  "authors": [
+    {
+      "name": "Douglas G. R.",
+      "homepage": "http://douggr.github.io"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "ZfRest\\": "library/"
+    }
+  },
+  "canonical": "https://github.com/douggr/zf-rest",
+  "homepage": "https://github.com/douggr/zf-rest",
+  "keywords": [
+    "framework",
+    "rest",
+    "zend",
+    "zf1"
+  ],
+  "license": "MIT",
+  "name": "douggr/zf-rest",
+  "require": {
+    "zendframework/zendframework1": "~1.12"
+  },
+  "type": "extension",
+  "version": "1.0.0"
+}
