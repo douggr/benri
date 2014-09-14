@@ -165,4 +165,12 @@ class Group extends Db\Row
     {
         return $this->locale_id = $value;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUsers()
+    {
+        return UserToGroup::loadUsers($this->id);
+    }
 }
