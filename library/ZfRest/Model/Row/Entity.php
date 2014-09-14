@@ -24,7 +24,7 @@ class Entity extends Db\Row
     /**
      * {@inheritdoc}
      */
-    public function isPublicProfile()
+    public function hasPublicProfile()
     {
         return 'PUBLIC' === $this->visibility;
     }
@@ -167,5 +167,13 @@ class Entity extends Db\Row
         } else {
             return $value;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUsers()
+    {
+        return UserToEntity::loadUsers($this->id);
     }
 }
