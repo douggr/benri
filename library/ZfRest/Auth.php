@@ -58,7 +58,7 @@ class Auth
             throw new Exception('ERR.IDENTITY_AMBIGUOUS', self::FAILURE_IDENTITY_AMBIGUOUS);
         }
 
-        if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
             $usedColumn = 'email';
         } else {
             $usedColumn = 'username';
