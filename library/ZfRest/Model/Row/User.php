@@ -21,23 +21,16 @@ use ZfRest\Util\DateTime;
 class User extends Db\Row
 {
     /**
+     * @var array
+     */
+    public $permissions = [];
+
+    /**
      * {@inheritdoc}
      */
-    public function isVisible($viewer)
+    public function hasPublicProfile()
     {
-        if (is_object($viewer)) {
-            return
-                    // explicitly set…
-                'PUBLIC' === $this->visibility
-
-                ||  // or admins…
-                $viewer->admin
-
-                ||  // or the user himself.
-                $viewer->id == $this->id;
-        } else {
-            return 'PUBLIC' === $this->visibility;
-        }
+        return 'PUBLIC' === $this->visibility;
     }
 
     /**
@@ -294,5 +287,45 @@ class User extends Db\Row
     final protected function setApiSecret($value)
     {
         return trim($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadGroups()
+    {
+        return UserToGroup::loadGroups($this->id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadEntities()
+    {
+        return UserToEntity::loadEntities($this->id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function isSiteAdmin()
+    {
+        $context = Db\Table::getContext();
+
+        if ($this->admin) {
+            return true;
+
+        } elseif (!array_key_exists($context, $this->permissions)) {
+            return false;
+
+        } else {
+            foreach ($this->permissions[$context] as $group) {
+                if ($group[1]) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
