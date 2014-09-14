@@ -44,6 +44,28 @@ class Table extends \Zend_Db_Table
     /**
      * {@inheritdoc}
      */
+    public static function all($pageSize, $sort = null, $order = 'desc')
+    {
+        $table  = new static();
+        $model  = $table::create();
+        $select = $table->select();
+
+        if ($model->offsetExists('entity_id')) {
+            $select->where('entity_id = ?', static::getContext());
+        }
+
+        if ($sort && $model->offsetExists($sort)) {
+            $select->order("$sort $order");
+        }
+
+        $select->limitPage($pageSize->currentPage, $pageSize->pageSize);
+
+        return $table->fetchAll($select);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function create($data = [])
     {
         return (new static())
