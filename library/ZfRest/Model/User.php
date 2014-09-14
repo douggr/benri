@@ -37,6 +37,31 @@ class User extends Db\Table
     /**
      * {@inheritdoc}
      */
+    public static function all($pageSize, $sort = null, $order = 'desc')
+    {
+        $user   = static::getAuthUser();
+        $table  = new static();
+        $model  = $table::create();
+        $select = $table->select();
+
+        if ($sort && $model->offsetExists($sort)) {
+            $select->order("$sort $order");
+        } else {
+            $select->order("created_at $order");
+        }
+
+        if (!$user || !$user->admin) {
+            $select->where('visibility = ?', 'PUBLIC');
+        }
+
+        $select->limitPage($pageSize->currentPage, $pageSize->pageSize);
+
+        return $table->fetchAll($select);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function loadWithPermissions($token, $context)
     {
         $entity = intval($context);
@@ -48,7 +73,7 @@ class User extends Db\Table
         //  - if the user is a system admin
         $select = $table->select()
             ->setIntegrityCheck(false)
-            ->from(['us' => 'vw_user'])
+            ->from(['us' => 'user'])
             ->join(['ue' => 'user_to_entity'], 'us.id = ue.user_id', [])
             ->join(['en' => 'entity'], 'ue.entity_id = en.id', ['en.id as entity'])
             ->where('us.token = ?', $token)
@@ -89,25 +114,8 @@ class User extends Db\Table
             $permissions[$model->entity][] = [$model->gid, intval($model->gadmin)];
         }
 
-        $model = json_decode($model->json_data);
         $model->permissions = $permissions;
 
         return $model;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadGroups()
-    {
-        return UserToGroup::loadGroups($this->id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadEntities()
-    {
-        return UserToEntity::loadEntities($this->id);
     }
 }

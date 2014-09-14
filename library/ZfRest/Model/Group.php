@@ -37,8 +37,27 @@ class Group extends Db\Table
     /**
      * {@inheritdoc}
      */
-    public function loadUsers()
+    public static function all($pageSize, $sort = null, $order = 'desc')
     {
-        return UserToGroup::loadUsers($this->id);
+        $user   = static::getAuthUser();
+        $table  = new static();
+
+        if (!$user || !$user->isSiteAdmin()) {
+            return $table;
+        }
+
+        $model  = $table::create();
+        $select = $table->select()
+            ->where('entity_id = ?', static::getContext());
+
+        if ($sort && $model->offsetExists($sort)) {
+            $select->order("$sort $order");
+        } else {
+            $select->order("created_at $order");
+        }
+
+        $select->limitPage($pageSize->currentPage, $pageSize->pageSize);
+
+        return $table->fetchAll($select);
     }
 }

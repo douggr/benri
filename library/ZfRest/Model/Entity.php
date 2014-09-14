@@ -37,8 +37,29 @@ class Entity extends Db\Table
     /**
      * {@inheritdoc}
      */
-    public function loadUsers()
+    public static function all($pageSize, $sort = null, $order = 'desc')
     {
-        return UserToEntity::loadUsers($this->id);
+        $user   = static::getAuthUser();
+        $table  = new static();
+        $model  = $table::create();
+        $select = $table->select();
+
+        if ($model->offsetExists('entity_id')) {
+            $select->where('entity_id = ?', static::getContext());
+        }
+
+        if ($sort && $model->offsetExists($sort)) {
+            $select->order("$sort $order");
+        } else {
+            $select->order("created_at $order");
+        }
+
+        if (!$user || !$user->admin) {
+            $select->where('visibility = ?', 'PUBLIC');
+        }
+
+        $select->limitPage($pageSize->currentPage, $pageSize->pageSize);
+
+        return $table->fetchAll($select);
     }
 }
