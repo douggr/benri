@@ -92,7 +92,11 @@ class Table extends \Zend_Db_Table
 
         $result = $table->fetchAll($select);
 
-        return $result ? $result[0] : null;
+        if ($result && $result->count()) {
+            return $result[0];
+        } else {
+            return null;
+        }
     }
 
     /**
