@@ -11,7 +11,7 @@
 
 namespace ZfRest\Controller;
 
-use ZfRest\Model\View\User;
+use ZfRest\Model\User;
 
 /**
  * {@inheritdoc}
@@ -39,7 +39,12 @@ trait Auth
     final public function getCurrentUser()
     {
         if ($this->hasAuth() && null === self::$user) {
-            self::$user = User::loadWithPermissions(self::$auth, $this->getContext());
+            $user = User::loadWithPermissions(self::$auth, $this->getContext());
+
+            if ($user) {
+                self::$user = $user->toArray();
+                self::$user['permissions'] = $user->permissions;
+            }
         }
 
         return self::$user;
