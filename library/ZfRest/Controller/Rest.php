@@ -12,6 +12,7 @@
 namespace ZfRest\Controller;
 
 use ZfRest\Db\Table;
+use ZfRest\Db\Exception as ModelException;
 
 /**
  * {@inheritdoc}
@@ -399,5 +400,68 @@ class Rest extends \Zend_Rest_Controller
 
         // As we gather here today, we bid farewell…
         exit -$code;
+    }
+
+    /**
+     * Returns an object containing the page size and current page used in
+     * lists.
+     *
+     * @return StdClass
+     */
+    final protected function _getPageSize()
+    {
+        $defaults = [
+            'defaultPageSize' => 20,
+            'maxPageSize'     => 1000
+        ];
+
+        $paginationConfig = $this->getInvokeArg('bootstrap')
+            ->getOption('pagination');
+
+        if (!$paginationConfig) {
+            $paginationConfig = $defaults;
+        } else {
+            $paginationConfig = array_replace($defaults, $paginationConfig);
+        }
+
+        $pageSize    = $this->getRequest()->getParam('limit') ?: $paginationConfig['defaultPageSize'];
+        $currentPage = $this->getRequest()->getParam('page')  ?: 1;
+
+        if ($pageSize > $paginationConfig['maxPageSize']) {
+            $pageSize = $paginationConfig['maxPageSize'];
+        }
+
+        return (object) [
+            'pageSize'      => $pageSize,
+            'currentPage'   => $currentPage,
+        ];
+    }
+
+    /**
+     * Allows pre-save logic to be applied to models.
+     */
+    protected function _saveModel($model)
+    {
+        $model->normalizeInput($this->input);
+
+        try {
+            $model->save();
+            $this->data = $model->toArray();
+
+        } catch (ModelException $e) {
+            $errors = $model->getErrors();
+
+            if (false !== $errors) {
+                foreach ($errors as $error) {
+                    call_user_func_array([$this, 'pushError'], $error);
+                }
+            }
+
+        } catch (\Exception $e) {
+            $this->pushError('general', 'unknown', $e->getMessage());
+
+        } finally {
+            // log…
+        }
     }
 }
