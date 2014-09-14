@@ -77,25 +77,7 @@ trait Auth
         $user    = $this->getCurrentUser();
         $context = $this->getContext();
 
-        if (!$user) {
-            return false;
-
-        } elseif ($this->isAdmin()) {
-            return true;
-
-        } else {
-            if (!array_key_exists($context, $user->permissions)) {
-                return false;
-            }
-
-            foreach ($user->permissions[$context] as $group) {
-                if ($group[1]) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        return !!($user && $user->isSiteAdmin());
     }
 
     /**
