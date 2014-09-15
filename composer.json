@@ -23,6 +23,5 @@
   "require": {
     "zendframework/zendframework1": "~1.12"
   },
-  "type": "extension",
-  "version": "1.0.0"
+  "type": "extension"
 }
