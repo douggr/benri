@@ -308,6 +308,17 @@ class User extends Db\Row
     /**
      * {@inheritdoc}
      */
+    public function toArray()
+    {
+        $data                = parent::toArray();
+        $data['permissions'] = $this->permissions;
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     final public function isSiteAdmin()
     {
         $context = Db\Table::getContext();
