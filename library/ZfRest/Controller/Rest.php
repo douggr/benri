@@ -246,7 +246,7 @@ class Rest extends \Zend_Rest_Controller
 
         $needIdToContinue = !!($request->isPut() || $request->isPatch() || $request->isDelete());
 
-        if ($needIdToContinue && !isset($this->input->id)) {
+        if ($needIdToContinue && (!isset($this->input->id) && !$request->getParam('id'))) {
             return $this->_skipAction(422, 'ERR.ID_REQUIRED');
         }
 
