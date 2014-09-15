@@ -54,7 +54,7 @@ class Entity extends Db\Table
             $select->order("created_at $order");
         }
 
-        if (!$user || !$user->admin) {
+        if (!$user || ($user && !$user->admin)) {
             $select->where('visibility = ?', 'PUBLIC');
         }
 
