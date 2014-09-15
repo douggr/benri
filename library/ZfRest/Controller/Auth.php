@@ -39,12 +39,7 @@ trait Auth
     final public function getCurrentUser()
     {
         if ($this->hasAuth() && null === self::$user) {
-            $user = User::loadWithPermissions(self::$auth, $this->getContext());
-
-            if ($user) {
-                self::$user = $user->toArray();
-                self::$user['permissions'] = $user->permissions;
-            }
+            self::$user = User::loadWithPermissions(self::$auth, $this->getContext());
         }
 
         return self::$user;
