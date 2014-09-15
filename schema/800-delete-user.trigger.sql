@@ -18,7 +18,7 @@ CREATE TRIGGER `%DATABASE%`.delete_user
 BEFORE DELETE ON `%DATABASE%`.`user`
 FOR EACH ROW
 BEGIN
-  DELETE FROM `%DATABASE%`.`user_to_entity` WHERE `user_id` = OLD.id
+  DELETE FROM `%DATABASE%`.`user_to_entity` WHERE `user_id` = OLD.id;
 END$$
 
 DELIMITER ;
