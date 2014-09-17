@@ -10,8 +10,8 @@
       "ZfRest_": "library/"
     }
   },
-  "canonical": "https://svn.locness.com.br/svn/base/trunk/zf-rest",
-  "homepage": "https://svn.locness.com.br/svn/base/trunk/zf-rest",
+  "canonical": "https://github.com/douggr/zf-rest",
+  "homepage": "https://github.com/douggr/zf-rest",
   "keywords": [
     "framework",
     "rest",
@@ -19,7 +19,7 @@
     "zf1"
   ],
   "license": "MIT",
-  "name": "base/zf-rest",
+  "name": "douggr/zf-rest",
   "require": {
     "zendframework/zendframework1": "~1.12"
   },
