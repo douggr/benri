@@ -101,7 +101,7 @@ class ZfRest_Db_Row extends Zend_Db_Table_Row
             throw new Exception('ERR.VALIDATION_INVALID');
         }
 
-        $user = Table::getAuthUser();
+        $user = ZfRest_Db_Table::getAuthUser();
         if ($user) {
             $created_by = $user->id;
         } else {
