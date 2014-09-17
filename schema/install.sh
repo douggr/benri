@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # 
-# douggr/zf-rest
+# base/zf-rest
 # 
-# @link https://github.com/douggr/zf-rest for the canonical source repository
+# @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
 # @version 1.0.0
 #
 # For the full copyright and license information, please view the LICENSE
@@ -13,6 +13,7 @@
 DATABASE="$1"
 USERNAME="$2"
 PASSWORD="$3"
+HOSTNAME="$5"
 PORT="$4"
 
 if [ "" = "$DATABASE" ]; then
@@ -28,6 +29,10 @@ if [ "" = "$PASSWORD" ]; then
   PASSWORD="root"
 fi
 
+if [ "" = "$HOSTNAME" ]; then
+  HOSTNAME="127.0.0.1"
+fi
+
 if [ "" = "$PORT" ]; then
   PORT="3306"
 fi
@@ -38,7 +43,7 @@ for SQL in *.sql; do
   echo "Running $SQL… "
 
   cat $SQL | sed "s/%DATABASE%/$DATABASE/g" > tmp.sql
-  mysql -u"$USERNAME" -p"$PASSWORD" -P$PORT < tmp.sql
+  mysql -u"$USERNAME" -p"$PASSWORD" -h"$HOSTNAME" -P$PORT < tmp.sql
 
   if [ 0 != $? ]; then
     exit 1

@@ -1,20 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Http;
-
 /**
  * {@inheritdoc}
  */
-class Response extends \Zend_Controller_Response_Http
+class ZfRest_Http_Response extends Zend_Controller_Response_Http
 {
     /**
      * @var array
@@ -99,7 +97,7 @@ class Response extends \Zend_Controller_Response_Http
         }
 
         foreach ($this->_headers as $header) {
-            header($header['name'] . ': ' . $header['value'], $header['replace']);
+            header("{$header['name']}: {$header['value']}", $header['replace']);
         }
 
         if (!$httpCodeSent) {

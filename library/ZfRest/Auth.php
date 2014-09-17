@@ -1,40 +1,34 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest;
-
-use ZfRest\Auth\Exception;
-use ZfRest\Util\String;
-use ZfRest\Model\User;
-
 /**
  * {@inheritdoc}
  */
-class Auth
+class ZfRest_Auth
 {
-    const FAILURE                       = \Zend_Auth_Result::FAILURE;
-    const FAILURE_IDENTITY_NOT_FOUND    = \Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
-    const FAILURE_IDENTITY_AMBIGUOUS    = \Zend_Auth_Result::FAILURE_IDENTITY_AMBIGUOUS;
-    const FAILURE_CREDENTIAL_INVALID    = \Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
-    const FAILURE_UNCATEGORIZED         = \Zend_Auth_Result::FAILURE_UNCATEGORIZED;
+    const FAILURE                       = Zend_Auth_Result::FAILURE;
+    const FAILURE_IDENTITY_NOT_FOUND    = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
+    const FAILURE_IDENTITY_AMBIGUOUS    = Zend_Auth_Result::FAILURE_IDENTITY_AMBIGUOUS;
+    const FAILURE_CREDENTIAL_INVALID    = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+    const FAILURE_UNCATEGORIZED         = Zend_Auth_Result::FAILURE_UNCATEGORIZED;
 
     /**
-     * @var ZfRest\Auth
+     * @var ZfRest_Auth
      */
     protected static $instance = null;
 
     /**
-     * Returns an instance of ZfRest\Auth
+     * Returns an instance of ZfRest_Auth
      *
-     * @return ZfRest\Auth
+     * @return ZfRest_Auth
      */
     final public static function getInstance()
     {
@@ -50,12 +44,12 @@ class Auth
      *
      * @param string username
      * @param string password in row format
-     * @return ZfRest\Auth
+     * @return ZfRest_Auth
      */
     public static function authenticate($username, $password)
     {
         if ('' === trim($username) || '' === trim($password)) {
-            throw new Exception('ERR.IDENTITY_AMBIGUOUS', self::FAILURE_IDENTITY_AMBIGUOUS);
+            throw new ZfRest_Auth_Exception('ERR.IDENTITY_AMBIGUOUS', self::FAILURE_IDENTITY_AMBIGUOUS);
         }
 
         if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
@@ -64,15 +58,17 @@ class Auth
             $usedColumn = 'username';
         }
 
-        if (null === $user = User::locate($usedColumn, $username)) {
-            throw new Exception('ERR.IDENTITY_NOT_FOUND', self::FAILURE_IDENTITY_NOT_FOUND);
+        $user = ZfRest_Model_User::locate($usedColumn, $username);
+
+        if (null === $user) {
+            throw new ZfRest_Auth_Exception('ERR.IDENTITY_NOT_FOUND', self::FAILURE_IDENTITY_NOT_FOUND);
         }
 
-        if (!String::verifyPassword($password, $user->password)) {
-            throw new Exception('ERR.CREDENTIAL_INVALID', self::FAILURE_CREDENTIAL_INVALID);
+        if (!ZfRest_Util_String::verifyPassword($password, $user->password)) {
+            throw new ZfRest_Auth_Exception('ERR.CREDENTIAL_INVALID', self::FAILURE_CREDENTIAL_INVALID);
         }
 
-        $token       = String::password(static::getAccessToken($user));
+        $token       = ZfRest_Util_String::password(static::getAccessToken($user));
         $user->token = $token;
         $user->save();
 
@@ -83,7 +79,7 @@ class Auth
     }
 
     /**
-     * @param ZfRest\Model\User
+     * @param Object|ZfRest_Model_User
      * @return string
      */
     public static function getAccessToken($user)

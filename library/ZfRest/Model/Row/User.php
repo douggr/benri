@@ -1,24 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Model\Row;
-
-use ZfRest\Db;
-use ZfRest\Util\String;
-use ZfRest\Util\DateTime;
-
 /**
  * {@inheritdoc}
  */
-class User extends Db\Row
+class ZfRest_Model_Row_User extends ZfRest_Db_Row
 {
     /**
      * @var array
@@ -113,13 +107,13 @@ class User extends Db\Row
         }
 
         // an api_key…
-        $this->api_key      = String::random(32);
+        $this->api_key      = ZfRest_Util_String::random(32);
 
         // an api_secret…
-        $this->api_secret   = String::random(60);
+        $this->api_secret   = ZfRest_Util_String::random(60);
 
         // a token…
-        $this->token        = String::random(60);
+        $this->token        = ZfRest_Util_String::random(60);
 
         // and a valid token_max_ts…
         $this->token_max_ts = '+1week';
@@ -217,7 +211,7 @@ class User extends Db\Row
      */
     final protected function setPassword($value)
     {
-        return String::password($value);
+        return ZfRest_Util_String::password($value);
     }
 
     /**
@@ -268,7 +262,7 @@ class User extends Db\Row
      */
     final protected function setTokenMaxTs($value)
     {
-        return new DateTime($value);
+        return new ZfRest_Util_DateTime($value);
     }
 
     /**
@@ -294,7 +288,7 @@ class User extends Db\Row
      */
     public function loadGroups()
     {
-        return UserToGroup::loadGroups($this->id);
+        return ZfRest_Model_UserToGroup::loadGroups($this->id);
     }
 
     /**
@@ -302,7 +296,7 @@ class User extends Db\Row
      */
     public function loadEntities()
     {
-        return UserToEntity::loadEntities($this->id);
+        return ZfRest_Model_UserToEntity::loadEntities($this->id);
     }
 
     /**
@@ -321,7 +315,7 @@ class User extends Db\Row
      */
     final public function isSiteAdmin()
     {
-        $context = Db\Table::getContext();
+        $context = ZfRest_Db_Table::getContext();
 
         if ($this->admin) {
             return true;

@@ -1,28 +1,23 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Model;
-
-use ZfRest\Db;
-use ZfRest\Model\Exception\UserToEntity as Exception;
-
 /**
  * {@inheritdoc}
  */
-class UserToEntity extends Db\Table
+class ZfRest_Model_UserToEntity extends ZfRest_Db_Table
 {
     /**
      * {@inheritdoc}
      */
-    protected $_rowClass = 'ZfRest\Model\Row\UserToEntity';
+    protected $_rowClass = 'ZfRest_Model_Row_UserToEntity';
 
     /**
      * {@inheritdoc}
@@ -39,7 +34,7 @@ class UserToEntity extends Db\Table
      */
     public static function loadEntities($userId)
     {
-        $table  = new Entity();
+        $table  = new ZfRest_Model_Entity();
         $select = $table->select()
             ->setIntegrityCheck(false)
             ->from(['en' => 'entity'])
@@ -54,7 +49,7 @@ class UserToEntity extends Db\Table
      */
     public static function loadUsers($entityId)
     {
-        $table  = new User();
+        $table  = new ZfRest_Model_User();
         $select = $table->select()
             ->setIntegrityCheck(false)
             ->from(['us' => 'user'])

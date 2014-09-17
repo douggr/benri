@@ -1,26 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Model\Row;
-
-use ZfRest\Db;
-use ZfRest\Model;
-use ZfRest\Model\Group as Table;
-use ZfRest\Model\Exception\Group as Exception;
-use ZfRest\Util\String;
-
 /**
  * {@inheritdoc}
  */
-class Group extends Db\Row
+class ZfRest_Model_Row_Group extends ZfRest_Db_Row
 {
     /**
      * {@inheritdoc}
@@ -30,7 +22,6 @@ class Group extends Db\Row
         // name        varchar(200)
         // description text
         // entity_id   int(11)
-        // locale_id   int(11)
 
         if (isset($input->name)) {
             $this->name = $input->name;
@@ -42,10 +33,6 @@ class Group extends Db\Row
 
         if (isset($input->entity_id)) {
             $this->entity_id = $input->entity_id;
-        }
-
-        if (isset($input->locale)) {
-            $this->locale_id = $input->locale;
         }
 
         return $this;
@@ -65,10 +52,6 @@ class Group extends Db\Row
     {
         if (!isset($this->name)) {
             $this->pushError('name', 'missing_field', 'ERR.MISSING_FIELD');
-        }
-
-        if (!isset($this->locale_id)) {
-            $this->pushError('locale_id', 'missing_field', 'ERR.MISSING_FIELD');
         }
 
         if (!isset($this->entity_id)) {
@@ -98,7 +81,7 @@ class Group extends Db\Row
      */
     final protected function getDescription()
     {
-        return String::escape($this->description);
+        return ZfRest_Util_String::escape($this->description);
     }
 
     /**
@@ -138,39 +121,10 @@ class Group extends Db\Row
     }
 
     /**
-     * Translate this object to another locale
-     * @return mixed
-     */
-    public function translate($newLocale)
-    {
-        $clone = Table::locateWithinLocale($this->id, $newLocale);
-
-        if (!$clone) {
-            $clone             = Table::create();
-            $clone->_data      = $this->toArray();
-            $clone->locale_id  = $newLocale;
-            $clone->created_by = Table::getAuthUser()->id;
-
-            $clone->save();
-        }
-
-        return $clone;
-    }
-
-    /**
-     * Setter for `locale_id`
-     * @return mixed
-     */
-    final protected function setLocale($value)
-    {
-        return $this->locale_id = $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function loadUsers()
     {
-        return UserToGroup::loadUsers($this->id);
+        return ZfRest_Model_UserToGroup::loadUsers($this->id);
     }
 }

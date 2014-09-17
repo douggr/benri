@@ -1,20 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Util;
-
 /**
  * Representation of date and time. 
  */
-class DateTime extends \DateTime
+class ZfRest_Util_DateTime extends DateTime
 {
     /**
      * {@inheritdoc}
@@ -22,14 +20,13 @@ class DateTime extends \DateTime
     private $_format = parent::ISO8601;
 
     /**
-     * ctor
+     * ctor. Returns new ZfRest_Util_DateTime object
      *
-     * Returns new DateTime object
      * @param string A date/time string.
-     * @param \DateTimeZone A DateTimeZone object representing the timezone
-     * @return \Base\Util\DateTime A new DateTime instance
+     * @param DateTimeZone A DateTimeZone object representing the timezone
+     * @return ZfRest_Util_DateTime A new ZfRest_Util_DateTime instance
      */
-    public function __construct($time = 'now', \DateTimeZone $timezone = null)
+    public function __construct($time = 'now', DateTimeZone $timezone = null)
     {
         if (preg_match('/[\d+]{10}/', $time)) {
             return static::createFromFormat('U', $time, $timezone);

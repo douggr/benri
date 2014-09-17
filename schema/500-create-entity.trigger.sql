@@ -1,7 +1,7 @@
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
@@ -22,17 +22,10 @@ BEGIN
     `name`,
     `entity_id`,
     `admin`,
-    `created_by`,
-    `locale_id`
-  ) VALUES
-  ('ADMIN', NEW.id, TRUE, NEW.created_by, NEW.locale_id),
-  ('USERS', NEW.id, FALSE,NEW.created_by, NEW.locale_id);
-
-  INSERT INTO `%DATABASE%`.`user_to_entity` (
-    `user_id`,
-    `entity_id`,
     `created_by`
-  ) VALUES (NEW.created_by, NEW.id, NEW.created_by);
+  ) VALUES
+  ('ADMIN', NEW.id, TRUE, NEW.created_by),
+  ('USERS', NEW.id, FALSE,NEW.created_by);
 END$$
 
 DELIMITER ;

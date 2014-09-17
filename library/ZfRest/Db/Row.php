@@ -1,23 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Db;
-
-use ZfRest\Util\String;
-use ZfRest\Util\DateTime;
-
 /**
  * {@inheritdoc}
  */
-class Row extends \Zend_Db_Table_Row
+class ZfRest_Db_Row extends Zend_Db_Table_Row
 {
     /**
      * @var array
@@ -97,7 +92,7 @@ class Row extends \Zend_Db_Table_Row
         $this->_save();
 
         foreach ($this->_data as $column => &$value) {
-            if ($value instanceof \DateTime) {
+            if ($value instanceof DateTime) {
                 $value->setFormat('Y:m:d H:i:s');
             }
         }
@@ -297,7 +292,7 @@ class Row extends \Zend_Db_Table_Row
      */
     public function __call($method, array $args)
     {
-        $column           = String::dasherize(substr($method, 3));
+        $column           = ZfRest_Util_String::dasherize(substr($method, 3));
         $isSetterOrGetter = substr($method, 0, 3);
 
         if ('get' === $isSetterOrGetter && $this->offsetExists($column)) {
@@ -318,7 +313,7 @@ class Row extends \Zend_Db_Table_Row
      */
     public function __get($columnName)
     {
-        $getter = String::camelize($columnName, true);
+        $getter = ZfRest_Util_String::camelize($columnName, true);
 
         if (method_exists($this, "get{$getter}")) {
             return call_user_func_array([$this, "get{$getter}"], [$value]);
@@ -335,7 +330,7 @@ class Row extends \Zend_Db_Table_Row
      */
     public function __set($columnName, $value)
     {
-        $setter = String::camelize($columnName, true);
+        $setter = ZfRest_Util_String::camelize($columnName, true);
 
         if (method_exists($this, "set{$setter}")) {
             $value = call_user_func_array([$this, "set{$setter}"], [$value]);

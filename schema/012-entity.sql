@@ -1,7 +1,7 @@
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
@@ -29,17 +29,12 @@ CREATE TABLE IF NOT EXISTS `%DATABASE%`.`entity` (
 
   `created_at`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by`    INTEGER       NOT NULL,
-  `locale_id`     INTEGER       NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
 ALTER TABLE `%DATABASE%`.`entity`
   ADD CONSTRAINT `entity_fk_created_by`
   FOREIGN KEY (`created_by`) REFERENCES `user`(`id`);
-
-ALTER TABLE `%DATABASE%`.`entity`
-  ADD CONSTRAINT `entity_fk_locale`
-  FOREIGN KEY (`locale_id`) REFERENCES `locale`(`id`);
 
 CREATE UNIQUE INDEX `entity_name`
   USING BTREE ON `%DATABASE%`.`entity` (`name`);

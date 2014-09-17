@@ -1,20 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Util;
-
 /**
  * Helpful string class
  */
-class String
+class ZfRest_Util_String
 {
     /**
      *
@@ -319,7 +317,7 @@ class String
      * Verifies that a password matches a hash.
      *
      * @param string The password in raw format.
-     * @param string A hash created by String::password().
+     * @param string A hash created by ZfRest_Util_String::password().
      * @return boolean TRUE if the password and hash match, or FALSE otherwise. 
      */
     public static function verifyPassword($raw, $hash)

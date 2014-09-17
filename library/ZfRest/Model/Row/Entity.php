@@ -1,23 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Model\Row;
-
-use ZfRest\Db;
-use ZfRest\Util\String;
-
 /**
  * {@inheritdoc}
  */
-class Entity extends Db\Row
+class ZfRest_Model_Row_Entity extends ZfRest_Db_Row
 {
     private static $_adminGroup = null;
 
@@ -109,7 +104,7 @@ class Entity extends Db\Row
      */
     final protected function setSlug($value)
     {
-        return String::slugfy($value);
+        return ZfRest_Util_String::slugfy($value);
     }
 
     /**
@@ -174,6 +169,6 @@ class Entity extends Db\Row
      */
     public function loadUsers()
     {
-        return UserToEntity::loadUsers($this->id);
+        return ZfRest_Model_UserToEntity::loadUsers($this->id);
     }
 }

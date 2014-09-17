@@ -1,20 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Db;
-
 /**
  * {@inheritdoc}
  */
-class Table extends \Zend_Db_Table
+class ZfRest_Db_Table extends Zend_Db_Table
 {
     /**
      * {@inheritdoc}
@@ -24,20 +22,20 @@ class Table extends \Zend_Db_Table
     /**
      * {@inheritdoc}
      */
-    protected $_rowClass = 'ZfRest\Db\Row';
+    protected $_rowClass = 'ZfRest_Db_Row';
 
     /**
-     * {@inheritdoc}
+     * @var ZfRest_Model_Row_User
      */
     private static $user;
 
     /**
-     * {@inheritdoc}
+     * @var string
      */
     private static $locale;
 
     /**
-     * {@inheritdoc}
+     * @var integer
      */
     private static $context;
 
@@ -154,7 +152,6 @@ class Table extends \Zend_Db_Table
      */
     protected function _setupDatabaseAdapter()
     {
-        $adapter = \Zend_Registry::get('multidb');
-        $this->_setAdapter($adapter);
+        $this->_setAdapter(Zend_Registry::get('multidb'));
     }
 }

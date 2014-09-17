@@ -1,18 +1,13 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
-
-namespace ZfRest\Controller;
-
-use ZfRest\Db\Table;
-use ZfRest\Db\Exception as ModelException;
 
 /**
  * {@inheritdoc}
@@ -20,9 +15,9 @@ use ZfRest\Db\Exception as ModelException;
  * All API requests MUST include a valid User-Agent header. Requests with no
  * User-Agent header will be rejected.
  */
-class Rest extends \Zend_Rest_Controller
+class ZfRest_Controller_Rest extends Zend_Rest_Controller
 {
-    use Auth;
+    use ZfRest_Controller_Auth;
 
     /**
      * Request data
@@ -108,9 +103,9 @@ class Rest extends \Zend_Rest_Controller
         $this->setAuth($this->getRequest()->getHeader('Authorization'))
             ->setContext($this->getContext());
 
-        Table::setAuthUser($this->getCurrentUser());
-        Table::setContext($this->getContext());
-        Table::setPreferredLocale($this->getPreferredLocale());
+        ZfRest_Db_Table::setAuthUser($this->getCurrentUser());
+        ZfRest_Db_Table::setContext($this->getContext());
+        ZfRest_Db_Table::setPreferredLocale($this->getPreferredLocale());
 
         $this
             ->_helper
@@ -286,7 +281,7 @@ class Rest extends \Zend_Rest_Controller
             ->getHeader('X-Preferred-Locale');
 
         if (!$locale) {
-            $locale = \Zend_Registry::get('Zend_Locale');
+            $locale = Zend_Registry::get('Zend_Locale');
         }
 
         return str_replace('-', '_', $locale);
@@ -371,7 +366,7 @@ class Rest extends \Zend_Rest_Controller
      */
     final protected function _($message, array $params = [])
     {
-        $message = \Zend_Registry::get('Zend_Translate')
+        $message = Zend_Registry::get('Zend_Translate')
             ->_($message, $this->getPreferredLocale());
 
         return vsprintf($message, $params);
@@ -448,7 +443,7 @@ class Rest extends \Zend_Rest_Controller
             $model->save();
             $this->data = $model->toArray();
 
-        } catch (ModelException $e) {
+        } catch (ZfRest_Db_Exception $e) {
             $errors = $model->getErrors();
 
             if (false !== $errors) {
@@ -457,7 +452,7 @@ class Rest extends \Zend_Rest_Controller
                 }
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->pushError('general', 'unknown', $e->getMessage());
 
         } finally {

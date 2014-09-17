@@ -1,22 +1,18 @@
 <?php
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
  */
 
-namespace ZfRest\Controller;
-
-use ZfRest\Model\User;
-
 /**
  * {@inheritdoc}
  */
-trait Auth
+trait ZfRest_Controller_Auth
 {
     /**
      * @var stdObject
@@ -39,7 +35,7 @@ trait Auth
     final public function getCurrentUser()
     {
         if ($this->hasAuth() && null === self::$user) {
-            self::$user = User::loadWithPermissions(self::$auth, $this->getContext());
+            self::$user = ZfRest_Model_User::loadWithPermissions(self::$auth, $this->getContext());
         }
 
         return self::$user;

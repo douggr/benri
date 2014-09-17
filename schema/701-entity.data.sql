@@ -1,7 +1,7 @@
 /*
- * douggr/zf-rest
+ * base/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
+ * @link https://svn.locness.com.br/svn/base/trunk/zf-rest for the canonical source repository
  * @version 1.0.0
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,10 +20,9 @@ LOCK TABLES `%DATABASE%`.`entity` WRITE;
 INSERT INTO `%DATABASE%`.`entity` (
   `name`,
   `slug`,
-  `created_by`,
-  `locale_id`
+  `created_by`
 ) VALUES
-('SITE', 'site', 1, 150);
+('SITE', 'site', 1);
 
 /*!40000 ALTER TABLE `%DATABASE%`.`entity` ENABLE KEYS */;
 UNLOCK TABLES;
