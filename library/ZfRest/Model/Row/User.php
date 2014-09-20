@@ -32,29 +32,16 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
      */
     public function normalizeInput($input)
     {
-        // email        varchar(200)
-        // first_name   varchar(200)
-        // last_name    varchar(200)
-        // username     varchar(200)
-        // password     char(60)
-        // admin        tinyint(1)
-        // status       char(1)
-        // visibility   enum('PUBLIC','PRIVATE')
-        // token        char(60)
-        // token_max_ts timestamp
-        // api_key      char(32)
-        // api_secret   char(60)
+        // email         VARCHAR(200)
+        // username      VARCHAR(200)
+        // password      CHAR(60)
+        // admin         BOOLEAN
+        // token         CHAR(60)
+        // api_key       CHAR(32)
+        // api_secret    CHAR(60)
 
         if (isset($input->email)) {
             $this->email = $input->email;
-        }
-
-        if (isset($input->first_name)) {
-            $this->first_name = $input->first_name;
-        }
-
-        if (isset($input->last_name)) {
-            $this->last_name = $input->last_name;
         }
 
         if (isset($input->username)) {
@@ -69,20 +56,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
             $this->admin = $input->admin;
         }
 
-        if (isset($input->status)) {
-            $this->status = $input->status;
-        }
-
-        if (isset($input->visibility)) {
-            $this->visibility = $input->visibility;
-        }
-
         if (isset($input->token)) {
             $this->token = $input->token;
-        }
-
-        if (isset($input->token_max_ts)) {
-            $this->token_max_ts = $input->token_max_ts;
         }
 
         if (isset($input->api_key)) {
@@ -101,7 +76,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
      */
     protected function _insert()
     {
-        // every `user` MUST HAVE a password…
+        // every user MUST HAVE a password…
         if ('' === trim($this->password)) {
             $this->pushError('password', 'invalid', 'ERR.PASSWORD_REQUIRED');
         }
@@ -114,12 +89,6 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
 
         // a token…
         $this->token        = ZfRest_Util_String::random(60);
-
-        // and a valid token_max_ts…
-        $this->token_max_ts = '+1week';
-
-        $this->token_max_ts
-            ->setFormat('Y:m:d H:i:s');
     }
 
     /**
@@ -160,7 +129,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `email`
+     * Setter for email
      * @return mixed
      */
     final protected function setEmail($value)
@@ -179,25 +148,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `first_name`
-     * @return mixed
-     */
-    final protected function setFirstName($value)
-    {
-        return trim($value);
-    }
-
-    /**
-     * Setter for `last_name`
-     * @return mixed
-     */
-    final protected function setLastName($value)
-    {
-        return trim($value);
-    }
-
-    /**
-     * Setter for `first_name`
+     * Setter for first_name
      * @return mixed
      */
     final protected function setUsername($value)
@@ -206,7 +157,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `password`
+     * Setter for password
      * @return mixed
      */
     final protected function setPassword($value)
@@ -215,7 +166,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `admin`
+     * Setter for admin
      * @return mixed
      */
     final protected function setAdmin($value)
@@ -224,31 +175,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `status`
-     * @return mixed
-     */
-    final protected function setStatus($value)
-    {
-        return trim($value);
-    }
-
-    /**
-     * Setter for `visibility`
-     * @return mixed
-     */
-    final protected function setVisibility($value)
-    {
-        $value = strtoupper(trim($value));
-
-        if ('PUBLIC' !== $value && 'PRIVATE' !== $value) {
-            $this->pushError('visibility', 'invalid', 'ERR.VISIBILITY_INVALID');
-        } else {
-            return $value;
-        }
-    }
-
-    /**
-     * Setter for `token`
+     * Setter for token
      * @return mixed
      */
     final protected function setToken($value)
@@ -257,16 +184,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `token_max_ts`
-     * @return mixed
-     */
-    final protected function setTokenMaxTs($value)
-    {
-        return new ZfRest_Util_DateTime($value);
-    }
-
-    /**
-     * Setter for `api_key`
+     * Setter for api_key
      * @return mixed
      */
     final protected function setApiKey($value)
@@ -275,7 +193,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     }
 
     /**
-     * Setter for `api_secret`
+     * Setter for api_secret
      * @return mixed
      */
     final protected function setApiSecret($value)

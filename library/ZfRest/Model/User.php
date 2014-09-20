@@ -45,10 +45,6 @@ class ZfRest_Model_User extends ZfRest_Db_Table
             $select->order("created_at $order");
         }
 
-        if (!$user || ($user && !$user->admin)) {
-            $select->where('visibility = ?', 'PUBLIC');
-        }
-
         $select->limitPage($pageSize->currentPage, $pageSize->pageSize);
 
         return $table->fetchAll($select);

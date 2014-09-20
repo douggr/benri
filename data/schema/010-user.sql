@@ -20,15 +20,10 @@ CREATE TABLE IF NOT EXISTS `%DATABASE%`.`user` (
   `id`            INTEGER       NOT NULL AUTO_INCREMENT,
 
   `email`         VARCHAR(200)  NOT NULL,
-  `first_name`    VARCHAR(200),
-  `last_name`     VARCHAR(200),
   `username`      VARCHAR(200)  NOT NULL,
   `password`      CHAR(60)      NOT NULL,
   `admin`         BOOLEAN       NOT NULL DEFAULT FALSE,
-  `status`        CHAR(1)       NOT NULL DEFAULT '1',
-  `visibility`    ENUM('PUBLIC', 'PRIVATE') DEFAULT 'PUBLIC',
   `token`         CHAR(60)      NOT NULL,
-  `token_max_ts`  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `api_key`       CHAR(32)      NOT NULL,
   `api_secret`    CHAR(60)      NOT NULL,
 
