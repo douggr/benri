@@ -22,14 +22,6 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     /**
      * {@inheritdoc}
      */
-    public function hasPublicProfile()
-    {
-        return 'PUBLIC' === $this->visibility;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function normalizeInput($input)
     {
         // email         VARCHAR(200)
