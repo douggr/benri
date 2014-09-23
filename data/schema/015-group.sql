@@ -18,9 +18,8 @@
 DROP TABLE IF EXISTS `%DATABASE%`.`group`;
 CREATE TABLE IF NOT EXISTS `%DATABASE%`.`group` (
   `id`            INTEGER       NOT NULL AUTO_INCREMENT,
-
-  `name`          VARCHAR(200)  NOT NULL,
-  `summary`       TEXT          NULL,
+  `name`          VARCHAR(100)  NOT NULL,
+  `description`   VARCHAR(800)  NOT NULL DEFAULT '',
   `active`        BOOLEAN       NOT NULL DEFAULT TRUE,
   `entity_id`     INTEGER       NOT NULL DEFAULT 1,
   `admin`         BOOLEAN       NOT NULL DEFAULT FALSE,
