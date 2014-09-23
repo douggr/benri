@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS `%DATABASE%`.`user_to_entity`;
 CREATE TABLE IF NOT EXISTS `%DATABASE%`.`user_to_entity` (
   `user_id`       INTEGER       NOT NULL,
   `entity_id`     INTEGER       NOT NULL DEFAULT 1,
-
   `created_at`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by`    INTEGER       NOT NULL,
   PRIMARY KEY (`user_id`, `entity_id`)

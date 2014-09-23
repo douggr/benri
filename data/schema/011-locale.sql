@@ -18,9 +18,8 @@
 DROP TABLE IF EXISTS `%DATABASE%`.`locale`;
 CREATE TABLE IF NOT EXISTS `%DATABASE%`.`locale` (
   `id`            INTEGER       NOT NULL AUTO_INCREMENT,
-
   `name`          VARCHAR(100)  NOT NULL,
-  `code`          CHAR(15)      NOT NULL,
+  `code`          VARCHAR(15)   NOT NULL,
   `active`        BOOLEAN       NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;

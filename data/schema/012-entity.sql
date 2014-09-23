@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS `%DATABASE%`.`entity` (
 
   `name`          VARCHAR(200)  NOT NULL,
   `slug`          VARCHAR(200)  NOT NULL,
-  `description`   VARCHAR(800)  NOT NULL DEFAULT '',
-  `location`      VARCHAR(100)  NOT NULL DEFAULT '',
-  `url`           VARCHAR(200)  NOT NULL DEFAULT '',
-  `email`         VARCHAR(100)  NOT NULL DEFAULT '',
+  `description`   TEXT,
+  `location`      TEXT,
+  `url`           VARCHAR(2048) NOT NULL DEFAULT '',  /* RFC 2616 */
+  `email`         VARCHAR(254)  NOT NULL DEFAULT '',  /* RFC 3696 */
   `visibility`    ENUM('PUBLIC', 'PRIVATE') DEFAULT 'PUBLIC',
 
   `created_at`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,

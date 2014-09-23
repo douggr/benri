@@ -19,8 +19,8 @@ DROP TABLE IF EXISTS `%DATABASE%`.`user`;
 CREATE TABLE IF NOT EXISTS `%DATABASE%`.`user` (
   `id`            INTEGER       NOT NULL AUTO_INCREMENT,
 
-  `email`         VARCHAR(200)  NOT NULL,
-  `username`      VARCHAR(200)  NOT NULL,
+  `email`         VARCHAR(254)  NOT NULL,  /* RFC 3696 */
+  `username`      VARCHAR(254)  NOT NULL,
   `password`      CHAR(60)      NOT NULL,
   `admin`         BOOLEAN       NOT NULL DEFAULT FALSE,
   `token`         CHAR(60)      NOT NULL,

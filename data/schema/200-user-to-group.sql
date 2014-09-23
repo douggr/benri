@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS `%DATABASE%`.`user_to_group`;
 CREATE TABLE IF NOT EXISTS `%DATABASE%`.`user_to_group` (
   `user_id`       INTEGER       NOT NULL,
   `group_id`      INTEGER       NOT NULL,
-
   `created_at`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by`    INTEGER       NOT NULL,
   PRIMARY KEY (`user_id`, `group_id`)
