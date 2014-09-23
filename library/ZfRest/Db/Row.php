@@ -144,6 +144,12 @@ class ZfRest_Db_Row extends Zend_Db_Table_Row
      */
     public function normalizeInput($input)
     {
+        foreach ($input as $column => $value) {
+            if ($this->offsetExists($column)) {
+                $this->__set($column, $value);
+            }
+        }
+
         return $this;
     }
 
