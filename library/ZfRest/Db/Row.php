@@ -352,7 +352,7 @@ class ZfRest_Db_Row extends Zend_Db_Table_Row
     final protected function setLocaleId($value)
     {
         if ($this->offsetExists('locale_id')) {
-            $locale = Model\Locale::getLocale($value);
+            $locale = ZfRest_Model_Locale::getLocale($value);
 
             if (!$locale) {
                 $this->pushError('locale_id', 'invalid', 'ERR.UNKNONWN_LOCALE', $value);
