@@ -3,7 +3,7 @@
  * douggr/zf-rest
  *
  * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 1.0.0
+ * @version 1.1.3
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
