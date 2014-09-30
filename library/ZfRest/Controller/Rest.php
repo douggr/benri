@@ -92,6 +92,7 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
             ->setHeader('Access-Control-Allow-Credentials', 'true', true)
             ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE', true)
             ->setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Preferred-Locale, X-Context, Authorization', true)
+            ->setHeader('Access-Control-Max-Age', '1728000', true)
             // END CORS }}}
 
             ->setHeader('Access-Control-Max-Age', '1728000', true)
