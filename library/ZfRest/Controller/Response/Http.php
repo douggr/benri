@@ -12,7 +12,7 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Http_Response extends Zend_Controller_Response_Http
+class ZfRest_Controller_Response_Http extends Zend_Controller_Response_Http
 {
     /**
      * @var array

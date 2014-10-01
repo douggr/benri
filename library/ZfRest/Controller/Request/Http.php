@@ -12,7 +12,7 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Http_Request extends Zend_Controller_Request_Http
+class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
 {
     /**
      * {@inheritdoc}
@@ -85,6 +85,6 @@ class ZfRest_Http_Request extends Zend_Controller_Request_Http
      */
     public function isPut()
     {
-        return 'PUT' == $this->getMethod();
+        return 'PUT' === $this->getMethod();
     }
 }
