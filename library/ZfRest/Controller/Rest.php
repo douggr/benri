@@ -95,7 +95,6 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
             ->setHeader('Access-Control-Max-Age', '1728000', true)
             // END CORS }}}
 
-            ->setHeader('Access-Control-Max-Age', '1728000', true)
             ->setHeader('X-Preferred-Locale', $this->getPreferredLocale(), true)
             ->setHeader('X-Context', $this->getContext(), true)
             ->setHeader('Vary', 'Accept-Encoding', true)
@@ -113,7 +112,7 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
             ->viewRenderer
             ->setNoRender(true);
 
-        $this->input = new \StdClass();
+        $this->input = new StdClass();
     }
 
     /**
@@ -278,14 +277,8 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      */
     final public function getPreferredLocale()
     {
-        $locale = $this->getRequest()
-            ->getHeader('X-Preferred-Locale');
-
-        if (!$locale) {
-            $locale = Zend_Registry::get('Zend_Locale');
-        }
-
-        return str_replace('-', '_', $locale);
+        return $this->getRequest()
+            ->getHeader('X-Preferred-Locale') ?: 'en';
     }
 
     /**
@@ -367,9 +360,6 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      */
     final protected function _($message, array $params = [])
     {
-        $message = Zend_Registry::get('Zend_Translate')
-            ->_($message, $this->getPreferredLocale());
-
         return vsprintf($message, $params);
     }
 
@@ -378,11 +368,11 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      *
      * @exit
      */
-    final protected function _skipAction($code, $message = null)
+    final protected function _skipAction($code, $message = null, array $params = [])
     {
         if (is_string($message)) {
             $message = (object) [
-                'message'   => $this->_($message),
+                'message'   => $this->_($message, $params),
                 'code'      => 0,
                 'details'   => []
             ];
