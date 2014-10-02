@@ -12,9 +12,6 @@
 /*!40101 SET GLOBAL log_output = 'TABLE' */;
 /*!40101 SET GLOBAL general_log = 'ON' */;
 
--- ---------------------------------------------------------------------------
--- Database structure for `%DATABASE%`
--- ---------------------------------------------------------------------------
 DROP DATABASE IF EXISTS `%DATABASE%`;
 
 CREATE DATABASE `%DATABASE%`

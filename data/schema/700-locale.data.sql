@@ -10,9 +10,6 @@
 
 /*!40101 SET NAMES utf8 */;
 
--- ---------------------------------------------------------------------------
--- Data for table `%DATABASE%`.`locale`
--- ---------------------------------------------------------------------------
 LOCK TABLES `%DATABASE%`.`locale` WRITE;
 /*!40000 ALTER TABLE `%DATABASE%`.`locale` DISABLE KEYS */;
 

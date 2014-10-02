@@ -12,9 +12,6 @@
 /*!40101 SET GLOBAL log_output = 'TABLE' */;
 /*!40101 SET GLOBAL general_log = 'ON' */;
 
--- ---------------------------------------------------------------------------
--- Data for table `%DATABASE%`.`entity`
--- ---------------------------------------------------------------------------
 LOCK TABLES `%DATABASE%`.`entity` WRITE;
 /*!40000 ALTER TABLE `%DATABASE%`.`entity` DISABLE KEYS */;
 INSERT INTO `%DATABASE%`.`entity` (

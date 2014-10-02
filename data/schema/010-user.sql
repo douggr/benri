@@ -12,9 +12,6 @@
 /*!40101 SET GLOBAL log_output = 'TABLE' */;
 /*!40101 SET GLOBAL general_log = 'ON' */;
 
--- ---------------------------------------------------------------------------
--- Table structure for table `%DATABASE%`.`user`
--- ---------------------------------------------------------------------------
 DROP TABLE IF EXISTS `%DATABASE%`.`user`;
 CREATE TABLE IF NOT EXISTS `%DATABASE%`.`user` (
   `id`            INTEGER       NOT NULL AUTO_INCREMENT,
