@@ -82,8 +82,9 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
 
     /**
      * {@inheritdoc}
+     * Note: Remember to call parent::init() if you override this one.
      */
-    final public function init()
+    public function init()
     {
         $this
             ->getResponse()
