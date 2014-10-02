@@ -275,16 +275,16 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      *
      * @return string
      */
-    final public function getPreferredLocale()
+    public function getPreferredLocale()
     {
         return $this->getRequest()
             ->getHeader('X-Preferred-Locale') ?: 'en';
     }
 
     /**
-     * 
+     * @return integer
      */
-    final protected function getContext()
+    protected function getContext()
     {
         return $this->getRequest()
             ->getHeader('X-Context') ?: 1;
@@ -358,7 +358,7 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      *
      * @return string
      */
-    final protected function _($message, array $params = [])
+    protected function _($message, array $params = [])
     {
         return vsprintf($message, $params);
     }
@@ -368,7 +368,7 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      *
      * @exit
      */
-    final protected function _skipAction($code, $message = null, array $params = [])
+    protected function _skipAction($code, $message = null, array $params = [])
     {
         if (is_string($message)) {
             $message = (object) [
@@ -394,7 +394,7 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      *
      * @return StdClass
      */
-    final protected function _getPageSize()
+    protected function _getPageSize()
     {
         $defaults = [
             'defaultPageSize' => 20,
