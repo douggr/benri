@@ -68,8 +68,8 @@ class ZfRest_Auth
             throw new ZfRest_Auth_Exception('ERR.CREDENTIAL_INVALID', self::FAILURE_CREDENTIAL_INVALID);
         }
 
-        $token       = ZfRest_Util_String::password(static::getAccessToken($user));
-        $user->token = $token;
+        $token              = ZfRest_Util_String::password(static::getAccessToken($user));
+        $user->access_token = $token;
         $user->save();
 
         return [

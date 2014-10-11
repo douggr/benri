@@ -155,8 +155,13 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
                 ];
             }
 
-            $this->getResponse()
-                ->setHttpResponseCode(422);
+            $httpResponseCode = $this->getResponse()
+                ->getHttpResponseCode();
+
+            if (!$httpResponseCode || 200 === $httpResponseCode) {
+                $this->getResponse()
+                    ->setHttpResponseCode(422);
+            }
         }
 
         if (null !== $this->data) {
@@ -426,6 +431,8 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
 
     /**
      * Allows pre-save logic to be applied to models.
+     *
+     * @return boolean true if the Model could be saved.
      */
     protected function _saveModel($model)
     {
@@ -435,7 +442,8 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
             $model->save();
             $this->data = $model->toArray();
 
-        } catch (ZfRest_Db_Exception $e) {
+            return true;
+        } catch (Exception $e) {
             $errors = $model->getErrors();
 
             if (false !== $errors) {
@@ -444,9 +452,10 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
                 }
             }
 
-        } catch (Exception $e) {
-            $this->pushError('general', 'unknown', $e->getMessage());
+            $this->getResponse()
+                ->setHttpResponseCode(422);
 
+            return false;
         } finally {
             // log…
         }

@@ -29,6 +29,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
         // password      CHAR(60)
         // admin         BOOLEAN
         // token         CHAR(60)
+        // access_token  CHAR(60)
         // api_key       CHAR(32)
         // api_secret    CHAR(60)
 
@@ -48,16 +49,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
             $this->admin = $input->admin;
         }
 
-        if (isset($input->token)) {
-            $this->token = $input->token;
-        }
-
-        if (isset($input->api_key)) {
-            $this->api_key = $input->api_key;
-        }
-
-        if (isset($input->api_secret)) {
-            $this->api_secret = $input->api_secret;
+        if (isset($input->access_token)) {
+            $this->token = $input->access_token;
         }
 
         return $this;
@@ -81,6 +74,9 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
 
         // a token…
         $this->token        = ZfRest_Util_String::random(60);
+
+        // and an access token…
+        $this->access_token = ZfRest_Util_String::random(60);
     }
 
     /**
@@ -88,28 +84,16 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
      */
     protected function _save()
     {
-        if (!isset($this->email)) {
+        if ('' === trim($this->email)) {
             $this->pushError('email', 'missing_field', 'ERR.MISSING_FIELD');
         }
 
-        if (!isset($this->password)) {
+        if ('' === trim($this->password)) {
             $this->pushError('password', 'missing_field', 'ERR.MISSING_FIELD');
         }
 
-        if (!isset($this->admin)) {
-            $this->pushError('admin', 'missing_field', 'ERR.MISSING_FIELD');
-        }
-
-        if (!isset($this->token)) {
-            $this->pushError('token', 'missing_field', 'ERR.MISSING_FIELD');
-        }
-
-        if (!isset($this->api_key)) {
-            $this->pushError('api_key', 'missing_field', 'ERR.MISSING_FIELD');
-        }
-
-        if (!isset($this->api_secret)) {
-            $this->pushError('api_secret', 'missing_field', 'ERR.MISSING_FIELD');
+        if ('' === trim($this->admin)) {
+            $this->admin = false;
         }
     }
 
@@ -130,8 +114,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
             $this->pushError('email', 'invalid', 'ERR.EMAIL_INVALID', $value);
 
         } elseif (!$this->username) {
-            $this->username = trim($value);
-            return $this->username;
+            return $this->username = $value;
 
         } else {
             return trim($value);
@@ -171,6 +154,15 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
      * @return mixed
      */
     final protected function setToken($value)
+    {
+        return trim($value);
+    }
+
+    /**
+     * Setter for token
+     * @return mixed
+     */
+    final protected function setAccessToken($value)
     {
         return trim($value);
     }

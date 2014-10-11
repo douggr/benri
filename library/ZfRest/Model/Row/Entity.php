@@ -76,7 +76,7 @@ class ZfRest_Model_Row_Entity extends ZfRest_Db_Row
      */
     protected function _save()
     {
-        if (!isset($this->name)) {
+        if ('' === trim($this->name)) {
             $this->pushError('name', 'missing_field', 'ERR.MISSING_FIELD');
         }
     }

@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `%DATABASE%`.`user` (
   `password`      CHAR(60)      NOT NULL,
   `admin`         BOOLEAN       NOT NULL DEFAULT FALSE,
   `token`         CHAR(60)      NOT NULL,
+  `access_token`  CHAR(60)      NOT NULL,
   `api_key`       CHAR(32)      NOT NULL,
   `api_secret`    CHAR(60)      NOT NULL,
 

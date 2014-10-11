@@ -67,7 +67,7 @@ class ZfRest_Model_User extends ZfRest_Db_Table
             ->from(['us' => 'user'])
             ->join(['ue' => 'user_to_entity'], 'us.id = ue.user_id', [])
             ->join(['en' => 'entity'], 'ue.entity_id = en.id', ['en.id as entity'])
-            ->where('us.token = ?', $token)
+            ->where('us.access_token = ?', $token)
             ->where("en.id = ? OR us.admin = true", $entity);
 
         $model = $table->fetchRow($select->limit(1))
