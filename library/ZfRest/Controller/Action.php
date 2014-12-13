@@ -91,6 +91,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
 
             $this->view
                 ->assign([
+                    'identity'  => ZfRest_Auth::getInstance()->getIdentity(),
                     'messages'  => $this->_messages,
                     'title'     => $this->_pageTitle,
                 ]);
