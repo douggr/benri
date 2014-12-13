@@ -12,7 +12,7 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Db_Table_Abstract_Row extends Zend_Db_Table_Row
+class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
 {
     /// This means a required resource does not exist.
     const ERROR_MISSING         = 'missing';
