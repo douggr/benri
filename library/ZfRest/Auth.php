@@ -17,6 +17,40 @@ class ZfRest_Auth extends Zend_Auth
     /**
      * {@inheritdoc}
      */
+    public function authenticate(Zend_Auth_Adapter_Interface $adapter)
+    {
+        $result = $adapter->authenticate();
+
+        /**
+         * ZF-7546 - prevent multiple succesive calls from storing inconsistent results
+         * Ensure storage has clean state
+         */
+        if ($this->hasIdentity()) {
+            $this->clearIdentity();
+        }
+
+        if ($result->isValid()) {
+            $identity = $adapter->getResultRowObject([
+                'access_token',
+                'admin',
+                'api_key',
+                'created_at',
+                'email',
+                'id',
+                'updated_at',
+                'username'
+            ]);
+
+            $this->getStorage()->write($identity);
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     public static function getInstance()
     {
         if (null === self::$_instance) {
