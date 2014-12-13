@@ -22,21 +22,27 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Abstract
     /**
      * Response data
      */
-    protected $_data;
+    private $_data;
 
     /**
      * {@inheritdoc}
      */
     public function init()
     {
-        $this->_registerPlugin(new ZfRest_Controller_Plugin_CORS())
-            ->_registerPlugin(new Zend_Controller_Plugin_PutHandler())
-            ->_helper
+        $this->_registerPlugin(new ZfRest_Controller_Plugin_CORS());
+        $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
+
+        $this->_helper
+            ->layout()
+            ->disableLayout();
+
+        $this->_helper
             ->viewRenderer
             ->setNoRender(true);
 
         $this->_input   = new StdClass();
         $this->_data    = [
+            'identity'  => ZfRest_Auth::getInstance()->getIdentity(),
             'messages'  => [],
             'data'      => null
         ];
@@ -122,5 +128,13 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Abstract
                 exit -403;
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _setResponseData($data)
+    {
+        $this->_data['data'] = $data;
     }
 }
