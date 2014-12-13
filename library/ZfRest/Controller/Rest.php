@@ -65,6 +65,7 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Abstract
         }
 
         $this->getResponse()
+            ->setHeader('Content-Type', 'application/json; charset=utf-8')
             ->setBody(json_encode($this->_data, $jsonOptions));
     }
 
