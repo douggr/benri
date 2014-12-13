@@ -12,20 +12,11 @@
 /*!40101 SET GLOBAL log_output = 'TABLE' */;
 /*!40101 SET GLOBAL general_log = 'ON' */;
 
-DELIMITER $$
+DROP DATABASE IF EXISTS `%DATABASE%`;
 
-CREATE TRIGGER `%DATABASE%`.create_entity
-AFTER INSERT ON `%DATABASE%`.`entity`
-FOR EACH ROW
-BEGIN
-  INSERT INTO `%DATABASE%`.`group` (
-    `name`,
-    `entity_id`,
-    `admin`,
-    `created_by`
-  ) VALUES
-  ('ADMIN', NEW.id, TRUE, NEW.created_by),
-  ('USERS', NEW.id, FALSE,NEW.created_by);
-END$$
+CREATE DATABASE `%DATABASE%`
+	DEFAULT CHARACTER SET utf8
+	DEFAULT COLLATE utf8_general_ci;
 
-DELIMITER ;
+CREATE FUNCTION `%DATABASE%`.JSON_ESCAPE(str TEXT) RETURNS TEXT
+  RETURN REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(str, ''), '\\', '\\u005C'), '''', '\\u0027'), '"',  '\\u0022'), '\n', '\\u000A');

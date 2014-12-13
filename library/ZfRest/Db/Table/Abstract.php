@@ -12,51 +12,32 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Db_Table extends Zend_Db_Table
+abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
 {
     /**
      * {@inheritdoc}
      */
-    protected $_primary = 'id';
+    protected $_primary = ['id'];
 
     /**
      * {@inheritdoc}
      */
-    protected $_rowClass = 'ZfRest_Db_Row';
-
-    /**
-     * @var ZfRest_Model_Row_User
-     */
-    private static $user;
-
-    /**
-     * @var string
-     */
-    private static $locale;
-
-    /**
-     * @var integer
-     */
-    private static $context;
+    protected $_rowClass = 'ZfRest_Db_Table_Row';
 
     /**
      * {@inheritdoc}
      */
-    public static function all($pageSize, $sort = null, $order = 'desc')
+    public static function all($currentPage = 1, $pageSize = 10, $sort = null, $order = 'desc')
     {
         $table  = new static();
         $model  = $table::create();
         $select = $table->select();
 
-        if ($model->offsetExists('entity_id')) {
-            $select->where('entity_id = ?', static::getContext());
-        }
-
         if ($sort && $model->offsetExists($sort)) {
             $select->order("$sort $order");
         }
 
-        $select->limitPage($pageSize->currentPage, $pageSize->pageSize);
+        $select->limitPage($currentPage, $pageSize);
 
         return $table->fetchAll($select);
     }
@@ -68,14 +49,6 @@ class ZfRest_Db_Table extends Zend_Db_Table
     {
         return (new static())
             ->createRow((array) $data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public static function getAuthUser()
-    {
-        return self::$user;
     }
 
     /**
@@ -100,41 +73,10 @@ class ZfRest_Db_Table extends Zend_Db_Table
     /**
      * {@inheritdoc}
      */
-    final public static function setAuthUser($user)
+    public function select($withFromPart = self::SELECT_WITHOUT_FROM_PART)
     {
-        self::$user = $user;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public static function getContext()
-    {
-        return self::$context;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public static function setContext($context)
-    {
-        self::$context = $context;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public static function getPreferredLocale()
-    {
-        return self::$locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public static function setPreferredLocale($locale)
-    {
-        self::$locale = $locale;
+        return parent::select($withFromPart)
+            ->setIntegrityCheck(false);
     }
 
     /**
@@ -148,7 +90,7 @@ class ZfRest_Db_Table extends Zend_Db_Table
     }
 
     /**
-     * @return void
+     * {@inheritdoc}
      */
     protected function _setupDatabaseAdapter()
     {

@@ -73,6 +73,18 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
+     * Is the request a Javascript XMLHttpRequest and has the PJAX header?
+     *
+     * Should work with jQuery, Prototype, possibly others.
+     *
+     * @return boolean
+     */
+    public function isPjaxRequest()
+    {
+        return $this->isXmlHttpRequest() && $this->getHeader('X-PJAX');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isPost()

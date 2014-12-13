@@ -170,7 +170,8 @@ class ZfRest_Util_String
     /**
      * Returns given string as a dash_erized word.
      *
-     * @param string
+     * @param string String to dasherize
+     * @param string Replacement to be used as "dash"
      * @return string
      */
     public static function dasherize($str, $replacement = '_')
