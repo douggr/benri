@@ -61,13 +61,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
             ->where("{$column} = ?", $value)
             ->limit(1);
 
-        $result = $table->fetchAll($select);
-
-        if ($result && $result->count()) {
-            return $result[0];
-        } else {
-            return null;
-        }
+        return $table->fetchRow($select);
     }
 
     /**
