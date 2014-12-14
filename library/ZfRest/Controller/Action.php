@@ -73,6 +73,11 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
         $contentType = 'application/json';
 
         if ($this->view instanceof Zend_View_Interface) {
+            // allow the programmer to use any script located in 'layouts'…
+            $this->view->addScriptPath(APPLICATION_PATH . '/layouts');
+            // … and in '/views/scripts/components'.
+            $this->view->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
+
             $contentType      = 'text/html';
             $isXmlHttpRequest = $request->isXmlHttpRequest();
 
