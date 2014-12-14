@@ -38,6 +38,18 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
     /**
      * {@inheritdoc}
      */
+    public function disableLayout()
+    {
+        $this->_helper
+            ->layout()
+            ->disableLayout();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function indexAction()
     {
     }
@@ -65,9 +77,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
             $isXmlHttpRequest = $request->isXmlHttpRequest();
 
             if ($isXmlHttpRequest) {
-                $this->_helper
-                    ->layout
-                    ->disableLayout();
+                $this->disableLayout();
 
                 if (!$request->isPjaxRequest()) {
                     $this->view
@@ -91,9 +101,11 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
 
             $this->view
                 ->assign([
-                    'identity'  => ZfRest_Auth::getInstance()->getIdentity(),
-                    'messages'  => $this->_messages,
-                    'title'     => $this->_pageTitle,
+                    'controller'    => $this->getParam('controller'),
+                    'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
+                    'messages'      => $this->_messages,
+                    'module'        => $this->getParam('module'),
+                    'title'         => $this->_pageTitle,
                 ]);
         }
 

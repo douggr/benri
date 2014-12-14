@@ -42,9 +42,11 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Abstract
 
         $this->_input   = new StdClass();
         $this->_data    = [
-            'identity'  => ZfRest_Auth::getInstance()->getIdentity(),
-            'messages'  => [],
-            'data'      => null
+            'controller'    => $this->getParam('controller'),
+            'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
+            'messages'      => [],
+            'module'        => $this->getParam('module'),
+            'data'          => null
         ];
     }
 
