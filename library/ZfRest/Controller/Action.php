@@ -73,9 +73,8 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
         $contentType = 'application/json';
 
         if ($this->view instanceof Zend_View_Interface) {
-            // allow the programmer to use any script located in 'layouts'…
-            $this->view->addScriptPath(APPLICATION_PATH . '/layouts');
-            // … and in '/views/scripts/components'.
+            // allow the programmer to use any partial view located in
+            // '/views/scripts/components'.
             $this->view->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
 
             $contentType      = 'text/html';
@@ -85,23 +84,10 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
                 $this->disableLayout();
 
                 if (!$request->isPjaxRequest()) {
-                    $this->view
-                        ->assign([
-                            'pjaxTemplate' => $this->getViewScript(),
-                        ]);
-
                     $this->_helper
                         ->ViewRenderer
                         ->setNoController(true);
-
-                    $main = "{$request->getParam('controller')}/{$request->getParam('action')}";
-                    $this->_helper
-                        ->viewRenderer($this->_mainTemplate ?: $main);
                 }
-            } else {
-                $this->_helper
-                    ->layout
-                    ->setLayout($this->_layout);
             }
 
             $this->view
@@ -110,8 +96,19 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
                     'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
+                    'pjaxTemplate'  => $this->getViewScript(),
                     'title'         => $this->_pageTitle,
                 ]);
+
+            if ($this->_mainTemplate) {
+                $this->view
+                    ->assign([
+                        'pjaxTemplate'  => $this->getViewScript(),
+                    ]);
+
+                $this->_helper
+                    ->viewRenderer($this->_mainTemplate);
+            }
         }
 
         $this->getResponse()
