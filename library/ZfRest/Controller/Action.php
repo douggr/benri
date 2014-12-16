@@ -12,7 +12,7 @@
 /**
  * {@inheritdoc}
  */
-abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
+abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstract
 {
     /**
      * Layout used by this controller
@@ -62,6 +62,19 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
         $this->_helper
             ->layout
             ->setLayout($this->_layout);
+
+        $request = $this->getRequest();
+        $action  = $request->getParam('action');
+
+        if (!in_array($action, ['delete', 'index', 'get', 'patch', 'post', 'put'])) {
+            if ($request->isGet()) {
+                $action = $request->getParam('id') ? 'get' : 'index';
+            } else {
+                $action = strtolower($request->getMethod());
+            }
+
+            $request->setParam('action', $action);
+        }
     }
 
     /**
@@ -77,18 +90,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
             // '/views/scripts/components'.
             $this->view->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
 
-            $contentType      = 'text/html';
-            $isXmlHttpRequest = $request->isXmlHttpRequest();
-
-            if ($isXmlHttpRequest) {
-                $this->disableLayout();
-
-                if (!$request->isPjaxRequest()) {
-                    $this->_helper
-                        ->ViewRenderer
-                        ->setNoController(true);
-                }
-            }
+            $contentType = 'text/html';
 
             $this->view
                 ->assign([
@@ -96,18 +98,33 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Abstract
                     'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
-                    'pjaxTemplate'  => $this->getViewScript(),
                     'title'         => $this->_pageTitle,
                 ]);
 
-            if ($this->_mainTemplate) {
-                $this->view
-                    ->assign([
-                        'pjaxTemplate'  => $this->getViewScript(),
-                    ]);
+            if ($request->isXmlHttpRequest()) {
+                $this->disableLayout();
+            }
 
+            if ($this->_mainTemplate) {
                 $this->_helper
-                    ->viewRenderer($this->_mainTemplate);
+                    ->ViewRenderer
+                    ->setNoController(true);
+
+                $pjaxTemplate = "{$this->getParam('controller')}/{$this->getParam('action')}";
+
+                if ($request->isPjaxRequest()) {
+                    $this->_helper
+                        ->viewRenderer($pjaxTemplate);
+                    
+                } else {
+                    $this->view
+                        ->assign([
+                            'pjaxTemplate' => "{$pjaxTemplate}.phtml",
+                        ]);
+
+                    $this->_helper
+                        ->viewRenderer($this->_mainTemplate);
+                }
             }
         }
 
