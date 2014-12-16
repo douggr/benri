@@ -12,7 +12,7 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Controller_Rest extends ZfRest_Controller_Abstract
+class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 {
     /**
      * Request data
