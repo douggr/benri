@@ -98,7 +98,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
                     'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
-                    'title'         => $this->_pageTitle,
+                    'pageTitle'     => $this->_pageTitle,
                 ]);
 
             if ($request->isXmlHttpRequest()) {

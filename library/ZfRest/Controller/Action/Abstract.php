@@ -111,7 +111,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * {@inheritdoc}
      */
-    final protected function _pushMessage($message, $type = 'error', array $interpolateParams = [])
+    protected function _pushMessage($message, $type = 'error', array $interpolateParams = [])
     {
         $this->_messages[] = [
             'message'   => vsprintf($message, $interpolateParams),

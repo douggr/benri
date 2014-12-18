@@ -27,14 +27,14 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
     /**
      * {@inheritdoc}
      */
-    public static function all($currentPage = 1, $pageSize = 10, $sort = null, $order = 'desc')
+    public static function all($currentPage = 1, $pageSize = 10, $order = null, $sort = 'desc')
     {
         $table  = new static();
         $model  = $table::create();
         $select = $table->select();
 
-        if ($sort && $model->offsetExists($sort)) {
-            $select->order("$sort $order");
+        if ($order && $model->offsetExists($order)) {
+            $select->order("$order $sort");
         }
 
         $select->limitPage($currentPage, $pageSize);

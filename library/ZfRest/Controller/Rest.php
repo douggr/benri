@@ -25,6 +25,11 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     private $_data;
 
     /**
+     * @var array
+     */
+    private $_errors = [];
+
+    /**
      * {@inheritdoc}
      */
     public function init()
@@ -42,11 +47,8 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 
         $this->_input   = new StdClass();
         $this->_data    = [
-            'controller'    => $this->getParam('controller'),
-            'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
-            'messages'      => [],
-            'module'        => $this->getParam('module'),
-            'data'          => null
+            'messages'  => [],
+            'data'      => null
         ];
     }
 
@@ -55,7 +57,11 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
      */
     public function postDispatch()
     {
-        $this->_data['messages'][] = $this->_messages;
+        $this->_data['messages'] = $this->_messages;
+
+        if (count($this->_errors)) {
+            $this->_data['errors'] = $this->_errors;
+        }
 
         $pretty = $this->getRequest()
             ->getParam('pretty');
@@ -131,6 +137,33 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
                 exit -403;
             }
         }
+    }
+
+    /**
+     * All error objects have field and code properties so that your client
+     * can tell what the problem is.
+     *
+     * If resources have custom validation errors, they should be documented
+     * with the resource.
+     *
+     * @param string $field The erroneous field or column
+     * @param string $code One of the ERROR_* codes contants
+     * @param string $message
+     * @param array $interpolateParams Params to interpolate within the message
+     * @return ZfRest_Db_Table_Abstract_Row
+     */
+    protected function _pushError($resource, $field, $title)
+    {
+        $this->getResponse()
+            ->setHttpResponseCode(422);
+
+        $this->_errors[] = [
+            'field'     => $field,
+            'resource'  => $resource,
+            'title'     => $title
+        ];
+
+        return $this;
     }
 
     /**
