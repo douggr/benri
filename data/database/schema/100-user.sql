@@ -13,7 +13,7 @@
 /*!40101 SET GLOBAL general_log = 'ON' */;
 
 CREATE TABLE `%DATABASE%`.`user` (
-  `access_token`  CHAR(60)      NOT NULL,
+  `access_token`  TEXT          NOT NULL,
   `admin`         BOOLEAN       NOT NULL DEFAULT FALSE,
   `api_key`       CHAR(32)      NOT NULL,
   `api_secret`    CHAR(60)      NOT NULL,
