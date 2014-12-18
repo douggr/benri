@@ -181,12 +181,12 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * @param array $interpolateParams Params to interpolate within the message
      * @return ZfRest_Db_Table_Abstract_Row
      */
-    protected function _pushError($field, $code, $message = '', array $interpolateParams = [])
+    protected function _pushError($resource, $field, $title)
     {
         $this->_errors[] = [
             'field'     => $field,
-            'code'      => $code,
-            'message'   => vsprintf($message, $interpolateParams)
+            'resource'  => $resource,
+            'title'     => $title
         ];
 
         return $this;
@@ -203,39 +203,49 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
-     * @internal
+     * Constructor.
+     *
+     * Supported params for $config are:-
+     * - table       = class name or object of type Zend_Db_Table_Abstract
+     * - data        = values of columns in this row.
+     *
+     * @param  array $config OPTIONAL Array of user-specified config options.
+     * @return void
+     * @throws Zend_Db_Table_Row_Exception
      */
-    public function __call($method, array $args)
+    final public function __construct(array $config = array())
     {
-        $columnName         = ZfRest_Util_String::dasherize(substr($method, 3));
-        $isSetterOrGetter   = substr($method, 0, 3);
-        $columnExists       = $this->offsetExists($columnName);
+        if (isset($config['table']) && $config['table'] instanceof Zend_Db_Table_Abstract) {
+            $this->_table = $config['table'];
+            $this->_tableClass = get_class($this->_table);
+        } elseif ($this->_tableClass !== null) {
+            $this->_table = $this->_getTableFromString($this->_tableClass);
+        }
 
-        if ($columnExists) {
-            if ('get' === $isSetterOrGetter) {
-                return $this->__get($columnName);
-            } elseif ('set' === $isSetterOrGetter) {
-                return $this->__set($columnName, $args[0]);
+        if (isset($config['data'])) {
+            if (!is_array($config['data'])) {
+                throw new Zend_Db_Table_Row_Exception('Data must be an array.');
             }
+
+            $this->setFromArray($this->_data = $config['data']);
+            $this->_modifiedFields = [];
         }
 
-        return parent::__call($method, $args);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @internal
-     */
-    public function __get($columnName)
-    {
-        $getter = ZfRest_Util_String::camelize($columnName, true);
-
-        if (method_exists($this, "get{$getter}")) {
-            return call_user_func_array([$this, "get{$getter}"], []);
-        } else {
-            return parent::__get($columnName);
+        if (isset($config['stored']) && $config['stored'] === true) {
+            $this->_cleanData = $this->_data;
         }
+
+        if (isset($config['readOnly']) && $config['readOnly'] === true) {
+            $this->setReadOnly(true);
+        }
+
+        // Retrieve primary keys from table schema
+        if (($table = $this->_getTable())) {
+            $info = $table->info();
+            $this->_primary = (array) $info['primary'];
+        }
+
+        $this->init();
     }
 
     /**
@@ -250,6 +260,6 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
             $value = call_user_func_array([$this, "set{$setter}"], [$value]);
         }
 
-        parent::__set($columnName, $value);
+        return parent::__set($columnName, $value);
     }
 }
