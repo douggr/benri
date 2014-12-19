@@ -14,6 +14,27 @@
  */
 class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 {
+    /// This means a required resource does not exist.
+    const ERROR_MISSING         = 'missing';
+
+    /// This means a required field on a resource has not been set.
+    const ERROR_MISSING_FIELD   = 'missing_field';
+
+    /// This means the formatting of a field is invalid. The documentation for
+    /// that resource should be able to give you more specific information.
+    const ERROR_INVALID         = 'invalid';
+
+    /// This means another resource has the same value as this field. This can
+    /// happen in resources that must have some unique key (such as Label or
+    /// Locale names).
+    const ERROR_ALREADY_EXISTS  = 'already_exists';
+
+    /// This means an uncommon error.
+    const ERROR_UNCATEGORIZED   = 'uncategorized';
+
+    /// For the rare case an exception occurred and we couldn't recover.
+    const ERROR_UNKNOWN         = 'unknown';
+
     /**
      * Request data
      */
