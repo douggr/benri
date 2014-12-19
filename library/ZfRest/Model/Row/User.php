@@ -38,10 +38,6 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
      */
     public function setEmail($value)
     {
-        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            $this->_pushError('user', 'email', static::ERROR_INVALID);
-        }
-
         return trim($value);
     }
 
@@ -122,6 +118,10 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
 
         if ('' === trim($this->password)) {
             $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD);
+        }
+
+        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            $this->_pushError('user', 'email', static::ERROR_INVALID);
         }
 
         if ($this->isDirty('password')) {
