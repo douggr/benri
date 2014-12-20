@@ -141,18 +141,43 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
      * @param string $code One of the ERROR_* codes contants
      * @param string $message
      * @param array $interpolateParams Params to interpolate within the message
-     * @return ZfRest_Db_Table_Abstract_Row
+     * @return ZfRest_Controller_Rest
      */
-    protected function _pushError($resource, $field, $title)
+    protected function _pushError($resource, $field, $title, $message = '')
     {
         $this->getResponse()
             ->setHttpResponseCode(422);
 
         $this->_errors[] = [
             'field'     => $field,
+            'message'   => $message,
             'resource'  => $resource,
             'title'     => $title
         ];
+
+        return $this;
+    }
+
+    /**
+     * General method to save models (ZfRest_Db_Table_Row)
+     *
+     * @param ZfRest_Db_Table_Row
+     * @return ZfRest_Controller_Rest
+     */
+    protected function _saveModel(ZfRest_Db_Table_Row &$model)
+    {
+        try {
+            $model->normalizeInput($this->_input)
+                ->save();
+
+            $this->_pushMessage('Horray!', 'success');
+        } catch (Zend_Db_Table_Row_Exception $ex) {
+            foreach ($model->getErrors() as $error) {
+                extract($error) && $this->_pushError($resource, $field, $title, $message);
+            }
+
+            $this->_pushMessage($ex->getMessage(), 'danger');
+        }
 
         return $this;
     }
@@ -163,5 +188,7 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     protected function _setResponseData($data)
     {
         $this->_data['data'] = $data;
+
+        return $this;
     }
 }
