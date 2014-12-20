@@ -103,6 +103,10 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
      */
     public function preDispatch()
     {
+        Zend_Controller_Front::getInstance()
+            ->getPlugin('Zend_Controller_Plugin_ErrorHandler')
+            ->setErrorHandlerModule('api');
+
         $error   = null;
         $request = $this->getRequest();
 
@@ -112,50 +116,16 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
         if (!$request->isGet() && !$request->isHead()) {
             // … we read data from the request body.
             $this->_input   = json_decode(file_get_contents('php://input'));
-            $jsonError      = json_last_error();
 
-            if (JSON_ERROR_NONE !== $jsonError) {
-                switch ($jsonError) {
-                    case JSON_ERROR_DEPTH:
-                        $error = "Problems parsing JSON data.\nThe maximum stack depth has been exceeded.";
-                        break;
-
-                    case JSON_ERROR_STATE_MISMATCH:
-                        $error = "Invalid or malformed JSON.";
-                        break;
-
-                    case JSON_ERROR_CTRL_CHAR:
-                        $error = "Problems parsing JSON data.\nControl character error, possibly incorrectly encoded.";
-                        break;
-
-                    case JSON_ERROR_SYNTAX:
-                        $error = "Syntax error, malformed JSON.";
-                        break;
-
-                    case JSON_ERROR_UTF8:
-                        $error = "Problems parsing JSON data.\nMalformed UTF-8 characters, possibly incorrectly encoded.";
-                        break;
-
-                    case JSON_ERROR_RECURSION:
-                        $error = "Problems parsing JSON data.\nOne or more recursive references in the value to be encoded.";
-                        break;
-
-                    case JSON_ERROR_INF_OR_NAN:
-                        $error = "Problems parsing JSON data.\nOne or more NAN or INF values in the value to be encoded.";
-                        break;
-
-                    case JSON_ERROR_UNSUPPORTED_TYPE:
-                        $error = "Problems parsing JSON data.\nA value of a type that cannot be encoded was given.";
-                        break;
-                }
-
+            /// Sending invalid JSON will result in a `400 Bad Request` response.
+            if (JSON_ERROR_NONE !== json_last_error()) {
                 $this->getResponse()
-                    ->setHttpResponseCode(403)
+                    ->setHttpResponseCode(400)
                     ->setHeader('Content-Type', 'text/plain; charset=utf-8')
-                    ->setBody($error)
+                    ->setBody(json_last_error_msg())
                     ->sendResponse();
 
-                exit -403;
+                exit -422;
             }
         }
     }
