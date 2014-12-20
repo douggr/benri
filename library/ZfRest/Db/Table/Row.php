@@ -181,10 +181,11 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * @param array $interpolateParams Params to interpolate within the message
      * @return ZfRest_Db_Table_Abstract_Row
      */
-    protected function _pushError($resource, $field, $title)
+    protected function _pushError($resource, $field, $title, $message = '')
     {
         $this->_errors[] = [
             'field'     => $field,
+            'message'   => $message,
             'resource'  => $resource,
             'title'     => $title
         ];
