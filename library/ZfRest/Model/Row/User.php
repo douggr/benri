@@ -117,19 +117,23 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     protected function _save()
     {
         if ('' === trim($this->email)) {
-            $this->_pushError('user', 'email', static::ERROR_MISSING_FIELD, 'email is mandatory');
+            $this->_pushError('user', 'email', static::ERROR_MISSING_FIELD, 'Email is mandatory');
         }
 
         if ('' === trim($this->username)) {
-            $this->_pushError('user', 'username', static::ERROR_MISSING_FIELD, 'username is mandatory');
+            $this->_pushError('user', 'username', static::ERROR_MISSING_FIELD, 'Username is mandatory');
         }
 
         if ('' === trim($this->password)) {
-            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'password is mandatory');
+            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'Password is mandatory');
+        }
+
+        if (7 > strlen($this->password)) {
+            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'Password is too short (minimum is 7 characters)');
         }
 
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            $this->_pushError('user', 'email', static::ERROR_INVALID, 'this email is invalid');
+            $this->_pushError('user', 'email', static::ERROR_INVALID, 'This email is invalid');
         }
 
         if ($this->isDirty('password')) {
@@ -137,11 +141,11 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
         }
 
         if (!$this->_checkUniqueness('email')) {
-            $this->_pushError('user', 'email', static::ERROR_ALREADY_EXISTS, 'email is already taken');
+            $this->_pushError('user', 'email', static::ERROR_ALREADY_EXISTS, 'Email is already taken');
         }
 
         if (!$this->_checkUniqueness('username')) {
-            $this->_pushError('user', 'username', static::ERROR_ALREADY_EXISTS, 'username is already taken');
+            $this->_pushError('user', 'username', static::ERROR_ALREADY_EXISTS, 'Username is already taken');
         }
 
         // … and always change these
