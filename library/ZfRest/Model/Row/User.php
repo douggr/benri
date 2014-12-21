@@ -59,9 +59,9 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
      * Setter for created_at
      * @return ZfRest_Util_DateTime
      */
-    public function setUpdatedAt()
+    public function setUpdatedAt($value)
     {
-        return new ZfRest_Util_DateTime();
+        return new ZfRest_Util_DateTime($value);
     }
 
     /**
@@ -136,12 +136,12 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
             $this->password = ZfRest_Util_String::password($this->password);
         }
 
-        if (!$this->_checkModelUniqueness('email')) {
-            return $this->_pushError('user', 'email', static::ERROR_ALREADY_EXISTS, 'email is already taken');
+        if (!$this->_checkUniqueness('email')) {
+            $this->_pushError('user', 'email', static::ERROR_ALREADY_EXISTS, 'email is already taken');
         }
 
-        if (!$this->_checkModelUniqueness('username')) {
-            return $this->_pushError('user', 'username', static::ERROR_ALREADY_EXISTS, 'username is already taken');
+        if (!$this->_checkUniqueness('username')) {
+            $this->_pushError('user', 'username', static::ERROR_ALREADY_EXISTS, 'username is already taken');
         }
 
         // … and always change these
@@ -158,19 +158,5 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     protected function _setApiSecret()
     {
         $this->api_secret = ZfRest_Util_String::password(ZfRest_Util_String::random(60));
-    }
-
-    /**
-     * 
-     */
-    private function _checkModelUniqueness($column)
-    {
-        $select = $this->select()
-            ->where("$column = ?", $this->$column)
-            ->limit(1);
-
-        $model  = $this->getTable()->fetchRow($select);
-
-        return !$model || $model->id === $this->id;
     }
 }

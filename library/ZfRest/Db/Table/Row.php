@@ -146,19 +146,6 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
-     * @internal
-     */
-    final protected function _getValueForId($value)
-    {
-        if ($value instanceof static || $value instanceof StdClass) {
-            return $value->id;
-        } else {
-            return intval($value);
-        }
-    }
-
-    /**
      * Allows post-save logic to be applied to row.
      *
      * @return void
@@ -262,5 +249,19 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
         }
 
         return parent::__set($columnName, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final protected function _checkUniqueness($column)
+    {
+        $select = $this->select()
+            ->where("$column = ?", $this->__get($column))
+            ->limit(1);
+
+        $model  = $this->getTable()->fetchRow($select);
+
+        return !$model || $model->id === $this->id;
     }
 }
