@@ -49,7 +49,17 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     {
         if (preg_match('/^[^a-z]/i', $value)) {
             // username's must begin with a letter.
-            $this->_pushError('user', 'username', self::ERROR_INVALID, 'username must begin with a letter.');
+            $this->_pushError('user', 'username', self::ERROR_INVALID, 'Username must begin with a letter.');
+        }
+
+        if (preg_match('/[^\w+]/i', $value)) {
+            // username's must begin with a letter.
+            $this->_pushError(
+                'user',
+                'username',
+                self::ERROR_INVALID,
+                'Username may only contain alphanumeric characters or dashes and must begin with a letter.'
+            );
         }
 
         return trim($value);
@@ -129,7 +139,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
         }
 
         if (7 > strlen($this->password)) {
-            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'Password is too short (minimum is 7 characters)');
+            $this->_pushError('user', 'password', static::ERROR_INVALID, 'Password is too short (minimum is 7 characters)');
         }
 
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
