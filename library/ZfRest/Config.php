@@ -12,15 +12,23 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Model_User extends ZfRest_Db_Table_Abstract
+class ZfRest_Config
 {
     /**
      * {@inheritdoc}
      */
-    protected $_rowClass = 'ZfRest_Model_Row_User';
+    static private $_config;
 
     /**
      * {@inheritdoc}
      */
-    protected $_name = 'user';
+    public function get($index)
+    {
+        if (!self::$_config) {
+            self::$_config = Zend_Controller_Front::getInstance()
+                ->getInvokeArg('bootstrap');
+        }
+
+        return self::$_config->getOption($index);
+    }
 }

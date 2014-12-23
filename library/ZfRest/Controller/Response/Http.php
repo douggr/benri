@@ -3,7 +3,7 @@
  * douggr/zf-rest
  *
  * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 1.1.4
+ * @version 2.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
@@ -17,7 +17,7 @@ class ZfRest_Controller_Response_Http extends Zend_Controller_Response_Http
     /**
      * @var array
      */
-    private static $messages = [
+    private static $_messages = [
         // Informational 1xx
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -101,8 +101,8 @@ class ZfRest_Controller_Response_Http extends Zend_Controller_Response_Http
         }
 
         if (!$httpCodeSent) {
-            $message = array_key_exists($this->_httpResponseCode, self::$messages)
-                ? self::$messages[$this->_httpResponseCode]
+            $message = array_key_exists($this->_httpResponseCode, self::$_messages)
+                ? self::$_messages[$this->_httpResponseCode]
                 : 'No Reason Phrase';
 
             header("HTTP/1.1 {$this->_httpResponseCode} {$message}", true);

@@ -3,7 +3,7 @@
  * douggr/zf-rest
  *
  * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 1.1.4
+ * @version 2.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
@@ -11,130 +11,66 @@
 
 /**
  * {@inheritdoc}
- *
- * All API requests MUST include a valid User-Agent header. Requests with no
- * User-Agent header will be rejected.
  */
-class ZfRest_Controller_Rest extends Zend_Rest_Controller
+class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 {
-    use ZfRest_Controller_Auth;
+    /// This means a required resource does not exist.
+    const ERROR_MISSING         = 'missing';
+
+    /// This means a required field on a resource has not been set.
+    const ERROR_MISSING_FIELD   = 'missing_field';
+
+    /// This means the formatting of a field is invalid. The documentation for
+    /// that resource should be able to give you more specific information.
+    const ERROR_INVALID         = 'invalid';
+
+    /// This means another resource has the same value as this field. This can
+    /// happen in resources that must have some unique key (such as Label or
+    /// Locale names).
+    const ERROR_ALREADY_EXISTS  = 'already_exists';
+
+    /// This means an uncommon error.
+    const ERROR_UNCATEGORIZED   = 'uncategorized';
+
+    /// For the rare case an exception occurred and we couldn't recover.
+    const ERROR_UNKNOWN         = 'unknown';
 
     /**
      * Request data
      */
-    protected $input;
+    protected $_input;
 
     /**
      * Response data
      */
-    protected $data;
+    private $_data;
 
     /**
-     * {@inheritdoc}
+     * @var array
      */
     private $_errors = [];
 
     /**
-     * @var integer
-     */
-    private static $_forwardStack = 0;
-
-    /**
-     * @var integer
-     */
-    private static $_parents = -1;
-
-    /**
-     * Used for deleting resources.
-     */
-    public function deleteAction()
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(405);
-    }
-
-    /**
-     * Used for retrieving resources.
-     */
-    public function getAction()
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(405);
-    }
-
-    /**
-     * Issued against any resource to get just the HTTP header info.
-     */
-    final public function headAction()
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(204);
-    }
-
-    /**
-     * Used for retrieving resources.
-     */
-    public function indexAction()
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(405);
-    }
-
-    /**
      * {@inheritdoc}
-     * Note: Remember to call parent::init() if you override this one.
      */
     public function init()
     {
-        $this
-            ->getResponse()
-            // {{{ BEGIN CORS
-            ->setHeader('Access-Control-Allow-Origin', '*', true)
-            ->setHeader('Access-Control-Allow-Credentials', 'true', true)
-            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE', true)
-            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Preferred-Locale, X-Context, Authorization', true)
-            ->setHeader('Access-Control-Max-Age', '1728000', true)
-            // END CORS }}}
+        $this->_registerPlugin(new ZfRest_Controller_Plugin_CORS());
+        $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
 
-            ->setHeader('X-Preferred-Locale', $this->getPreferredLocale(), true)
-            ->setHeader('X-Context', $this->getContext(), true)
-            ->setHeader('Vary', 'Accept-Encoding', true)
-            ->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+        $this->_helper
+            ->layout()
+            ->disableLayout();
 
-        $this->setAuth($this->getRequest()->getHeader('Authorization'))
-            ->setContext($this->getContext());
-
-        ZfRest_Db_Table::setAuthUser($this->getCurrentUser());
-        ZfRest_Db_Table::setContext($this->getContext());
-        ZfRest_Db_Table::setPreferredLocale($this->getPreferredLocale());
-
-        $this
-            ->_helper
+        $this->_helper
             ->viewRenderer
             ->setNoRender(true);
 
-        $this->input = new StdClass();
-    }
-
-    /**
-     * Used for updating resources with partial JSON data. A PATCH request may
-     * accept one or more of the attributes to update the resource. PATCH is
-     * a relatively new and uncommon HTTP verb, so resource endpoints also
-     * accept PUT requests.
-     */
-    final public function patchAction()
-    {
-        return $this->putAction();
-    }
-
-    /**
-     * Used for creating resources, or performing custom actions.
-     */
-    public function postAction()
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(405);
-
+        $this->_input   = new StdClass();
+        $this->_data    = [
+            'messages'  => [],
+            'data'      => null
+        ];
     }
 
     /**
@@ -142,46 +78,24 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      */
     public function postDispatch()
     {
-        if (0 !== sizeof($this->_errors)) {
-            $this->data = ['errors' => []];
+        $this->_data['messages'] = $this->_messages;
 
-            foreach ($this->_errors as $error) {
-                $message = $error['message'];
-                unset($error['message']);
-
-                $this->data['errors'][] = (object) [
-                    'message'   => $message,
-                    'details'   => $error
-                ];
-            }
-
-            $httpResponseCode = $this->getResponse()
-                ->getHttpResponseCode();
-
-            if (!$httpResponseCode || 200 === $httpResponseCode) {
-                $this->getResponse()
-                    ->setHttpResponseCode(422);
-            }
+        if (count($this->_errors)) {
+            $this->_data['errors'] = $this->_errors;
         }
 
-        if (null !== $this->data) {
-            $pretty = $this->getRequest()
-                ->getParam('pretty');
+        $pretty = $this->getRequest()
+            ->getParam('pretty');
 
-            if (null !== $pretty) {
-                $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP | JSON_PRETTY_PRINT;
-            } else {
-                $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP;
-            }
-
-            $this->data = json_encode($this->data, $jsonOptions);
+        if (null !== $pretty) {
+            $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP | JSON_PRETTY_PRINT;
         } else {
-            $this->getResponse()
-                ->setHttpResponseCode(404);
+            $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP;
         }
 
-        return $this->getResponse()
-            ->setBody($this->data);
+        $this->getResponse()
+            ->setHeader('Content-Type', 'application/json; charset=utf-8')
+            ->setBody(json_encode($this->_data, $jsonOptions));
     }
 
     /**
@@ -189,275 +103,92 @@ class ZfRest_Controller_Rest extends Zend_Rest_Controller
      */
     public function preDispatch()
     {
-        $this->validateRequest();
+        Zend_Controller_Front::getInstance()
+            ->getPlugin('Zend_Controller_Plugin_ErrorHandler')
+            ->setErrorHandlerModule('api');
 
+        $error   = null;
         $request = $this->getRequest();
-
-        if ($request->isOptions()) {
-            $this->_skipAction(204);
-        }
 
         // we don't need this good guy no anymore…
         unset($_POST);
 
         if (!$request->isGet() && !$request->isHead()) {
+            // … we read data from the request body.
+            $this->_input   = json_decode(file_get_contents('php://input'));
 
-            // … so we read data from the request body.
-            $this->input = json_decode(file_get_contents('php://input'));
-            $jsonError = json_last_error();
+            /// Sending invalid JSON will result in a `400 Bad Request` response.
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                $this->getResponse()
+                    ->setHttpResponseCode(400)
+                    ->setHeader('Content-Type', 'text/plain; charset=utf-8')
+                    ->setBody(json_last_error_msg())
+                    ->sendResponse();
 
-            if (JSON_ERROR_NONE !== $jsonError) {
-                switch ($jsonError) {
-                    case JSON_ERROR_DEPTH:
-                        $message = 'ERR.JSON_DEPTH';
-                        break;
-
-                    case JSON_ERROR_STATE_MISMATCH:
-                        $message = 'ERR.JSON_STATE_MISMATCH';
-                        break;
-
-                    case JSON_ERROR_CTRL_CHAR:
-                        $message = 'ERR.JSON_CTRL_CHAR';
-                        break;
-
-                    case JSON_ERROR_SYNTAX:
-                        $message = 'ERR.JSON_SYNTAX';
-                        break;
-
-                    case JSON_ERROR_UTF8:
-                        $message = 'ERR.JSON_UTF8';
-                        break;
-
-                    case JSON_ERROR_RECURSION:
-                        $message = 'ERR.JSON_RECURSION';
-                        break;
-
-                    case JSON_ERROR_INF_OR_NAN:
-                        $message = 'ERR.JSON_INF_OR_NAN';
-                        break;
-
-                    case JSON_ERROR_UNSUPPORTED_TYPE:
-                        $message = 'ERR.JSON_UNSUPPORTED_TYPE';
-                        break;
-                }
-
-                $this->_skipAction(400, $message);
+                exit -422;
             }
         }
-
-        $needIdToContinue = !!($request->isPut() || $request->isPatch() || $request->isDelete());
-
-        if ($needIdToContinue && (!isset($this->input->id) && !$request->getParam('id'))) {
-            return $this->_skipAction(422, 'ERR.ID_REQUIRED');
-        }
-
-        // emulates hierarquical inheritance :)
-        // /:controller/:id/another-controller/:another-id/:anot...
-        // {{{
-        $action     = $request->getParam('action');
-        $controller = sprintf('children-%02d', self::$_forwardStack++);
-
-        while ($forwardingController = $request->getParam($controller)) {
-            if (!$request->isGet() || $request->getParam("{$controller}-id")) {
-                $action = strtolower($request->getMethod());
-            }
-
-            self::$_parents++;
-            $request->setParam($controller, null);
-
-            $this->forward(
-                $action,
-                $forwardingController,
-                'v1',
-                $request->getParams()
-            );
-        }
-        // }}}
-    }
-
-    /**
-     * Tells the application which of the registered translation tables to use
-     * for translation at initial startup.
-     *
-     * @return string
-     */
-    public function getPreferredLocale()
-    {
-        return $this->getRequest()
-            ->getHeader('X-Preferred-Locale') ?: 'en';
-    }
-
-    /**
-     * @return integer
-     */
-    protected function getContext()
-    {
-        return $this->getRequest()
-            ->getHeader('X-Context') ?: 1;
-    }
-
-    /**
-     * Used for replacing resources or collections. For PUT requests with no
-     * body attribute, be sure to set the Content-Length header to zero.
-     */
-    public function putAction()
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(405);
-
     }
 
     /**
      * All error objects have field and code properties so that your client
-     * can tell what the problem is. These are the possible validation error
-     * codes:
-     *  - missing: This means a resource does not exist.
-     *  - missing_field: This means a required field on a resource has not
-     *      been set.
-     *  - invalid: This means the formatting of a field is invalid. The
-     *      documentation for that resource should be able to give you more
-     *      specific information.
-     *  - already_exists: This means another resource has the same value as
-     *      this field. This can happen in resources that must have some unique
-     *      key (such as Label or Locale names).
-     *  - uncategorized: This means an uncommon error.
-     *  - unknown: For the rare case an exception occurred and we couldn't
-     *      recover.
+     * can tell what the problem is.
      *
-     * If resources have custom validation errors, they will be documented
+     * If resources have custom validation errors, they should be documented
      * with the resource.
+     *
+     * @param string $field The erroneous field or column
+     * @param string $code One of the ERROR_* codes contants
+     * @param string $message
+     * @param array $interpolateParams Params to interpolate within the message
+     * @return ZfRest_Controller_Rest
      */
-    protected function pushError($field, $code, $message = '', array $interpolateParams = [])
+    protected function _pushError($resource, $field, $title, $message = '')
     {
-        $message = $this->_($message, $interpolateParams);
+        $this->getResponse()
+            ->setHttpResponseCode(422);
 
         $this->_errors[] = [
             'field'     => $field,
-            'code'      => $code,
             'message'   => $message,
-        ];
-    }
-
-    /**
-     * There are three possible types of client errors on API calls that
-     * receive request bodies:
-     *
-     *  - Sending invalid JSON will result in a 400 Bad Request
-     *      response (@see preDispatch()).
-     *  - Requests with no User-Agent header will result in a 400 Bad Request
-     *      response.
-     *  - Sending invalid fields will result in a 422 Unprocessable Entity
-     *      response (per controller).
-     */
-    protected function validateRequest()
-    {
-        $hasUserAgent = $this->getRequest()
-            ->getHeader('User-Agent');
-
-        if (!$hasUserAgent) {
-            $this->_skipAction(400, 'ERR.USER_AGENT_REQUIRED');
-        }
-    }
-
-    /**
-     * Translate the given message
-     *
-     * @return string
-     */
-    protected function _($message, array $params = [])
-    {
-        return vsprintf($message, $params);
-    }
-
-    /**
-     * Don't execute the action, sending the response before.
-     *
-     * @exit
-     */
-    protected function _skipAction($code, $message = null, array $params = [])
-    {
-        if (is_string($message)) {
-            $message = (object) [
-                'message'   => $this->_($message, $params),
-                'code'      => 0,
-                'details'   => []
-            ];
-        }
-
-        $this
-            ->getResponse()
-            ->setHttpResponseCode($code)
-            ->setBody(json_encode($message))
-            ->sendResponse();
-
-        // As we gather here today, we bid farewell…
-        exit -$code;
-    }
-
-    /**
-     * Returns an object containing the page size and current page used in
-     * lists.
-     *
-     * @return StdClass
-     */
-    protected function _getPageSize()
-    {
-        $defaults = [
-            'defaultPageSize' => 20,
-            'maxPageSize'     => 1000
+            'resource'  => $resource,
+            'title'     => $title
         ];
 
-        $paginationConfig = $this->getInvokeArg('bootstrap')
-            ->getOption('pagination');
-
-        if (!$paginationConfig) {
-            $paginationConfig = $defaults;
-        } else {
-            $paginationConfig = array_replace($defaults, $paginationConfig);
-        }
-
-        $pageSize    = $this->getRequest()->getParam('limit') ?: $paginationConfig['defaultPageSize'];
-        $currentPage = $this->getRequest()->getParam('page')  ?: 1;
-
-        if ($pageSize > $paginationConfig['maxPageSize']) {
-            $pageSize = $paginationConfig['maxPageSize'];
-        }
-
-        return (object) [
-            'pageSize'      => $pageSize,
-            'currentPage'   => $currentPage,
-        ];
+        return $this;
     }
 
     /**
-     * Allows pre-save logic to be applied to models.
+     * General method to save models (ZfRest_Db_Table_Row)
      *
-     * @return boolean true if the Model could be saved.
+     * @param ZfRest_Db_Table_Row
+     * @return ZfRest_Controller_Rest
      */
-    protected function _saveModel($model)
+    protected function _saveModel(ZfRest_Db_Table_Row &$model)
     {
-        $model->normalizeInput($this->input);
-
         try {
-            $model->save();
-            $this->data = $model->toArray();
+            $model->normalizeInput($this->_input)
+                ->save();
 
-            return true;
-        } catch (Exception $e) {
-            $errors = $model->getErrors();
-
-            if (false !== $errors) {
-                foreach ($errors as $error) {
-                    call_user_func_array([$this, 'pushError'], $error);
-                }
+            $this->_pushMessage('Horray!', 'success');
+        } catch (Zend_Db_Table_Row_Exception $ex) {
+            foreach ($model->getErrors() as $error) {
+                extract($error) && $this->_pushError($resource, $field, $title, $message);
             }
 
-            $this->getResponse()
-                ->setHttpResponseCode(422);
-
-            return false;
-        } finally {
-            // log…
+            $this->_pushMessage($ex->getMessage(), 'danger');
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _setResponseData($data)
+    {
+        $this->_data['data'] = $data;
+
+        return $this;
     }
 }

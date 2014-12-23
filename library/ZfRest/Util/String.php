@@ -3,7 +3,7 @@
  * douggr/zf-rest
  *
  * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 1.1.4
+ * @version 2.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
@@ -170,7 +170,8 @@ class ZfRest_Util_String
     /**
      * Returns given string as a dash_erized word.
      *
-     * @param string
+     * @param string String to dasherize
+     * @param string Replacement to be used as "dash"
      * @return string
      */
     public static function dasherize($str, $replacement = '_')

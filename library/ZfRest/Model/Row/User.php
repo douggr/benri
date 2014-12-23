@@ -3,7 +3,7 @@
  * douggr/zf-rest
  *
  * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 1.1.4
+ * @version 2.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
@@ -12,48 +12,77 @@
 /**
  * {@inheritdoc}
  */
-class ZfRest_Model_Row_User extends ZfRest_Db_Row
+class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
 {
     /**
-     * @var array
+     * Setter for access_token
+     * @return string
      */
-    public $permissions = [];
+    public function setAccessToken($value)
+    {
+        return base64_encode("{$this->api_key}:{$this->api_secret}");
+    }
+
+    /**
+     * Setter for created_at
+     * @return ZfRest_Util_DateTime
+     */
+    public function setCreatedAt($value)
+    {
+        return new ZfRest_Util_DateTime($value);
+    }
+
+    /**
+     * Setter for email
+     * @return string
+     */
+    public function setEmail($value)
+    {
+        return trim($value);
+    }
+
+    /**
+     * Setter for email
+     * @return string
+     */
+    public function setUsername($value)
+    {
+        if (preg_match('/^[^a-z]/i', $value)) {
+            // username's must begin with a letter.
+            $this->_pushError('user', 'username', self::ERROR_INVALID, 'Username must begin with a letter.');
+        }
+
+        if (preg_match('/[^\w+]/i', $value)) {
+            // username's must begin with a letter.
+            $this->_pushError(
+                'user',
+                'username',
+                self::ERROR_INVALID,
+                'Username may only contain alphanumeric characters or dashes and must begin with a letter.'
+            );
+        }
+
+        return trim($value);
+    }
+
+    /**
+     * Setter for created_at
+     * @return ZfRest_Util_DateTime
+     */
+    public function setUpdatedAt($value)
+    {
+        return new ZfRest_Util_DateTime($value);
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function normalizeInput($input)
+    public function toArray()
     {
-        // email         VARCHAR(200)
-        // username      VARCHAR(200)
-        // password      CHAR(60)
-        // admin         BOOLEAN
-        // token         CHAR(60)
-        // access_token  CHAR(60)
-        // api_key       CHAR(32)
-        // api_secret    CHAR(60)
-
-        if (isset($input->email)) {
-            $this->email = $input->email;
-        }
-
-        if (isset($input->username)) {
-            $this->username = $input->username;
-        }
-
-        if (isset($input->password)) {
-            $this->password = $input->password;
-        }
-
-        if (isset($input->admin)) {
-            $this->admin = $input->admin;
-        }
-
-        if (isset($input->access_token)) {
-            $this->token = $input->access_token;
-        }
-
-        return $this;
+        return array_replace($this->_data, [
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
+        ]);
     }
 
     /**
@@ -61,22 +90,35 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
      */
     protected function _insert()
     {
-        // every user MUST HAVE a password…
-        if ('' === trim($this->password)) {
-            $this->pushError('password', 'invalid', 'ERR.PASSWORD_REQUIRED');
-        }
-
-        // an api_key…
+        // every user MUST HAVE an api_key…
         $this->api_key      = ZfRest_Util_String::random(32);
 
         // an api_secret…
-        $this->api_secret   = ZfRest_Util_String::random(60);
+        $this->_setApiSecret();
 
         // a token…
         $this->token        = ZfRest_Util_String::random(60);
 
-        // and an access token…
-        $this->access_token = ZfRest_Util_String::random(60);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _update()
+    {
+        if ($this->isDirty('api_key')) {
+            $this->api_key = ZfRest_Util_String::random(32);
+        }
+
+        if ($this->isDirty('api_secret')) {
+            $this->_setApiSecret();
+        }
+
+        // Never change this…
+        //$this->created_at = $this->_cleanData['created_at'];
+
+        return $this;
     }
 
     /**
@@ -85,154 +127,50 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Row
     protected function _save()
     {
         if ('' === trim($this->email)) {
-            $this->pushError('email', 'missing_field', 'ERR.MISSING_FIELD');
+            $this->_pushError('user', 'email', static::ERROR_MISSING_FIELD, 'Email is mandatory');
+        }
+
+        if ('' === trim($this->username)) {
+            $this->_pushError('user', 'username', static::ERROR_MISSING_FIELD, 'Username is mandatory');
         }
 
         if ('' === trim($this->password)) {
-            $this->pushError('password', 'missing_field', 'ERR.MISSING_FIELD');
+            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'Password is mandatory');
         }
 
-        if ('' === trim($this->admin)) {
-            $this->admin = false;
+        if (7 > strlen($this->password)) {
+            $this->_pushError('user', 'password', static::ERROR_INVALID, 'Password is too short (minimum is 7 characters)');
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function _update()
-    {
-    }
-
-    /**
-     * Setter for email
-     * @return mixed
-     */
-    final protected function setEmail($value)
-    {
-        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            $this->pushError('email', 'invalid', 'ERR.EMAIL_INVALID', $value);
-
-        } elseif (!$this->username) {
-            return $this->username = $value;
-
-        } else {
-            return trim($value);
-
+        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            $this->_pushError('user', 'email', static::ERROR_INVALID, 'This email is invalid');
         }
-    }
 
-    /**
-     * Setter for first_name
-     * @return mixed
-     */
-    final protected function setUsername($value)
-    {
-        return trim($value);
-    }
+        if ($this->isDirty('password')) {
+            $this->password = ZfRest_Util_String::password($this->password);
+        }
 
-    /**
-     * Setter for password
-     * @return mixed
-     */
-    final protected function setPassword($value)
-    {
-        return ZfRest_Util_String::password($value);
-    }
+        if (!$this->_checkUniqueness('email')) {
+            $this->_pushError('user', 'email', static::ERROR_ALREADY_EXISTS, 'Email is already taken');
+        }
 
-    /**
-     * Setter for admin
-     * @return mixed
-     */
-    final protected function setAdmin($value)
-    {
-        return intval($value);
-    }
+        if (!$this->_checkUniqueness('username')) {
+            $this->_pushError('user', 'username', static::ERROR_ALREADY_EXISTS, 'Username is already taken');
+        }
 
-    /**
-     * Setter for token
-     * @return mixed
-     */
-    final protected function setToken($value)
-    {
-        return trim($value);
-    }
+        // … and always change these
+        $this->updated_at   = new ZfRest_Util_DateTime();
+        $this->access_token = null;
 
-    /**
-     * Setter for token
-     * @return mixed
-     */
-    final protected function setAccessToken($value)
-    {
-        return trim($value);
-    }
-
-    /**
-     * Setter for api_key
-     * @return mixed
-     */
-    final protected function setApiKey($value)
-    {
-        return trim($value);
+        return $this;
     }
 
     /**
      * Setter for api_secret
-     * @return mixed
+     * @return string
      */
-    final protected function setApiSecret($value)
+    protected function _setApiSecret()
     {
-        return trim($value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadGroups()
-    {
-        return ZfRest_Model_UserToGroup::loadGroups($this->id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadEntities()
-    {
-        return ZfRest_Model_UserToEntity::loadEntities($this->id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray()
-    {
-        $data                = parent::toArray();
-        $data['permissions'] = $this->permissions;
-
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public function isSiteAdmin()
-    {
-        $context = ZfRest_Db_Table::getContext();
-
-        if ($this->admin) {
-            return true;
-
-        } elseif (!array_key_exists($context, $this->permissions)) {
-            return false;
-
-        } else {
-            foreach ($this->permissions[$context] as $group) {
-                if ($group[1]) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        $this->api_secret = ZfRest_Util_String::password(ZfRest_Util_String::random(60));
     }
 }

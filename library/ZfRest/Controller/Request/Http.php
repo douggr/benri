@@ -3,7 +3,7 @@
  * douggr/zf-rest
  *
  * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 1.1.4
+ * @version 2.0.0
  *
  * For the full copyright and license information, please view the LICENSE
  * file distributed with this source code.
@@ -70,6 +70,18 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     public function isPatch()
     {
         return 'PATCH' === $this->getMethod();
+    }
+
+    /**
+     * Is the request a Javascript XMLHttpRequest and has the PJAX header?
+     *
+     * Should work with jQuery, Prototype, possibly others.
+     *
+     * @return boolean
+     */
+    public function isPjaxRequest()
+    {
+        return $this->isXmlHttpRequest() && $this->getHeader('X-PJAX');
     }
 
     /**
