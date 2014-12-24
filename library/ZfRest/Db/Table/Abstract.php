@@ -31,13 +31,17 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
     {
         $table  = new static();
         $model  = $table::create();
-        $select = $table->select();
+        $fields = [new Zend_Db_Expr("CEILING(COUNT(1) / {$pageSize}) as _total_pages")] + $table->_getCols();
+        $group  = is_array($table->_primary) ? $table->_primary[0] : $table->_primary;
+        $select = $table->select()
+            ->from($table->_name, $fields);
 
         if ($order && $model->offsetExists($order)) {
             $select->order("$order $sort");
         }
 
-        $select->limitPage($currentPage, $pageSize);
+        $select->group($group)
+            ->limitPage($currentPage, $pageSize);
 
         return $table->fetchAll($select);
     }
