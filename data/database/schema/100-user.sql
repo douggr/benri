@@ -28,9 +28,6 @@ CREATE TABLE `%DATABASE%`.`user` (
   PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `user_consumer_token`
-  USING BTREE ON `%DATABASE%`.`user` (`api_key`, `api_secret`);
-
 CREATE UNIQUE INDEX `user_email`
   USING BTREE ON `%DATABASE%`.`user` (`email`);
 
