@@ -158,9 +158,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
             $this->_pushError('user', 'username', static::ERROR_ALREADY_EXISTS, 'Username is already taken');
         }
 
-        // … and always change these
-        $this->updated_at   = new ZfRest_Util_DateTime();
-        $this->access_token = null;
+        // … and always change this.
+        $this->updated_at = new ZfRest_Util_DateTime();
 
         return $this;
     }
