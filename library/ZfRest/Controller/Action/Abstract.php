@@ -38,7 +38,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * @var array
      */
-    private $_errors = [];
+    protected $_errors = [];
 
     /**
      * {@inheritdoc}
