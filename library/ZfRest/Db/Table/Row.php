@@ -81,7 +81,18 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     /**
      * {@inheritdoc}
      */
-    public function save()
+    final public function reset($column)
+    {
+        if ($this->isDirty($column)) {
+            $this->_data[$column] = $this->_cleanData[$column];
+            unset($this->_modifiedFields[$column]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function save()
     {
         if (true === $this->_readOnly) {
             throw new Zend_Db_Table_Row_Exception('This row has been marked read-only.');
@@ -263,5 +274,45 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
         $model  = $this->getTable()->fetchRow($select);
 
         return !$model || $model->id === $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final protected function _doInsert()
+    {
+        /// A read-only row cannot be saved.
+        if ($this->_readOnly === true) {
+            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
+        }
+
+        /// Run pre-INSERT logic
+        $this->_insert();
+
+        if (count($this->_errors)) {
+            throw new Zend_Db_Table_Row_Exception('This row contain errors.');
+        }
+
+        return parent::_doInsert();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final protected function _doUpdate()
+    {
+        /// A read-only row cannot be saved.
+        if ($this->_readOnly === true) {
+            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
+        }
+
+        /// Run pre-UPDATE logic
+        $this->_update();
+
+        if (count($this->_errors)) {
+            throw new Zend_Db_Table_Row_Exception('This row contain errors.');
+        }
+
+        return parent::_doUpdate();
     }
 }
