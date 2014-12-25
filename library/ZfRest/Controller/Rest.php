@@ -32,9 +32,13 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
         $this->_registerPlugin(new ZfRest_Controller_Plugin_CORS());
         $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
 
-        $this->_helper
-            ->layout()
-            ->disableLayout();
+        try {
+            $this->_helper
+                ->layout()
+                ->disableLayout();
+        } catch (Zend_Controller_Action_Exception $e) {
+            // If the Layout helper isn't enabled, just ignore and continue.
+        }
 
         $this->_helper
             ->viewRenderer
