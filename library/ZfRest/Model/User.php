@@ -53,7 +53,7 @@ class ZfRest_Model_User extends ZfRest_Db_Table_Abstract
         $model = static::locate($column, $id);
 
         if (!$model) {
-            return static::create();
+            return null;
         } else {
             return $model;
         }
