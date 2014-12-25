@@ -99,6 +99,9 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
         // a token…
         $this->token        = ZfRest_Util_String::random(60);
 
+        // and a valid password.
+        $this->_setPassword();
+
         return $this;
     }
 
@@ -115,8 +118,13 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
             $this->_setApiSecret();
         }
 
-        // Never change this…
-        //$this->created_at = $this->_cleanData['created_at'];
+        if ($this->isDirty('password')) {
+            if ('' === trim($this->password)) {
+                $this->reset('password');
+            } else {
+                $this->_setPassword();
+            }
+        }
 
         return $this;
     }
@@ -134,20 +142,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
             $this->_pushError('user', 'username', static::ERROR_MISSING_FIELD, 'Username is mandatory');
         }
 
-        if ('' === trim($this->password)) {
-            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'Password is mandatory');
-        }
-
-        if (7 > strlen($this->password)) {
-            $this->_pushError('user', 'password', static::ERROR_INVALID, 'Password is too short (minimum is 7 characters)');
-        }
-
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             $this->_pushError('user', 'email', static::ERROR_INVALID, 'This email is invalid');
-        }
-
-        if ($this->isDirty('password')) {
-            $this->password = ZfRest_Util_String::password($this->password);
         }
 
         if (!$this->_checkUniqueness('email')) {
@@ -162,7 +158,6 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
         $this->updated_at   = new ZfRest_Util_DateTime();
         $this->access_token = null;
 
-
         return $this;
     }
 
@@ -173,5 +168,22 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     protected function _setApiSecret()
     {
         $this->api_secret = ZfRest_Util_String::password(ZfRest_Util_String::random(60));
+    }
+
+    /**
+     * Setter for password
+     * @return string
+     */
+    protected function _setPassword()
+    {
+        if ('' === trim($this->password)) {
+            $this->_pushError('user', 'password', static::ERROR_MISSING_FIELD, 'Password is mandatory');
+        }
+
+        if (7 > strlen($this->password)) {
+            $this->_pushError('user', 'password', static::ERROR_INVALID, 'Password is too short (minimum is 7 characters)');
+        }
+
+        $this->password = ZfRest_Util_String::password($this->password);
     }
 }
