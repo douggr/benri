@@ -82,6 +82,8 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
         header("Access-Control-Allow-Methods: {$methods}", true);
         header("Access-Control-Allow-Headers: {$headers}", true);
         header("Access-Control-Max-Age: {$this->_maxAge}", true);
+        header('X-XSS-Protection: 1; mode=block', true);
+        header('X-Frame-Options: SAMEORIGIN', true);
     }
 
     /**
