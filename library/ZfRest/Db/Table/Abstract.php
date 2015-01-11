@@ -34,7 +34,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
     protected $_rowClass = 'ZfRest_Db_Table_Row';
 
     /**
-     * Fetches `all` rows.
+     * Fetches all rows.
      *
      * @param integer $currentPage An SQL LIMIT offset
      * @param integer $pageSize An SQL LIMIT count
@@ -43,15 +43,18 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      */
     public static function all($currentPage = 1, $pageSize = 10, $order = null)
     {
-        $table  = new static();
-        $fields = [new Zend_Db_Expr("CEILING(COUNT(1) / {$pageSize}) as _total_pages")] + $table->_getCols();
+        $table      = new static();
+        $columns    = $table->_getCols();
+        $expression = "CEILING(COUNT(1) / {$pageSize}) as _total_pages";
+        $fields     = [new Zend_Db_Expr($expression)] + $columns;
 
         $group  = is_array($table->_primary)
                 ? $table->_primary[0]
                 : $table->_primary;
 
         $select = $table->select()
-            ->from($table->_name, $fields);
+            ->from($table->_name, $fields)
+            ->group($columns);
 
         return $table->fetchAll($select, $order, $pageSize, $currentPage);
     }
