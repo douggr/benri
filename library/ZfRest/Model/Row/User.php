@@ -43,7 +43,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * Setter for email.
+     * Setter for username.
      *
      * @return string
      */

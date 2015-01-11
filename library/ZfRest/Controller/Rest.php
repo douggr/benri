@@ -15,17 +15,23 @@
 class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 {
     /**
-     * Request data
+     * Request data.
+     *
+     * @var StdClass
      */
     protected $_input;
 
     /**
-     * Response data
+     * Response data.
+     *
+     * @var mixed
      */
     private $_data;
 
     /**
-     * {@inheritdoc}
+     * Initialize object.
+     *
+     * @return void
      */
     public function init()
     {
@@ -52,7 +58,12 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Post-dispatch routines.
+     *
+     * Common usages for `postDispatch()` include rendering content in a
+     * sitewide template, link url correction, setting headers, etc.
+     *
+     * @return void
      */
     public function postDispatch()
     {
@@ -77,7 +88,9 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Pre-dispatch routines.
+     *
+     * @return void
      */
     public function preDispatch()
     {
@@ -109,7 +122,7 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * General method to save models (ZfRest_Db_Table_Row)
+     * General method to save models (ZfRest_Db_Table_Row).
      *
      * @param ZfRest_Db_Table_Row
      * @return ZfRest_Controller_Rest
@@ -133,7 +146,13 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Prepare the response.
+     *
+     * Response data in REST requests are send together with `messages` and
+     * `errors`.
+     *
+     * @param mixed $data Data to send along with `messages` and `errors`
+     * @return ZfRest_Controller_Rest
      */
     protected function _setResponseData($data)
     {

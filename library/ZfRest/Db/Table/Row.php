@@ -278,7 +278,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
-     * @return ZfRest_Db_Table_Abstract_Row
+     * @return ZfRest_Db_Table_Row
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {

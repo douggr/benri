@@ -74,7 +74,7 @@ class ZfRest_Controller_Response_Http extends Zend_Controller_Response_Http
     ];
 
     /**
-     * Send all headers
+     * Send all headers.
      *
      * Sends any headers specified. If an HTTP response code has been
      * specified, it is sent with the first header.

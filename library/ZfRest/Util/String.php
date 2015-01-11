@@ -260,7 +260,7 @@ class ZfRest_Util_String
     }
 
     /**
-     * Translate characters to match \w regex
+     * Translate characters to match \w regex.
      *
      * @param string $str
      * @return string

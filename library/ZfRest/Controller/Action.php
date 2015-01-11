@@ -46,7 +46,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
     protected $_pjaxTemplate;
 
     /**
-     * Disable the view layout
+     * Disable the view layout.
      *
      * @return ZfRest_Controller_Action
      */
@@ -69,7 +69,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
     }
 
     /**
-     * Initialize object
+     * Initialize object.
      *
      * @return void
      */
@@ -94,9 +94,9 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
     }
 
     /**
-     * Post-dispatch routines
+     * Post-dispatch routines.
      *
-     * Common usages for postDispatch() include rendering content in a
+     * Common usages for `postDispatch()` include rendering content in a
      * sitewide template, link url correction, setting headers, etc.
      *
      * @return void

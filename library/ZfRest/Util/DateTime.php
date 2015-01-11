@@ -68,7 +68,7 @@ class ZfRest_Util_DateTime extends DateTime
     }
 
     /**
-    * Returns new ZfRest_Util_DateTime object
+    * Returns new ZfRest_Util_DateTime object.
     *
     * @param string $time A date/time string
     *   Format accepted by

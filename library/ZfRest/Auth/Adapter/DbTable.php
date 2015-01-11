@@ -51,7 +51,7 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      * Set the value to be used as the identity.
      *
      * @param string $identity
-     * @return ZfRest_Auth_Adapter_DbTable Provides a fluent interface
+     * @return ZfRest_Auth_Adapter_DbTable
      */
     public function setIdentity($identity)
     {
@@ -68,6 +68,7 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      * Sets a flag for usage of identical identities with unique credentials.
      * It accepts integers (0, 1) or boolean (true, false) parameters.
      *
+     * @internal
      * @param int|bool $flag
      * @return ZfRest_Auth_Adapter_DbTable
      */
@@ -77,13 +78,14 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
     }
 
     /**
-     * Defined by Zend_Auth_Adapter_Interface. This method is called to attempt
-     * an authentication.  Previous to this call, this adapter would have
-     * already been configured with all necessary information to successfully
-     * connect to a database table and attempt to find a record matching the
-     * provided identity.
+     * Called to attempt an authentication.
+     *
+     * Previous to this call, this adapter would have already been configured
+     * with all necessary information to successfully connect to a database
+     * table and attempt to find a record matching the provided identity.
      *
      * @return Zend_Auth_Result
+     * @see http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html#zend.auth.introduction.results Zend_Auth_Result
      * @throws Zend_Auth_Adapter_Exception if answering the authentication
      *  query is impossible
      */
@@ -126,7 +128,8 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      * resultset.
      *
      * @param array $resultIdentities
-     * @return true|Zend_Auth_Result
+     * @return Zend_Auth_Result
+     * @see http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html#zend.auth.introduction.results Zend_Auth_Result
      */
     protected function _authenticateValidateResult(array $resultIdentity)
     {

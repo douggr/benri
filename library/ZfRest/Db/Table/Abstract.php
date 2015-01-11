@@ -93,6 +93,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      * @param boolean $withFromPart Whether or not to include the from part of the
      *  select based on the table
      * @return Zend_Db_Table_Select
+     * @see http://framework.zend.com/manual/1.12/en/zend.db.select.html Zend_Db_Select
      */
     public function select($withFromPart = self::SELECT_WITHOUT_FROM_PART)
     {

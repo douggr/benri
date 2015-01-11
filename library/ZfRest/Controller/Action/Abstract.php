@@ -66,7 +66,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     protected $_request = null;
 
     /**
-     * Zend_Controller_Response_Abstract object wrapping the response
+     * Zend_Controller_Response_Abstract object wrapping the response.
      *
      * @var ZfRest_Controller_Response_Http
      */
@@ -117,10 +117,11 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     }
 
     /**
-     * Used for updating resources with partial JSON data. A PATCH request may
-     * accept one or more of the attributes to update the resource. PATCH is
-     * a relatively new and uncommon HTTP verb, so resource endpoints also
-     * accept PUT requests.
+     * Used for updating resources with partial JSON data.
+     *
+     * A PATCH request may accept one or more of the attributes to update the
+     * resource. PATCH is a relatively new and uncommon HTTP verb, so resource
+     * endpoints also accept PUT requests.
      *
      * @return void
      */
@@ -141,8 +142,10 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     }
 
     /**
-     * Used for replacing resources or collections. For PUT requests with no
-     * body attribute, be sure to set the Content-Length header to zero.
+     * Used for replacing resources or collections.
+     *
+     * For PUT requests with no body attribute, be sure to set the
+     * `Content-Length` header to zero.
      *
      * @return void
      */
