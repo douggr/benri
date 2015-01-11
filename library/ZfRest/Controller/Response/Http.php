@@ -1,20 +1,21 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * HTTP response for controllers.
+ *
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.response.html Zend_Controller_Response_Http
  */
 class ZfRest_Controller_Response_Http extends Zend_Controller_Response_Http
 {
     /**
+     * @internal
      * @var array
      */
     private static $_messages = [
@@ -73,7 +74,12 @@ class ZfRest_Controller_Response_Http extends Zend_Controller_Response_Http
     ];
 
     /**
-     * {@inheritdoc}
+     * Send all headers
+     *
+     * Sends any headers specified. If an HTTP response code has been
+     * specified, it is sent with the first header.
+     *
+     * @return ZfRest_Controller_Response_Http
      */
     public function sendHeaders()
     {

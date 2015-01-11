@@ -1,19 +1,23 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
  * Validates the presence of the User-Agent header.
+ *
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html Zend_Controller_Plugin_Abstract
  */
 class ZfRest_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Plugin_Abstract
 {
+    /**
+     * @internal
+     * @var array
+     */
     static private $_errMessage = [
         'Request forbidden by administrative rules.',
         'Please make sure your request has a User-Agent header.'
@@ -24,6 +28,11 @@ class ZfRest_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Pl
      *
      * All requests MUST include a valid User-Agent header. Requests with no
      * User-Agent header will be rejected.
+     *
+     * @internal
+     * @param Zend_Controller_Request_Abstract $request
+     * @return void
+     * @see http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Abstract
      */
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {

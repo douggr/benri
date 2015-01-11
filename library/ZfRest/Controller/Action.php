@@ -1,42 +1,54 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * Used to implement Action Controllers for use with the Front Controller.
+ *
+ * @link ZfRest_Controller_Action_Abstract.html ZfRest_Controller_Action_Abstract
  */
 abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstract
 {
     /**
-     * Layout used by this controller
+     * Layout used by this controller.
+     *
      * @var string
      */
     protected $_layout = 'default/layout';
 
     /**
+     * Used to override default templates. If this is set, the controller will
+     * ignore controller template and use $_mainTemplate.
+     *
      * @var string
      */
     protected $_mainTemplate;
 
     /**
+     * A title for an action.
+     *
      * @var string
      */
     protected $_pageTitle = null;
 
     /**
+     * Used to override default templates. If this is set, the controller will
+     * ignore controller template and use $_mainTemplate together with
+     * $_pjaxTemplate.
+     *
      * @var string
      */
     protected $_pjaxTemplate;
 
     /**
-     * {@inheritdoc}
+     * Disable the view layout
+     *
+     * @return ZfRest_Controller_Action
      */
     public function disableLayout()
     {
@@ -48,14 +60,18 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
     }
 
     /**
-     * {@inheritdoc}
+     * Used as the index page.
+     *
+     * @return void
      */
     public function indexAction()
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Initialize object
+     *
+     * @return void
      */
     public function init()
     {
@@ -78,7 +94,12 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
     }
 
     /**
-     * {@inheritdoc}
+     * Post-dispatch routines
+     *
+     * Common usages for postDispatch() include rendering content in a
+     * sitewide template, link url correction, setting headers, etc.
+     *
+     * @return void
      */
     public function postDispatch()
     {
@@ -92,6 +113,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
 
             $contentType = 'text/html';
 
+            // Common variables used in all views.
             $this->view
                 ->assign([
                     'controller'    => $this->getParam('controller'),
@@ -101,6 +123,8 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
                     'pageTitle'     => $this->_pageTitle,
                 ]);
 
+            // XMLHttpRequest requests should not render the entire layout,
+            // only the correct templates related to the action.
             if ($request->isXmlHttpRequest()) {
                 $this->disableLayout();
             }

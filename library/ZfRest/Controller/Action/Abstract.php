@@ -1,38 +1,51 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * Used to implement Action Controllers for use with the Front Controller.
+ *
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.front.html Zend_Controller_Front
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.action.html Zend_Controller_Action
  */
 abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
 {
-    /// This means a required resource does not exist.
+    /**
+     * This means a required resource does not exist.
+     */
     const ERROR_MISSING         = 'missing';
 
-    /// This means a required field on a resource has not been set.
+    /**
+     * This means a required field on a resource has not been set.
+     */
     const ERROR_MISSING_FIELD   = 'missing_field';
 
-    /// This means the formatting of a field is invalid. The documentation for
-    /// that resource should be able to give you more specific information.
+    /**
+     * This means the formatting of a field is invalid. The documentation for
+     * that resource should be able to give you more specific information.
+     */
     const ERROR_INVALID         = 'invalid';
 
-    /// This means another resource has the same value as this field. This can
-    /// happen in resources that must have some unique key (such as Label or
-    /// Locale names).
+    /**
+     * This means another resource has the same value as this field. This can
+     * happen in resources that must have some unique key (such as Label or
+     * Locale names).
+     */
     const ERROR_ALREADY_EXISTS  = 'already_exists';
 
-    /// This means an uncommon error.
+    /**
+     * This means an uncommon error.
+     */
     const ERROR_UNCATEGORIZED   = 'uncategorized';
 
-    /// For the rare case an exception occurred and we couldn't recover.
+    /**
+     * For the rare case an exception occurred and we couldn't recover.
+     */
     const ERROR_UNKNOWN         = 'unknown';
 
     /**
@@ -41,12 +54,28 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     protected $_errors = [];
 
     /**
-     * {@inheritdoc}
+     * @var array
      */
     protected $_messages = [];
 
     /**
+     * ZfRest_Controller_Request_Http object wrapping the request environment.
+     *
+     * @var ZfRest_Controller_Request_Http
+     */
+    protected $_request = null;
+
+    /**
+     * Zend_Controller_Response_Abstract object wrapping the response
+     *
+     * @var ZfRest_Controller_Response_Http
+     */
+    protected $_response = null;
+
+    /**
      * Used for deleting resources.
+     *
+     * @return void
      */
     public function deleteAction()
     {
@@ -56,6 +85,8 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for retrieving resources.
+     *
+     * @return void
      */
     public function getAction()
     {
@@ -65,6 +96,8 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
 
     /**
      * Issued against any resource to get just the HTTP header info.
+     *
+     * @return void
      */
     final public function headAction()
     {
@@ -74,6 +107,8 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for retrieving resources.
+     *
+     * @return void
      */
     public function indexAction()
     {
@@ -86,6 +121,8 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      * accept one or more of the attributes to update the resource. PATCH is
      * a relatively new and uncommon HTTP verb, so resource endpoints also
      * accept PUT requests.
+     *
+     * @return void
      */
     final public function patchAction()
     {
@@ -94,6 +131,8 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for creating resources, or performing custom actions.
+     *
+     * @return void
      */
     public function postAction()
     {
@@ -104,6 +143,8 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * Used for replacing resources or collections. For PUT requests with no
      * body attribute, be sure to set the Content-Length header to zero.
+     *
+     * @return void
      */
     public function putAction()
     {
@@ -114,8 +155,10 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * Retrieve a plugin or plugins by class.
      *
-     * @param  string $class
-     * @return false|Zend_Controller_Plugin_Abstract|array
+     * @param string $class
+     * @return mixed `false` if no one plugin is loaded,
+     *  `Zend_Controller_Plugin_Abstract` if then given $class is registered
+     *  as a plugin or `Zend_Controller_Plugin_Abstract[]` if $class is null.
      */
     final protected function _getPlugin($class)
     {
@@ -126,7 +169,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * Retrieve all registered plugins.
      *
-     * @return array
+     * @return array An array of `Zend_Controller_Plugin_Abstract`
      */
     final protected function _getPlugins()
     {
@@ -135,7 +178,9 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     }
 
     /**
-     * {@inheritdoc}
+     * Push a message, allowing it to be shown to clients.
+     *
+     * @return ZfRest_Controller_Action_Abstract
      */
     protected function _pushMessage($message, $type = 'error', array $interpolateParams = [])
     {
@@ -150,9 +195,9 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * Register a plugin.
      *
-     * @param  string|Zend_Controller_Plugin_Abstract $plugin
-     * @param  int $stackIndex stack index for plugin
-     * @return ZfRest_Controller_Action
+     * @param mixed $plugin string or Zend_Controller_Plugin_Abstract
+     * @param integer $stackIndex stack index for plugin
+     * @return ZfRest_Controller_Action_Abstract
      */
     final protected function _registerPlugin($plugin, $stackIndex = null)
     {
@@ -173,11 +218,11 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      * If resources have custom validation errors, they should be documented
      * with the resource.
      *
-     * @param string $field The erroneous field or column
-     * @param string $code One of the ERROR_* codes contants
-     * @param string $message
-     * @param array $interpolateParams Params to interpolate within the message
-     * @return ZfRest_Controller_Rest
+     * @param string $field The erroneous field or column.
+     * @param string $code One of the ERROR_* codes contants.
+     * @param string $title A title for this error
+     * @param string $message A friendly message.
+     * @return ZfRest_Controller_Action_Abstract
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {

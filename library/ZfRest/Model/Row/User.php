@@ -1,12 +1,10 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
@@ -15,7 +13,8 @@
 class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
 {
     /**
-     * Setter for access_token
+     * Setter for access_token.
+     *
      * @return string
      */
     public function setAccessToken($value)
@@ -24,7 +23,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * Setter for created_at
+     * Setter for created_at.
+     *
      * @return ZfRest_Util_DateTime
      */
     public function setCreatedAt($value)
@@ -33,7 +33,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * Setter for email
+     * Setter for email.
+     *
      * @return string
      */
     public function setEmail($value)
@@ -42,7 +43,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * Setter for email
+     * Setter for email.
+     *
      * @return string
      */
     public function setUsername($value)
@@ -66,7 +68,8 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * Setter for created_at
+     * Setter for created_at.
+     *
      * @return ZfRest_Util_DateTime
      */
     public function setUpdatedAt($value)
@@ -75,7 +78,9 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the column/value data as an array.
+     *
+     * @return array
      */
     public function toArray()
     {
@@ -86,7 +91,10 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     * Allows pre-insert logic to be applied to row.
+     * Subclasses may override this method.
+     *
+     * @return void
      */
     protected function _insert()
     {
@@ -106,7 +114,10 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     * Allows pre-update logic to be applied to row.
+     * Subclasses may override this method.
+     *
+     * @return void
      */
     protected function _update()
     {
@@ -162,16 +173,18 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
-     * Setter for api_secret
+     * Setter for api_secret.
+     *
      * @return string
      */
     protected function _setApiSecret()
     {
-        $this->api_secret = ZfRest_Util_String::password(ZfRest_Util_String::random(60));
+        $this->api_secret = ZfRest_Util_String::password(ZfRest_Util_String::random());
     }
 
     /**
-     * Setter for password
+     * Setter for password.
+     *
      * @return string
      */
     protected function _setPassword()

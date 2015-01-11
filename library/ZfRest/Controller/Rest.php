@@ -1,16 +1,16 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * Used to implement Action Controllers for use with the Front Controller.
+ *
+ * @link ZfRest_Controller_Action_Abstract.html ZfRest_Controller_Action_Abstract
  */
 class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 {
