@@ -50,9 +50,11 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
 
         $select = $table->select()
             ->from($table->_name, $fields)
-            ->group($columns);
+            ->group($columns)
+            ->order($order)
+            ->limitPage($currentPage, $pageSize);
 
-        return $table->fetchAll($select, $order, $pageSize, $currentPage);
+        return $table->fetchAll($select);
     }
 
     /**
