@@ -39,18 +39,8 @@ class ZfRest_Auth extends Zend_Auth
         }
 
         if ($result->isValid()) {
-            $identity = $adapter->getResultRowObject([
-                'access_token',
-                'admin',
-                'api_key',
-                'created_at',
-                'email',
-                'id',
-                'updated_at',
-                'username'
-            ]);
-
-            $this->getStorage()->write($identity);
+            $this->getStorage()
+                ->write($adapter->getResultRowObject());
         }
 
         return $result;
