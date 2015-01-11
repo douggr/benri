@@ -141,7 +141,7 @@ class ZfRest_Util_String
     /**
      * Singularize the given string.
      *
-     * @param string $string The string to singularize.
+     * @param string $string The string to singularize
      * @return string The singularized form of the given `$string`
      */
     public static function singularize($string)
@@ -308,7 +308,7 @@ class ZfRest_Util_String
      * Creates a password hash.
      *
      * @param string $raw The password in raw format
-     * @return string Returns the hashed password, or `null` on failure.
+     * @return string Returns the hashed password, or `null` on failure
      */
     public static function password($raw)
     {
@@ -318,10 +318,10 @@ class ZfRest_Util_String
     /**
      * Verifies if the given (raw) password matches a hash.
      *
-     * @param string $raw The password in raw format.
-     * @param string $hash A hash created by ZfRest_Util_String::password().
+     * @param string $raw The password in raw format
+     * @param string $hash A hash created by ZfRest_Util_String::password()
      * @return boolean `true` if the password and hash match, or `false`
-     *  otherwise.
+     *  otherwise
      */
     public static function verifyPassword($raw, $hash)
     {

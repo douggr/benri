@@ -18,7 +18,7 @@ class ZfRest_Auth extends Zend_Auth
     /**
      * Authenticates against the supplied adapter.
      *
-     * @param Zend_Auth_Adapter_Interface $adapter The adapter to use.
+     * @param Zend_Auth_Adapter_Interface $adapter The adapter to use
      * @return Zend_Auth_Result
      * @see http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html#zend.auth.introduction.adapters Zend_Auth_Adapter_Interface
      * @see http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html#zend.auth.introduction.results Zend_Auth_Result

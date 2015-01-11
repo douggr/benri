@@ -140,7 +140,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     /**
      * Clear the specified header from 'Access-Control-Allow-Headers' index.
      *
-     * @param string $name The header to clear.
+     * @param string $name The header to clear
      * @return ZfRest_Controller_Plugin_CORS
      */
     public function clearHeader($name)

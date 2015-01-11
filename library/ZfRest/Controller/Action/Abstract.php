@@ -158,7 +158,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      * @param string $class
      * @return mixed `false` if no one plugin is loaded,
      *  `Zend_Controller_Plugin_Abstract` if then given $class is registered
-     *  as a plugin or `Zend_Controller_Plugin_Abstract[]` if $class is null.
+     *  as a plugin or `Zend_Controller_Plugin_Abstract[]` if $class is null
      */
     final protected function _getPlugin($class)
     {
@@ -218,10 +218,10 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      * If resources have custom validation errors, they should be documented
      * with the resource.
      *
-     * @param string $field The erroneous field or column.
-     * @param string $code One of the ERROR_* codes contants.
+     * @param string $field The erroneous field or column
+     * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
-     * @param string $message A friendly message.
+     * @param string $message A friendly message
      * @return ZfRest_Controller_Action_Abstract
      */
     protected function _pushError($resource, $field, $title, $message = '')

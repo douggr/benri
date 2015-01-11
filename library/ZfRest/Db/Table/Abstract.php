@@ -36,10 +36,10 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
     /**
      * Fetches `all` rows.
      *
-     * @param integer $currentPage An SQL LIMIT offset.
-     * @param integer $pageSize An SQL LIMIT count.
-     * @param string|array $order An SQL ORDER clause.
-     * @return ZfRest_Db_Table_Row The row results.
+     * @param integer $currentPage An SQL LIMIT offset
+     * @param integer $pageSize An SQL LIMIT count
+     * @param string|array $order An SQL ORDER clause
+     * @return ZfRest_Db_Table_Row The row results
      */
     public static function all($currentPage = 1, $pageSize = 10, $order = null)
     {
@@ -59,7 +59,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
     /**
      * Fetches a new blank row (not from the database).
      *
-     * @param array $data Data to populate in the new row.
+     * @param array $data Data to populate in the new row
      * @return ZfRest_Db_Table_Row
      */
     public static function create($data = [])
@@ -72,10 +72,10 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      * Fetches one row in an object of type ZfRest_Db_Table_Row, or returns
      * null if no row matches the specified criteria.
      *
-     * @param string $column The sql `where` clause.
-     * @param mixed $value The value to use against the `where` clause.
+     * @param string $column The sql `where` clause
+     * @param mixed $value The value to use against the `where` clause
      * @return ZfRest_Db_Table_Row or null The row results, or null if no row
-     *  found.
+     *  found
      */
     public static function locate($column, $value)
     {

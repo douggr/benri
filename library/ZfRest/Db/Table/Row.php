@@ -93,7 +93,9 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @param $input
+     * @return ZfRest_Db_Table_Row
      */
     public function normalizeInput($input)
     {
@@ -110,6 +112,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * Reset the value to the given column to its defaults.
      *
      * @param string $column
+     * @return void
      */
     final public function reset($column)
     {
@@ -126,7 +129,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * with fresh data from the table on success.
      *
      * @return mixed The primary key value(s), as an associative array if the
-     *  key is compound, or a scalar if the key is single-column.
+     *  key is compound, or a scalar if the key is single-column
      */
     final public function save()
     {
@@ -198,8 +201,8 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     /**
      * Checks for a column uniqueness value.
      *
-     * @param string $column The column to check against.
-     * @return boolean True if the
+     * @param string $column The column to check against
+     * @return boolean
      */
     final protected function _checkUniqueness($column)
     {
@@ -214,7 +217,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
 
     /**
      * @return mixed The primary key value(s), as an associative array if the
-     *  key is compound, or a scalar if the key is single-column.
+     *  key is compound, or a scalar if the key is single-column
      */
     final protected function _doInsert()
     {
@@ -235,7 +238,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
 
     /**
      * @return mixed The primary key value(s), as an associative array if the
-     *  key is compound, or a scalar if the key is single-column.
+     *  key is compound, or a scalar if the key is single-column
      */
     final protected function _doUpdate()
     {
@@ -271,11 +274,11 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * If resources have custom validation errors, they should be documented
      * with the resource.
      *
-     * @param string $field The erroneous field or column.
-     * @param string $code One of the ERROR_* codes contants.
+     * @param string $field The erroneous field or column
+     * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
-     * @param string $message A friendly message.
-     * @return ZfRest_Db_Table_Abstract_Row.
+     * @param string $message A friendly message
+     * @return ZfRest_Db_Table_Abstract_Row
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {
@@ -306,7 +309,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * - table       = class name or object of type Zend_Db_Table_Abstract
      * - data        = values of columns in this row.
      *
-     * @param array $config OPTIONAL Array of user-specified config options.
+     * @param array $config OPTIONAL Array of user-specified config options
      * @return void
      * @throws Zend_Db_Table_Row_Exception
      */

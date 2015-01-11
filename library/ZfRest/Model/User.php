@@ -15,10 +15,10 @@
 class ZfRest_Model_User extends ZfRest_Db_Table_Abstract
 {
     /**
-     * Classname for row
+     * Classname for row.
      *
      * @var string
-     * @see ZfRest_Model_Row_User
+     * @link ZfRest_Model_Row_User.html ZfRest_Model_Row_User
      */
     protected $_rowClass = 'ZfRest_Model_Row_User';
 
@@ -33,7 +33,7 @@ class ZfRest_Model_User extends ZfRest_Db_Table_Abstract
      * Find a user using various fields as ID.
      *
      * @param mixed $id
-     * @return ZfRest_Model_User_Row or null if the Model couldn't be found.
+     * @return ZfRest_Model_User_Row or null if the Model couldn't be found
      * @see ZfRest_Db_Table_Abstract::locate()
      */
     public static function findUserById($id)
