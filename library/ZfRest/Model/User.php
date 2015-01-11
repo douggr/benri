@@ -32,7 +32,7 @@ class ZfRest_Model_User extends ZfRest_Db_Table_Abstract
     /**
      * Find a user using various fields as ID.
      *
-     * @param mixed $id
+     * @param mixed $id Any scalar value to use as ID
      * @return ZfRest_Model_User_Row or null if the Model couldn't be found
      * @see ZfRest_Db_Table_Abstract::locate()
      */
