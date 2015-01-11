@@ -34,5 +34,6 @@ Thumbs.db
 
 # Folders to ignore
 bower_components
+docs
 node_modules
 vendor
