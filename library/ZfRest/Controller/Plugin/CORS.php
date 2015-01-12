@@ -1,16 +1,16 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
  * Remove the same origin restriction from API calls.
+ *
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html Zend_Controller_Plugin_Abstract
  */
 class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
 {
@@ -38,14 +38,14 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      *
      * @var array
      */
-    private $_methods = [
+    private $_methods = array(
         'DELETE',
         'GET',
         'OPTIONS',
         'PATCH',
         'POST',
         'PUT'
-    ];
+    );
 
     /**
      * Indicates, as part of the response to a preflight request, which header
@@ -53,10 +53,10 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      *
      * @var array
      */
-    private $_headers = [
+    private $_headers = array(
         'Authorization',
         'Content-Type',
-    ];
+    );
 
     /**
      * Indicates how long the results of a preflight request can be cached in
@@ -67,7 +67,12 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     private $_maxAge = 86400;
 
     /**
-     * {@inheritdoc}
+     * Called after an action is dispatched by Zend_Controller_Dispatcher.
+     *
+     * @internal
+     * @param Zend_Controller_Request_Abstract $request
+     * @return void
+     * @see http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Abstract
      */
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
@@ -82,10 +87,12 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
         header("Access-Control-Allow-Methods: {$methods}", true);
         header("Access-Control-Allow-Headers: {$headers}", true);
         header("Access-Control-Max-Age: {$this->_maxAge}", true);
+        header('X-XSS-Protection: 1; mode=block', true);
+        header('X-Frame-Options: SAMEORIGIN', true);
     }
 
     /**
-     * @param boolean
+     * @param boolean $credentials
      * @return ZfRest_Controller_Plugin_CORS
      */
     public function setCredentials($credentials = true)
@@ -96,7 +103,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     }
 
     /**
-     * @param boolean
+     * @param string $origin
      * @return ZfRest_Controller_Plugin_CORS
      */
     public function setOrigin($origin = '*')
@@ -107,7 +114,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     }
 
     /**
-     * @param boolean
+     * @param integer $deltaSeconds
      * @return ZfRest_Controller_Plugin_CORS
      */
     public function setMaxAge($deltaSeconds = 86400)
@@ -133,7 +140,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     /**
      * Clear the specified header from 'Access-Control-Allow-Headers' index.
      *
-     * @param  string $name
+     * @param string $name The header to clear
      * @return ZfRest_Controller_Plugin_CORS
      */
     public function clearHeader($name)
@@ -157,7 +164,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     /**
      * Clear the specified method from 'Access-Control-Allow-Methods' index.
      *
-     * @param  string $name
+     * @param string $name
      * @return ZfRest_Controller_Plugin_CORS
      */
     public function clearMethod($name)

@@ -1,47 +1,69 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * Contains an individual row of a ZfZend_Db_Table object.
+ *
+ * This is a class that contains an individual row of a ZfZend_Db_Table object.
+ * When you run a query against a Table class, the result is returned in a set
+ * of ZfRest_Db_Table_Row objects. You can also use this object to create new
+ * rows and add them to the database table.
+ *
+ * @link http://framework.zend.com/manual/1.12/en/zend.db.table.row.html Zend_Db_Table_Row
+ * @link ZfRest_Db_Table_Abstract.html ZfRest_Db_Table_Abstract
  */
 class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
 {
-    /// This means a required resource does not exist.
+    /**
+     * This means a required resource does not exist.
+     */
     const ERROR_MISSING         = 'missing';
 
-    /// This means a required field on a resource has not been set.
+    /**
+     * This means a required field on a resource has not been set.
+     */
     const ERROR_MISSING_FIELD   = 'missing_field';
 
-    /// This means the formatting of a field is invalid. The documentation for
-    /// that resource should be able to give you more specific information.
+    /**
+     * This means the formatting of a field is invalid. The documentation for
+     * that resource should be able to give you more specific information.
+     */
     const ERROR_INVALID         = 'invalid';
 
-    /// This means another resource has the same value as this field. This can
-    /// happen in resources that must have some unique key (such as Label or
-    /// Locale names).
+    /**
+     * This means another resource has the same value as this field. This can
+     * happen in resources that must have some unique key (such as Label or
+     * Locale names).
+     */
     const ERROR_ALREADY_EXISTS  = 'already_exists';
 
-    /// This means an uncommon error.
+    /**
+     * This means an uncommon error.
+     */
     const ERROR_UNCATEGORIZED   = 'uncategorized';
 
-    /// For the rare case an exception occurred and we couldn't recover.
+    /**
+     * For the rare case an exception occurred and we couldn't recover.
+     */
     const ERROR_UNKNOWN         = 'unknown';
 
     /**
+     * Hold the errors while saving this object.
+     *
      * @var array
      */
-    private $_errors = [];
+    private $_errors = array();
 
     /**
-     * {@inheritdoc}
+     * Returns the errors found while saving this object.
+     *
+     * @return array
      */
     public function getErrors()
     {
@@ -49,7 +71,11 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if the given column was modified since this object was
+     * loaded from the database.
+     *
+     * @param string $column
+     * @return boolean
      */
     public function isDirty($column)
     {
@@ -57,7 +83,9 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if this is a new record on the database.
+     *
+     * @return boolean
      */
     public function isNewRecord()
     {
@@ -65,7 +93,9 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @param $input
+     * @return ZfRest_Db_Table_Row
      */
     public function normalizeInput($input)
     {
@@ -79,18 +109,40 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
+     * Reset the value to the given column to its defaults.
+     *
+     * @param string $column
+     * @return void
      */
-    public function save()
+    final public function reset($column)
+    {
+        if ($this->isDirty($column)) {
+            $this->_data[$column] = $this->_cleanData[$column];
+            unset($this->_modifiedFields[$column]);
+        }
+    }
+
+    /**
+     * Saves the properties to the database.
+     *
+     * This performs an intelligent insert/update, and reloads the properties
+     * with fresh data from the table on success.
+     *
+     * @return mixed The primary key value(s), as an associative array if the
+     *  key is compound, or a scalar if the key is single-column
+     */
+    final public function save()
     {
         if (true === $this->_readOnly) {
             throw new Zend_Db_Table_Row_Exception('This row has been marked read-only.');
         }
 
-        /// Allows pre-save logic to be applied to any row.
-        ///
-        /// Zend_Db_Table_Row only uses to do it on _insert OR _update,
-        /// here we can use the very same rules to be applied in both methods.
+        /**
+         * Allows pre-save logic to be applied to any row.
+         *
+         * Zend_Db_Table_Row only uses to do it on _insert OR _update,
+         * here we can use the very same rules to be applied in both methods.
+         */
         $this->_save();
 
         if (count($this->_errors)) {
@@ -116,16 +168,22 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
             $createdBy = 1;
         }
 
-        if ($this->isNewRecord() && $this->offsetExists('created_by')) {
-            if (!$this->created_by) {
+        if ($this->isNewRecord()) {
+            if ($this->offsetExists('created_at')) {
+                $this->created_at = new ZfRest_Util_DateTime();
+            }
+
+            if ($this->offsetExists('created_by') && !$this->created_by) {
                 $this->created_by = $createdBy;
             }
         }
 
-        if ($this->offsetExists('updated_by')) {
-            if (!$this->updated_by) {
-                $this->updated_by = $createdBy;
-            }
+        if ($this->offsetExists('updated_at')) {
+            $this->updated_at = new ZfRest_Util_DateTime();
+        }
+
+        if ($this->offsetExists('updated_by') && !$this->updated_by) {
+            $this->updated_by = $createdBy;
         }
 
         /// Saves the properties to the database
@@ -136,13 +194,73 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * Convert this object to a JSON string
+     * Convert this object to a JSON string.
      *
      * @return string
      */
     public function toJson()
     {
         return json_encode($this->toArray(), JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK);
+    }
+
+
+    /**
+     * Checks for a column uniqueness value.
+     *
+     * @param string $column The column to check against
+     * @return boolean
+     */
+    final protected function _checkUniqueness($column)
+    {
+        $select = $this->select()
+            ->where("$column = ?", $this->__get($column))
+            ->limit(1);
+
+        $model  = $this->getTable()->fetchRow($select);
+
+        return !$model || $model->id === $this->id;
+    }
+
+    /**
+     * @return mixed The primary key value(s), as an associative array if the
+     *  key is compound, or a scalar if the key is single-column
+     */
+    final protected function _doInsert()
+    {
+        /// A read-only row cannot be saved.
+        if ($this->_readOnly === true) {
+            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
+        }
+
+        /// Run pre-INSERT logic
+        $this->_insert();
+
+        if (count($this->_errors)) {
+            throw new Zend_Db_Table_Row_Exception('This row contain errors.');
+        }
+
+        return parent::_doInsert();
+    }
+
+    /**
+     * @return mixed The primary key value(s), as an associative array if the
+     *  key is compound, or a scalar if the key is single-column
+     */
+    final protected function _doUpdate()
+    {
+        /// A read-only row cannot be saved.
+        if ($this->_readOnly === true) {
+            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
+        }
+
+        /// Run pre-UPDATE logic
+        $this->_update();
+
+        if (count($this->_errors)) {
+            throw new Zend_Db_Table_Row_Exception('This row contain errors.');
+        }
+
+        return parent::_doUpdate();
     }
 
     /**
@@ -164,18 +282,18 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      *
      * @param string $field The erroneous field or column
      * @param string $code One of the ERROR_* codes contants
-     * @param string $message
-     * @param array $interpolateParams Params to interpolate within the message
-     * @return ZfRest_Db_Table_Abstract_Row
+     * @param string $title A title for this error
+     * @param string $message A friendly message
+     * @return ZfRest_Db_Table_Row
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {
-        $this->_errors[] = [
+        $this->_errors[] = array(
             'field'     => $field,
             'message'   => $message,
             'resource'  => $resource,
             'title'     => $title
-        ];
+        );
 
         return $this;
     }
@@ -197,7 +315,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * - table       = class name or object of type Zend_Db_Table_Abstract
      * - data        = values of columns in this row.
      *
-     * @param  array $config OPTIONAL Array of user-specified config options.
+     * @param array $config OPTIONAL Array of user-specified config options
      * @return void
      * @throws Zend_Db_Table_Row_Exception
      */
@@ -216,7 +334,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
             }
 
             $this->setFromArray($this->_data = $config['data']);
-            $this->_modifiedFields = [];
+            $this->_modifiedFields = array();
         }
 
         if (isset($config['stored']) && $config['stored'] === true) {
@@ -237,7 +355,6 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
      * @internal
      */
     public function __set($columnName, $value)
@@ -245,23 +362,9 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
         $setter = ZfRest_Util_String::camelize($columnName, true);
 
         if (method_exists($this, "set{$setter}")) {
-            $value = call_user_func_array([$this, "set{$setter}"], [$value]);
+            $value = call_user_func_array(array($this, "set{$setter}"), array($value));
         }
 
         return parent::__set($columnName, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final protected function _checkUniqueness($column)
-    {
-        $select = $this->select()
-            ->where("$column = ?", $this->__get($column))
-            ->limit(1);
-
-        $model  = $this->getTable()->fetchRow($select);
-
-        return !$model || $model->id === $this->id;
     }
 }

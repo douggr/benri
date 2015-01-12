@@ -1,80 +1,69 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * Used to implement Action Controllers for use with the Front Controller.
+ *
+ * @link ZfRest_Controller_Action_Abstract.html ZfRest_Controller_Action_Abstract
  */
 class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
 {
-    /// This means a required resource does not exist.
-    const ERROR_MISSING         = 'missing';
-
-    /// This means a required field on a resource has not been set.
-    const ERROR_MISSING_FIELD   = 'missing_field';
-
-    /// This means the formatting of a field is invalid. The documentation for
-    /// that resource should be able to give you more specific information.
-    const ERROR_INVALID         = 'invalid';
-
-    /// This means another resource has the same value as this field. This can
-    /// happen in resources that must have some unique key (such as Label or
-    /// Locale names).
-    const ERROR_ALREADY_EXISTS  = 'already_exists';
-
-    /// This means an uncommon error.
-    const ERROR_UNCATEGORIZED   = 'uncategorized';
-
-    /// For the rare case an exception occurred and we couldn't recover.
-    const ERROR_UNKNOWN         = 'unknown';
-
     /**
-     * Request data
+     * Request data.
+     *
+     * @var StdClass
      */
     protected $_input;
 
     /**
-     * Response data
+     * Response data.
+     *
+     * @var mixed
      */
     private $_data;
 
     /**
-     * @var array
-     */
-    private $_errors = [];
-
-    /**
-     * {@inheritdoc}
+     * Initialize object.
+     *
+     * @return void
      */
     public function init()
     {
         $this->_registerPlugin(new ZfRest_Controller_Plugin_CORS());
         $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
 
-        $this->_helper
-            ->layout()
-            ->disableLayout();
+        try {
+            $this->_helper
+                ->layout()
+                ->disableLayout();
+        } catch (Zend_Controller_Action_Exception $e) {
+            // If the Layout helper isn't enabled, just ignore and continue.
+        }
 
         $this->_helper
             ->viewRenderer
             ->setNoRender(true);
 
         $this->_input   = new StdClass();
-        $this->_data    = [
-            'messages'  => [],
+        $this->_data    = array(
+            'messages'  => array(),
             'data'      => null
-        ];
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * Post-dispatch routines.
+     *
+     * Common usages for `postDispatch()` include rendering content in a
+     * sitewide template, link url correction, setting headers, etc.
+     *
+     * @return void
      */
     public function postDispatch()
     {
@@ -84,22 +73,15 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
             $this->_data['errors'] = $this->_errors;
         }
 
-        $pretty = $this->getRequest()
-            ->getParam('pretty');
-
-        if (null !== $pretty) {
-            $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP | JSON_PRETTY_PRINT;
-        } else {
-            $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP;
-        }
-
         $this->getResponse()
             ->setHeader('Content-Type', 'application/json; charset=utf-8')
-            ->setBody(json_encode($this->_data, $jsonOptions));
+            ->setBody(json_encode($this->_data, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
     }
 
     /**
-     * {@inheritdoc}
+     * Pre-dispatch routines.
+     *
+     * @return void
      */
     public function preDispatch()
     {
@@ -131,35 +113,7 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * All error objects have field and code properties so that your client
-     * can tell what the problem is.
-     *
-     * If resources have custom validation errors, they should be documented
-     * with the resource.
-     *
-     * @param string $field The erroneous field or column
-     * @param string $code One of the ERROR_* codes contants
-     * @param string $message
-     * @param array $interpolateParams Params to interpolate within the message
-     * @return ZfRest_Controller_Rest
-     */
-    protected function _pushError($resource, $field, $title, $message = '')
-    {
-        $this->getResponse()
-            ->setHttpResponseCode(422);
-
-        $this->_errors[] = [
-            'field'     => $field,
-            'message'   => $message,
-            'resource'  => $resource,
-            'title'     => $title
-        ];
-
-        return $this;
-    }
-
-    /**
-     * General method to save models (ZfRest_Db_Table_Row)
+     * General method to save models (ZfRest_Db_Table_Row).
      *
      * @param ZfRest_Db_Table_Row
      * @return ZfRest_Controller_Rest
@@ -170,10 +124,14 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
             $model->normalizeInput($this->_input)
                 ->save();
 
-            $this->_pushMessage('Horray!', 'success');
         } catch (Zend_Db_Table_Row_Exception $ex) {
             foreach ($model->getErrors() as $error) {
-                extract($error) && $this->_pushError($resource, $field, $title, $message);
+                $this->_pushError(
+                    $error['resource'],
+                    $error['field'],
+                    $error['title'],
+                    $error['message']
+                );
             }
 
             $this->_pushMessage($ex->getMessage(), 'danger');
@@ -183,7 +141,13 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Prepare the response.
+     *
+     * Response data in REST requests are send together with `messages` and
+     * `errors`.
+     *
+     * @param mixed $data Data to send along with `messages` and `errors`
+     * @return ZfRest_Controller_Rest
      */
     protected function _setResponseData($data)
     {

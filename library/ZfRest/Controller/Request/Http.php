@@ -1,21 +1,23 @@
 <?php
-/*
+/**
  * douggr/zf-rest
  *
- * @link https://github.com/douggr/zf-rest for the canonical source repository
- * @version 2.0.0
- *
- * For the full copyright and license information, please view the LICENSE
- * file distributed with this source code.
+ * @license http://opensource.org/license/MIT
+ * @link    https://github.com/douggr/zf-rest
+ * @version 2.1.0
  */
 
 /**
- * {@inheritdoc}
+ * HTTP request object for use with ZfRest_Controller family.
+ *
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Http
  */
 class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
 {
     /**
-     * {@inheritdoc}
+     * Returns the REQUEST_METHOD header.
+     *
+     * @return string
      */
     public function getMethod()
     {
@@ -23,7 +25,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the URL which this request was made to.
+     *
+     * @return string
      */
     final public function getCompleteUri()
     {
@@ -31,7 +35,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Was the request made by GET?
+     *
+     * @return boolean
      */
     public function isGet()
     {
@@ -39,7 +45,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Was the request made by DELETE?
+     *
+     * @return boolean
      */
     public function isDelete()
     {
@@ -47,7 +55,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Was the request made by HEAD?
+     *
+     * @return boolean
      */
     public function isHead()
     {
@@ -55,7 +65,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Was the request made by OPTIONS?
+     *
+     * @return boolean
      */
     public function isOptions()
     {
@@ -85,7 +97,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Was the request made by POST?
+     *
+     * @return boolean
      */
     public function isPost()
     {
@@ -93,7 +107,9 @@ class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
     }
 
     /**
-     * {@inheritdoc}
+     * Was the request made by PUT?
+     *
+     * @return boolean
      */
     public function isPut()
     {
