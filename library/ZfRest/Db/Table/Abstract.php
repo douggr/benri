@@ -91,8 +91,8 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
     /**
      * Returns an instance of a Zend_Db_Table_Select object.
      *
-     * @param boolean $withFromPart Whether or not to include the from part of the
-     *  select based on the table
+     * @param boolean $withFromPart Whether or not to include the from part of
+     *  the select based on the table
      * @return Zend_Db_Table_Select
      * @see http://framework.zend.com/manual/1.12/en/zend.db.select.html Zend_Db_Select
      */
