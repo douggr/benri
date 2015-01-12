@@ -22,7 +22,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      * single-column primary key as a string. Prefer arrays.
      *
      * @var mixed
-    */
+     */
     protected $_primary = array('id');
 
     /**
