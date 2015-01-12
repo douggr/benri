@@ -96,7 +96,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      * @return Zend_Db_Table_Select
      * @see http://framework.zend.com/manual/1.12/en/zend.db.select.html Zend_Db_Select
      */
-    public function select($withFromPart = self::SELECT_WITHOUT_FROM_PART)
+    public function select($withFromPart = parent::SELECT_WITHOUT_FROM_PART)
     {
         return parent::select($withFromPart)
             ->setIntegrityCheck(false);
