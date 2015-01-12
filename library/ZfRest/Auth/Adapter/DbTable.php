@@ -117,7 +117,7 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
     protected function _authenticateValidateResult(array $resultIdentity)
     {
         if (!ZfRest_Util_String::verifyPassword($this->_credential, $resultIdentity[$this->_credentialColumn])) {
-            $code             = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;;
+            $code             = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
             $message          = 'Supplied credential is invalid.';
         } else {
             $this->_resultRow = $resultIdentity;
