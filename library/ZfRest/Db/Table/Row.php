@@ -168,16 +168,22 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
             $createdBy = 1;
         }
 
-        if ($this->isNewRecord() && $this->offsetExists('created_by')) {
-            if (!$this->created_by) {
+        if ($this->isNewRecord()) {
+            if ($this->offsetExists('created_at')) {
+                $this->created_at = new ZfRest_Util_DateTime();
+            }
+
+            if ($this->offsetExists('created_by') && !$this->created_by) {
                 $this->created_by = $createdBy;
             }
         }
 
-        if ($this->offsetExists('updated_by')) {
-            if (!$this->updated_by) {
-                $this->updated_by = $createdBy;
-            }
+        if ($this->offsetExists('updated_at')) {
+            $this->updated_at = new ZfRest_Util_DateTime();
+        }
+
+        if ($this->offsetExists('updated_by') && !$this->updated_by) {
+            $this->updated_by = $createdBy;
         }
 
         /// Saves the properties to the database
@@ -349,7 +355,6 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     * {@inheritdoc}
      * @internal
      */
     public function __set($columnName, $value)
