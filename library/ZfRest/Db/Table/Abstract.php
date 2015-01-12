@@ -43,6 +43,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      */
     public static function all($currentPage = 1, $pageSize = 10, $order = null)
     {
+        $table  = new static();
         $select = $table->select()
             ->order($order)
             ->limitPage($currentPage, $pageSize);
