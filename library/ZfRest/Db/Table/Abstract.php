@@ -23,7 +23,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      *
      * @var mixed
     */
-    protected $_primary = ['id'];
+    protected $_primary = array('id');
 
     /**
      * Classname for row
@@ -46,7 +46,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
         $table      = new static();
         $columns    = $table->_getCols();
         $expression = "CEILING(COUNT(1) / {$pageSize}) as _total_pages";
-        $fields     = [new Zend_Db_Expr($expression)] + $columns;
+        $fields     = array(new Zend_Db_Expr($expression)) + $columns;
 
         $select = $table->select()
             ->from($table->_name, $fields)
@@ -63,10 +63,10 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      * @param array $data Data to populate in the new row
      * @return ZfRest_Db_Table_Row
      */
-    public static function create($data = [])
+    public static function create($data = array())
     {
-        return (new static())
-            ->createRow((array) $data);
+        $table = new static();
+        return $table->createRow((array) $data);
     }
 
     /**

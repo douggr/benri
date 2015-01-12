@@ -38,14 +38,14 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      *
      * @var array
      */
-    private $_methods = [
+    private $_methods = array(
         'DELETE',
         'GET',
         'OPTIONS',
         'PATCH',
         'POST',
         'PUT'
-    ];
+    );
 
     /**
      * Indicates, as part of the response to a preflight request, which header
@@ -53,10 +53,10 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      *
      * @var array
      */
-    private $_headers = [
+    private $_headers = array(
         'Authorization',
         'Content-Type',
-    ];
+    );
 
     /**
      * Indicates how long the results of a preflight request can be cached in

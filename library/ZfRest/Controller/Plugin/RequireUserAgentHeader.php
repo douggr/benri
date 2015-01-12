@@ -18,10 +18,10 @@ class ZfRest_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Pl
      * @internal
      * @var array
      */
-    static private $_errMessage = [
+    static private $_errMessage = array(
         'Request forbidden by administrative rules.',
         'Please make sure your request has a User-Agent header.'
-    ];
+    );
 
     /**
      * Validates the current request.

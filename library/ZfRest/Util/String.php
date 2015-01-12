@@ -15,7 +15,7 @@ class ZfRest_Util_String
     /**
      * @var array
      */
-    private static $plural = [
+    private static $plural = array(
         '/(quiz)$/i'                     => '$1zes',
         '/^(ox)$/i'                      => '$1en',
         '/([m|l])ouse$/i'                => '$1ice',
@@ -35,12 +35,12 @@ class ZfRest_Util_String
         '/(us)$/i'                       => '$1es',
         '/s$/i'                          => 's',
         '/$/'                            => 's',
-    ];
+    );
 
     /**
      * @var array
      */
-    private static $singular = [
+    private static $singular = array(
         '/(quiz)zes$/i'                 => '$1',
         '/(matr)ices$/i'                => '$1ix',
         '/(vert|ind)ices$/i'            => '$1ex',
@@ -72,12 +72,12 @@ class ZfRest_Util_String
 
         '/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i'
                                         => '$1$2sis',
-    ];
+    );
 
     /**
      * @var array
      */
-    private static $irregular = [
+    private static $irregular = array(
         'move'                          => 'moves',
         'foot'                          => 'feet',
         'goose'                         => 'geese',
@@ -86,12 +86,12 @@ class ZfRest_Util_String
         'man'                           => 'men',
         'tooth'                         => 'teeth',
         'person'                        => 'people'
-    ];
+    );
 
     /**
      * @var array
      */
-    private static $uncountable = [
+    private static $uncountable = array(
         'sheep',
         'fish',
         'deer',
@@ -101,7 +101,7 @@ class ZfRest_Util_String
         'rice',
         'information',
         'equipment',
-    ];
+    );
 
     /**
      * Pluralize the given string.
@@ -210,7 +210,7 @@ class ZfRest_Util_String
         $replace = str_replace(
             ' ',
             '',
-            ucwords(str_replace(['_', '-'], ' ', strtolower($str)))
+            ucwords(str_replace(array('_', '-'), ' ', strtolower($str)))
         );
 
         if (!$ucfirst) {
@@ -231,7 +231,7 @@ class ZfRest_Util_String
     {
         return strtr(
             $value,
-            [
+            array(
                 "\r" => '\\r',
                 "\n" => '\\n',
                 "\'" => '\\\'',
@@ -239,7 +239,7 @@ class ZfRest_Util_String
                 "/"  => '\\/',
                 "\"" => '\\\\\'',
                 "\\" => '\\\\\\'
-            ]
+            )
         );
     }
 
@@ -268,21 +268,21 @@ class ZfRest_Util_String
     public static function accentremove($str)
     {
         return str_replace(
-                [
+                array(
                     'Á','á','à','À','â','Â','ä','Ä','ã','Ã','å','Å','ð',
                     'é','É','È','è','Ê','ê','Ë','ë','í','Í','ì','Ì','î',
                     'Î','ï','Ï','ñ','Ñ','ó','Ó','Ò','ò','Ô','ô','Ö','ö',
                     'õ','Õ','Ú','ú','ù','Ù','û','Û','ü','Ü','ý','Ý','ÿ',
                     'Ç','ç'
-                ],
+                ),
 
-                [
+                array(
                     'A','a','a','A','a','A','a','A','a','A','a','A','o',
                     'e','E','E','e','E','e','E','e','i','I','i','I','i',
                     'I','i','I','n','N','o','O','O','o','O','o','O','o',
                     'o','O','U','u','u','U','u','U','u','U','y','Y','y',
                     'C','c'
-                ],
+                ),
 
                 $str);
     }
@@ -317,7 +317,7 @@ class ZfRest_Util_String
      */
     public static function password($raw)
     {
-        return password_hash($raw, PASSWORD_BCRYPT) ?: null;
+        return md5($raw);
     }
 
     /**
@@ -330,6 +330,6 @@ class ZfRest_Util_String
      */
     public static function verifyPassword($raw, $hash)
     {
-        return password_verify($raw, $hash);
+        return $hash === md5($raw);
     }
 }

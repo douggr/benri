@@ -82,7 +82,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
         $request = $this->getRequest();
         $action  = $request->getParam('action');
 
-        if (!in_array($action, ['delete', 'index', 'get', 'patch', 'post', 'put'])) {
+        if (!in_array($action, array('delete', 'index', 'get', 'patch', 'post', 'put'))) {
             if ($request->isGet()) {
                 $action = $request->getParam('id') ? 'get' : 'index';
             } else {
@@ -115,13 +115,13 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
 
             // Common variables used in all views.
             $this->view
-                ->assign([
+                ->assign(array(
                     'controller'    => $this->getParam('controller'),
                     'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
                     'pageTitle'     => $this->_pageTitle,
-                ]);
+                ));
 
             // XMLHttpRequest requests should not render the entire layout,
             // only the correct templates related to the action.
@@ -142,9 +142,9 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
                     
                 } else {
                     $this->view
-                        ->assign([
+                        ->assign(array(
                             'pjaxTemplate' => "{$pjaxTemplate}.phtml",
-                        ]);
+                        ));
 
                     $this->_helper
                         ->viewRenderer($this->_mainTemplate);

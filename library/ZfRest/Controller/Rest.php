@@ -51,10 +51,10 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
             ->setNoRender(true);
 
         $this->_input   = new StdClass();
-        $this->_data    = [
-            'messages'  => [],
+        $this->_data    = array(
+            'messages'  => array(),
             'data'      => null
-        ];
+        );
     }
 
     /**
@@ -73,18 +73,9 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
             $this->_data['errors'] = $this->_errors;
         }
 
-        $pretty = $this->getRequest()
-            ->getParam('pretty');
-
-        if (null !== $pretty) {
-            $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP | JSON_PRETTY_PRINT;
-        } else {
-            $jsonOptions = JSON_NUMERIC_CHECK | JSON_HEX_AMP;
-        }
-
         $this->getResponse()
             ->setHeader('Content-Type', 'application/json; charset=utf-8')
-            ->setBody(json_encode($this->_data, $jsonOptions));
+            ->setBody(json_encode($this->_data, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
     }
 
     /**
@@ -133,10 +124,14 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
             $model->normalizeInput($this->_input)
                 ->save();
 
-            $this->_pushMessage('Horray!', 'success');
         } catch (Zend_Db_Table_Row_Exception $ex) {
             foreach ($model->getErrors() as $error) {
-                extract($error) && $this->_pushError($resource, $field, $title, $message);
+                $this->_pushError(
+                    $error['resource'],
+                    $error['field'],
+                    $error['title'],
+                    $error['message']
+                );
             }
 
             $this->_pushMessage($ex->getMessage(), 'danger');

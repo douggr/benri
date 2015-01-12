@@ -84,10 +84,10 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
      */
     public function toArray()
     {
-        return array_replace($this->_data, [
+        return array_replace($this->_data, array(
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
-        ]);
+        ));
     }
 
     /**
@@ -99,13 +99,13 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     protected function _insert()
     {
         // every user MUST HAVE an api_key…
-        $this->api_key      = ZfRest_Util_String::random(32);
+        $this->_setApiKey();
 
         // an api_secret…
         $this->_setApiSecret();
 
         // a token…
-        $this->token        = ZfRest_Util_String::random(60);
+        $this->token = ZfRest_Util_String::random(60);
 
         // and a valid password.
         $this->_setPassword();
@@ -122,7 +122,7 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     protected function _update()
     {
         if ($this->isDirty('api_key')) {
-            $this->api_key = ZfRest_Util_String::random(32);
+            $this->_setApiKey();
         }
 
         if ($this->isDirty('api_secret')) {
@@ -173,13 +173,23 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
     }
 
     /**
+     * Setter fot api_key.
+     *
+     * @return string
+     */
+    protected function _setApiKey()
+    {
+        return $this->api_key = md5(ZfRest_Util_String::random(60));
+    }
+
+    /**
      * Setter for api_secret.
      *
      * @return string
      */
     protected function _setApiSecret()
     {
-        $this->api_secret = ZfRest_Util_String::password(ZfRest_Util_String::random());
+        return $this->api_secret = ZfRest_Util_String::random(60);
     }
 
     /**
@@ -197,6 +207,6 @@ class ZfRest_Model_Row_User extends ZfRest_Db_Table_Row
             $this->_pushError('user', 'password', static::ERROR_INVALID, 'Password is too short (minimum is 7 characters)');
         }
 
-        $this->password = ZfRest_Util_String::password($this->password);
+        return $this->password = ZfRest_Util_String::password($this->password);
     }
 }

@@ -58,7 +58,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      *
      * @var array
      */
-    private $_errors = [];
+    private $_errors = array();
 
     /**
      * Returns the errors found while saving this object.
@@ -282,12 +282,12 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {
-        $this->_errors[] = [
+        $this->_errors[] = array(
             'field'     => $field,
             'message'   => $message,
             'resource'  => $resource,
             'title'     => $title
-        ];
+        );
 
         return $this;
     }
@@ -328,7 +328,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
             }
 
             $this->setFromArray($this->_data = $config['data']);
-            $this->_modifiedFields = [];
+            $this->_modifiedFields = array();
         }
 
         if (isset($config['stored']) && $config['stored'] === true) {
@@ -357,7 +357,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
         $setter = ZfRest_Util_String::camelize($columnName, true);
 
         if (method_exists($this, "set{$setter}")) {
-            $value = call_user_func_array([$this, "set{$setter}"], [$value]);
+            $value = call_user_func_array(array($this, "set{$setter}"), array($value));
         }
 
         return parent::__set($columnName, $value);

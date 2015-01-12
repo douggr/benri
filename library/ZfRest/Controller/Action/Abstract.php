@@ -51,12 +51,12 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * @var array
      */
-    protected $_errors = [];
+    protected $_errors = array();
 
     /**
      * @var array
      */
-    protected $_messages = [];
+    protected $_messages = array();
 
     /**
      * ZfRest_Controller_Request_Http object wrapping the request environment.
@@ -185,12 +185,12 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      *
      * @return ZfRest_Controller_Action_Abstract
      */
-    protected function _pushMessage($message, $type = 'error', array $interpolateParams = [])
+    protected function _pushMessage($message, $type = 'error', array $interpolateParams = array())
     {
-        $this->_messages[] = [
+        $this->_messages[] = array(
             'message'   => vsprintf($message, $interpolateParams),
             'type'      => $type
-        ];
+        );
 
         return $this;
     }
@@ -232,12 +232,12 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
         $this->getResponse()
             ->setHttpResponseCode(422);
 
-        $this->_errors[] = [
+        $this->_errors[] = array(
             'field'     => $field,
             'message'   => $message,
             'resource'  => $resource,
             'title'     => $title
-        ];
+        );
 
         return $this;
     }
