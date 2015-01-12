@@ -43,14 +43,7 @@ abstract class ZfRest_Db_Table_Abstract extends Zend_Db_Table
      */
     public static function all($currentPage = 1, $pageSize = 10, $order = null)
     {
-        $table      = new static();
-        $columns    = $table->_getCols();
-        $expression = "CEILING(COUNT(1) / {$pageSize}) as _total_pages";
-        $fields     = array(new Zend_Db_Expr($expression)) + $columns;
-
         $select = $table->select()
-            ->from($table->_name, $fields)
-            ->group($columns)
             ->order($order)
             ->limitPage($currentPage, $pageSize);
 
