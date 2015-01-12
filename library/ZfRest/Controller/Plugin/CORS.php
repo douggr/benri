@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -12,7 +12,7 @@
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html Zend_Controller_Plugin_Abstract
  */
-class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
+class ZfExtension_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
 {
     /**
      * Indicates whether a resource can be shared based by returning the value
@@ -93,7 +93,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
 
     /**
      * @param boolean $credentials
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function setCredentials($credentials = true)
     {
@@ -104,7 +104,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
 
     /**
      * @param string $origin
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function setOrigin($origin = '*')
     {
@@ -115,7 +115,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
 
     /**
      * @param integer $deltaSeconds
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function setMaxAge($deltaSeconds = 86400)
     {
@@ -128,7 +128,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      * Set a header to use within 'Access-Control-Allow-Headers' header.
      *
      * @param string $name
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function setHeader($name)
     {
@@ -141,7 +141,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      * Clear the specified header from 'Access-Control-Allow-Headers' index.
      *
      * @param string $name The header to clear
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function clearHeader($name)
     {
@@ -152,7 +152,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      * Set a method to use within 'Access-Control-Allow-Methods' header.
      *
      * @param string $name
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function setMethod($name)
     {
@@ -165,7 +165,7 @@ class ZfRest_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      * Clear the specified method from 'Access-Control-Allow-Methods' index.
      *
      * @param string $name
-     * @return ZfRest_Controller_Plugin_CORS
+     * @return ZfExtension_Controller_Plugin_CORS
      */
     public function clearMethod($name)
     {

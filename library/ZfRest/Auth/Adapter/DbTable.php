@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -14,7 +14,7 @@
  * @link http://framework.zend.com/manual/1.12/en/zend.auth.adapter.dbtable.html Zend_Auth_Adapter_DbTable
  * @link http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html#zend.auth.introduction.results Zend_Auth_Result
  */
-class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
+class ZfExtension_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
 {
     /**
      * The table name to check.
@@ -53,7 +53,7 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      *
      * @internal
      * @param int|bool $flag
-     * @return ZfRest_Auth_Adapter_DbTable
+     * @return ZfExtension_Auth_Adapter_DbTable
      */
     public function setAmbiguityIdentity($flag)
     {
@@ -116,7 +116,7 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      */
     protected function _authenticateValidateResult(array $resultIdentity)
     {
-        if (!ZfRest_Util_String::verifyPassword($this->_credential, $resultIdentity[$this->_credentialColumn])) {
+        if (!ZfExtension_Util_String::verifyPassword($this->_credential, $resultIdentity[$this->_credentialColumn])) {
             $code             = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
             $message          = 'Supplied credential is invalid.';
         } else {
@@ -130,7 +130,7 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
 
         /// _authenticateCreateAuthResult creates a Zend_Auth_Result object
         /// from the information that has been collected during the
-        /// ZfRest_Auth_Adapter_DbTable::authenticate() attempt.
+        /// ZfExtension_Auth_Adapter_DbTable::authenticate() attempt.
         return $this->_authenticateCreateAuthResult();
     }
 }

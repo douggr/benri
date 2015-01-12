@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -12,13 +12,13 @@
  *
  * This is a class that contains an individual row of a ZfZend_Db_Table object.
  * When you run a query against a Table class, the result is returned in a set
- * of ZfRest_Db_Table_Row objects. You can also use this object to create new
+ * of ZfExtension_Db_Table_Row objects. You can also use this object to create new
  * rows and add them to the database table.
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.db.table.row.html Zend_Db_Table_Row
- * @link ZfRest_Db_Table_Abstract.html ZfRest_Db_Table_Abstract
+ * @link ZfExtension_Db_Table_Abstract.html ZfExtension_Db_Table_Abstract
  */
-class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
+class ZfExtension_Db_Table_Row extends Zend_Db_Table_Row
 {
     /**
      * This means a required resource does not exist.
@@ -95,7 +95,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
     /**
      *
      * @param $input
-     * @return ZfRest_Db_Table_Row
+     * @return ZfExtension_Db_Table_Row
      */
     public function normalizeInput($input)
     {
@@ -151,16 +151,16 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
 
         foreach ($this->_data as $column => &$value) {
             if ($value instanceof DateTime) {
-                // Should replace with ZfRest_Util_DateTime.
-                if (!($value instanceof ZfRest_Util_DateTime)) {
-                    $value = new ZfRest_Util_DateTime($value->format('U'));
+                // Should replace with ZfExtension_Util_DateTime.
+                if (!($value instanceof ZfExtension_Util_DateTime)) {
+                    $value = new ZfExtension_Util_DateTime($value->format('U'));
                 }
 
                 $value->setFormat('Y:m:d H:i:s');
             }
         }
 
-        $identity = ZfRest_Auth::getInstance()->getIdentity();
+        $identity = ZfExtension_Auth::getInstance()->getIdentity();
 
         if ($identity && isset($identity->id)) {
             $createdBy = $identity->id;
@@ -170,7 +170,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
 
         if ($this->isNewRecord()) {
             if ($this->offsetExists('created_at')) {
-                $this->created_at = new ZfRest_Util_DateTime();
+                $this->created_at = new ZfExtension_Util_DateTime();
             }
 
             if ($this->offsetExists('created_by') && !$this->created_by) {
@@ -179,7 +179,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
         }
 
         if ($this->offsetExists('updated_at')) {
-            $this->updated_at = new ZfRest_Util_DateTime();
+            $this->updated_at = new ZfExtension_Util_DateTime();
         }
 
         if ($this->offsetExists('updated_by') && !$this->updated_by) {
@@ -284,7 +284,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
-     * @return ZfRest_Db_Table_Row
+     * @return ZfExtension_Db_Table_Row
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {
@@ -359,7 +359,7 @@ class ZfRest_Db_Table_Row extends Zend_Db_Table_Row
      */
     public function __set($columnName, $value)
     {
-        $setter = ZfRest_Util_String::camelize($columnName, true);
+        $setter = ZfExtension_Util_String::camelize($columnName, true);
 
         if (method_exists($this, "set{$setter}")) {
             $value = call_user_func_array(array($this, "set{$setter}"), array($value));

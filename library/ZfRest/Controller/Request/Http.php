@@ -1,18 +1,18 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
 /**
- * HTTP request object for use with ZfRest_Controller family.
+ * HTTP request object for use with ZfExtension_Controller family.
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Http
  */
-class ZfRest_Controller_Request_Http extends Zend_Controller_Request_Http
+class ZfExtension_Controller_Request_Http extends Zend_Controller_Request_Http
 {
     /**
      * Returns the REQUEST_METHOD header.

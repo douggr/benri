@@ -1,18 +1,18 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
- * @link ZfRest_Controller_Action_Abstract.html ZfRest_Controller_Action_Abstract
+ * @link ZfExtension_Controller_Action_Abstract.html ZfExtension_Controller_Action_Abstract
  */
-abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstract
+abstract class ZfExtension_Controller_Action extends ZfExtension_Controller_Action_Abstract
 {
     /**
      * Layout used by this controller.
@@ -48,7 +48,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
     /**
      * Disable the view layout.
      *
-     * @return ZfRest_Controller_Action
+     * @return ZfExtension_Controller_Action
      */
     public function disableLayout()
     {
@@ -117,7 +117,7 @@ abstract class ZfRest_Controller_Action extends ZfRest_Controller_Action_Abstrac
             $this->view
                 ->assign(array(
                     'controller'    => $this->getParam('controller'),
-                    'identity'      => ZfRest_Auth::getInstance()->getIdentity(),
+                    'identity'      => ZfExtension_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
                     'pageTitle'     => $this->_pageTitle,

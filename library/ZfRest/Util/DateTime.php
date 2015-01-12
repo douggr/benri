@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -12,7 +12,7 @@
  *
  * @link http://php.net/manual/en/class.datetime.php DateTime
  */
-class ZfRest_Util_DateTime extends DateTime
+class ZfExtension_Util_DateTime extends DateTime
 {
     /**
      * The format of the output date string.
@@ -27,12 +27,12 @@ class ZfRest_Util_DateTime extends DateTime
     /**
     * Returns date formatted according to given format.
     *
-    * If `$format` is `null`, it'll use `ZfRest_Util_DateTime::$_format`.
+    * If `$format` is `null`, it'll use `ZfExtension_Util_DateTime::$_format`.
     *
     * @param string $format Format accepted by
     *  [date()](http://php.net/manual/en/function.date.php#refsect1-function.date-parameters)
     * @return string
-    * @see ZfRest_Util_DateTime::setFormat() ZfRest_Util_DateTime::setFormat()
+    * @see ZfExtension_Util_DateTime::setFormat() ZfExtension_Util_DateTime::setFormat()
     */
     public function format($format = null)
     {
@@ -44,7 +44,7 @@ class ZfRest_Util_DateTime extends DateTime
     }
 
     /**
-     * Getter for `ZfRest_Util_DateTime::$_format` property.
+     * Getter for `ZfExtension_Util_DateTime::$_format` property.
      *
      * @return string
      */
@@ -54,11 +54,11 @@ class ZfRest_Util_DateTime extends DateTime
     }
 
     /**
-    * Setter for `ZfRest_Util_DateTime::$_format`.
+    * Setter for `ZfExtension_Util_DateTime::$_format`.
     *
     * @param string $format Format accepted by
     *  [date()](http://php.net/manual/en/function.date.php#refsect1-function.date-parameters)
-    * @return ZfRest_Util_DateTime
+    * @return ZfExtension_Util_DateTime
     */
     public function setFormat($format)
     {
@@ -68,7 +68,7 @@ class ZfRest_Util_DateTime extends DateTime
     }
 
     /**
-    * Returns new ZfRest_Util_DateTime object.
+    * Returns new ZfExtension_Util_DateTime object.
     *
     * @param string $time A date/time string
     *   Format accepted by
@@ -76,8 +76,8 @@ class ZfRest_Util_DateTime extends DateTime
     * @param DateTimeZone $timezone A
     *   [DateTimeZone](http://php.net/manual/en/class.datetimezone.php)
     *   object representing the timezone
-    * @return ZfRest_Util_DateTime A new ZfRest_Util_DateTime instance
-    * @see ZfRest_Util_DateTime::format() ZfRest_Util_DateTime::format()
+    * @return ZfExtension_Util_DateTime A new ZfExtension_Util_DateTime instance
+    * @see ZfExtension_Util_DateTime::format() ZfExtension_Util_DateTime::format()
     */
     public function __construct($time = 'now', DateTimeZone $timezone = null)
     {
@@ -90,7 +90,7 @@ class ZfRest_Util_DateTime extends DateTime
 
     /**
      * @return string
-     * @see ZfRest_Util_DateTime::format() ZfRest_Util_DateTime::format()
+     * @see ZfExtension_Util_DateTime::format() ZfExtension_Util_DateTime::format()
      */
     public function __toString()
     {

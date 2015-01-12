@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -13,7 +13,7 @@
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.front.html Zend_Controller_Front
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.action.html Zend_Controller_Action
  */
-abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
+abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controller
 {
     /**
      * This means a required resource does not exist.
@@ -59,16 +59,16 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     protected $_messages = array();
 
     /**
-     * ZfRest_Controller_Request_Http object wrapping the request environment.
+     * ZfExtension_Controller_Request_Http object wrapping the request environment.
      *
-     * @var ZfRest_Controller_Request_Http
+     * @var ZfExtension_Controller_Request_Http
      */
     protected $_request = null;
 
     /**
      * Zend_Controller_Response_Abstract object wrapping the response.
      *
-     * @var ZfRest_Controller_Response_Http
+     * @var ZfExtension_Controller_Response_Http
      */
     protected $_response = null;
 
@@ -183,7 +183,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
     /**
      * Push a message, allowing it to be shown to clients.
      *
-     * @return ZfRest_Controller_Action_Abstract
+     * @return ZfExtension_Controller_Action_Abstract
      */
     protected function _pushMessage($message, $type = 'error', array $interpolateParams = array())
     {
@@ -200,7 +200,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      *
      * @param mixed $plugin string or Zend_Controller_Plugin_Abstract
      * @param integer $stackIndex stack index for plugin
-     * @return ZfRest_Controller_Action_Abstract
+     * @return ZfExtension_Controller_Action_Abstract
      */
     final protected function _registerPlugin($plugin, $stackIndex = null)
     {
@@ -225,7 +225,7 @@ abstract class ZfRest_Controller_Action_Abstract extends Zend_Rest_Controller
      * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
-     * @return ZfRest_Controller_Action_Abstract
+     * @return ZfExtension_Controller_Action_Abstract
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {
