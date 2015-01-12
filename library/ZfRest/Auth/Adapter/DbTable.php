@@ -48,23 +48,6 @@ class ZfRest_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
     }
 
     /**
-     * Set the value to be used as the identity.
-     *
-     * @param string $identity
-     * @return ZfRest_Auth_Adapter_DbTable
-     */
-    public function setIdentity($identity)
-    {
-        if (filter_var($identity, FILTER_VALIDATE_EMAIL)) {
-            $this->setIdentityColumn('email');
-        } else {
-            $this->setIdentityColumn('username');
-        }
-
-        return parent::setIdentity($identity);
-    }
-
-    /**
      * Sets a flag for usage of identical identities with unique credentials.
      * It accepts integers (0, 1) or boolean (true, false) parameters.
      *
