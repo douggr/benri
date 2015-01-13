@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -13,7 +13,7 @@
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html Zend_Auth
  */
-class ZfRest_Auth extends Zend_Auth
+class ZfExtension_Auth extends Zend_Auth
 {
     /**
      * Authenticates against the supplied adapter.
@@ -48,9 +48,9 @@ class ZfRest_Auth extends Zend_Auth
 
 
     /**
-     * Returns an instance of ZfRest_Auth.
+     * Returns an instance of ZfExtension_Auth.
      *
-     * @return ZfRest_Auth
+     * @return ZfExtension_Auth
      */
     public static function getInstance()
     {

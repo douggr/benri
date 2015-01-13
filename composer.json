@@ -7,16 +7,16 @@
   ],
   "autoload": {
     "psr-0": {
-      "ZfRest_": "library/"
+      "ZfExtension_": "library/"
     }
   },
-  "canonical": "https://github.com/douggr/zf-rest",
+  "canonical": "https://github.com/douggr/zf-extension",
   "extra": {
     "branch-alias": {
       "dev-master": "2.1-dev"
     }
   },
-  "homepage": "https://github.com/douggr/zf-rest",
+  "homepage": "https://github.com/douggr/zf-extension",
   "keywords": [
     "framework",
     "rest",
@@ -24,7 +24,7 @@
     "zf1"
   ],
   "license": "MIT",
-  "name": "douggr/zf-rest",
+  "name": "douggr/zf-extension",
   "require": {
     "zendframework/zendframework1": "~1.12"
   },

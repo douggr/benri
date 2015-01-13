@@ -1,16 +1,16 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
 /**
  * Helpful string class.
  */
-class ZfRest_Util_String
+class ZfExtension_Util_String
 {
     /**
      * @var array
@@ -324,7 +324,7 @@ class ZfRest_Util_String
      * Verifies if the given (raw) password matches a hash.
      *
      * @param string $raw The password in raw format
-     * @param string $hash A hash created by ZfRest_Util_String::password()
+     * @param string $hash A hash created by ZfExtension_Util_String::password()
      * @return boolean `true` if the password and hash match, or `false`
      *  otherwise
      */

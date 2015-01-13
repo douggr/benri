@@ -1,18 +1,18 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
- * @link ZfRest_Controller_Action_Abstract.html ZfRest_Controller_Action_Abstract
+ * @link ZfExtension_Controller_Action_Abstract.html ZfExtension_Controller_Action_Abstract
  */
-class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
+class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
 {
     /**
      * Request data.
@@ -35,7 +35,7 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
      */
     public function init()
     {
-        $this->_registerPlugin(new ZfRest_Controller_Plugin_CORS());
+        $this->_registerPlugin(new ZfExtension_Controller_Plugin_CORS());
         $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
 
         try {
@@ -113,12 +113,12 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
     }
 
     /**
-     * General method to save models (ZfRest_Db_Table_Row).
+     * General method to save models (ZfExtension_Db_Table_Row).
      *
-     * @param ZfRest_Db_Table_Row
-     * @return ZfRest_Controller_Rest
+     * @param ZfExtension_Db_Table_Row
+     * @return ZfExtension_Controller_Rest
      */
-    protected function _saveModel(ZfRest_Db_Table_Row &$model)
+    protected function _saveModel(ZfExtension_Db_Table_Row &$model)
     {
         try {
             $model->normalizeInput($this->_input)
@@ -147,7 +147,7 @@ class ZfRest_Controller_Rest extends ZfRest_Controller_Action_Abstract
      * `errors`.
      *
      * @param mixed $data Data to send along with `messages` and `errors`
-     * @return ZfRest_Controller_Rest
+     * @return ZfExtension_Controller_Rest
      */
     protected function _setResponseData($data)
     {

@@ -1,9 +1,9 @@
 <?php
 /**
- * douggr/zf-rest
+ * douggr/zf-extension
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-rest
+ * @link    https://github.com/douggr/zf-extension
  * @version 2.1.0
  */
 
@@ -12,7 +12,7 @@
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html Zend_Controller_Plugin_Abstract
  */
-class ZfRest_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Plugin_Abstract
+class ZfExtension_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Plugin_Abstract
 {
     /**
      * @internal
