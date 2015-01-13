@@ -13,7 +13,7 @@
   "canonical": "https://github.com/douggr/zf-extension",
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.1-dev"
     }
   },
   "homepage": "https://github.com/douggr/zf-extension",
