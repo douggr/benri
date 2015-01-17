@@ -1,18 +1,18 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
- * @link ZfExtension_Controller_Action_Abstract.html ZfExtension_Controller_Action_Abstract
+ * @link Benri_Controller_Abstract.html Benri_Controller_Abstract
  */
-class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
+class Benri_Rest_Controller extends Benri_Controller_Abstract
 {
     /**
      * Request data.
@@ -35,13 +35,13 @@ class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
      */
     public function init()
     {
-        $this->_registerPlugin(new ZfExtension_Controller_Plugin_CORS());
         $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
+        $this->_registerPlugin(new Benri_Controller_Plugin_CORS());
+        $this->_registerPlugin(new Benri_Controller_Plugin_RequireUserAgentHeader());
+        $this->_registerPlugin(new Benri_Controller_Plugin_OptionsRequest());
 
         try {
-            $this->_helper
-                ->layout()
-                ->disableLayout();
+            $this->disableLayout();
         } catch (Zend_Controller_Action_Exception $e) {
             // If the Layout helper isn't enabled, just ignore and continue.
         }
@@ -85,10 +85,6 @@ class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
      */
     public function preDispatch()
     {
-        Zend_Controller_Front::getInstance()
-            ->getPlugin('Zend_Controller_Plugin_ErrorHandler')
-            ->setErrorHandlerModule('api');
-
         $error   = null;
         $request = $this->getRequest();
 
@@ -97,7 +93,7 @@ class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
 
         if (!$request->isGet() && !$request->isHead()) {
             // … we read data from the request body.
-            $this->_input   = json_decode(file_get_contents('php://input'));
+            $this->_input = json_decode(file_get_contents('php://input'));
 
             /// Sending invalid JSON will result in a `400 Bad Request` response.
             if (JSON_ERROR_NONE !== json_last_error()) {
@@ -107,18 +103,18 @@ class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
                     ->setBody(json_last_error_msg())
                     ->sendResponse();
 
-                exit -422;
+                exit(400);
             }
         }
     }
 
     /**
-     * General method to save models (ZfExtension_Db_Table_Row).
+     * General method to save models (Benri_Db_Table_Row).
      *
-     * @param ZfExtension_Db_Table_Row
-     * @return ZfExtension_Controller_Rest
+     * @param Benri_Db_Table_Row
+     * @return Benri_Controller_Rest
      */
-    protected function _saveModel(ZfExtension_Db_Table_Row &$model)
+    protected function _saveModel(Benri_Db_Table_Row &$model)
     {
         try {
             $model->normalizeInput($this->_input)
@@ -147,9 +143,9 @@ class ZfExtension_Controller_Rest extends ZfExtension_Controller_Action_Abstract
      * `errors`.
      *
      * @param mixed $data Data to send along with `messages` and `errors`
-     * @return ZfExtension_Controller_Rest
+     * @return Benri_Controller_Rest
      */
-    protected function _setResponseData($data)
+    protected function setResponseData($data)
     {
         $this->_data['data'] = $data;
 

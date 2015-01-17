@@ -1,10 +1,10 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
@@ -12,7 +12,7 @@
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html Zend_Controller_Plugin_Abstract
  */
-class ZfExtension_Controller_Plugin_Forwarder extends Zend_Controller_Plugin_Abstract
+class Benri_Controller_Plugin_Forwarder extends Zend_Controller_Plugin_Abstract
 {
     /**
      * @internal

@@ -1,10 +1,10 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
@@ -12,7 +12,7 @@
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.response.html Zend_Controller_Response_Http
  */
-class ZfExtension_Controller_Response_Http extends Zend_Controller_Response_Http
+class Benri_Controller_Response_Http extends Zend_Controller_Response_Http
 {
     /**
      * @internal
@@ -79,7 +79,7 @@ class ZfExtension_Controller_Response_Http extends Zend_Controller_Response_Http
      * Sends any headers specified. If an HTTP response code has been
      * specified, it is sent with the first header.
      *
-     * @return ZfExtension_Controller_Response_Http
+     * @return Benri_Controller_Response_Http
      */
     public function sendHeaders()
     {

@@ -1,10 +1,10 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
@@ -13,7 +13,7 @@
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.front.html Zend_Controller_Front
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.action.html Zend_Controller_Action
  */
-abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controller
+abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 {
     /**
      * This means a required resource does not exist.
@@ -59,16 +59,16 @@ abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controll
     protected $_messages = array();
 
     /**
-     * ZfExtension_Controller_Request_Http object wrapping the request environment.
+     * Benri_Controller_Request_Http object wrapping the request environment.
      *
-     * @var ZfExtension_Controller_Request_Http
+     * @var Benri_Controller_Request_Http
      */
     protected $_request = null;
 
     /**
      * Zend_Controller_Response_Abstract object wrapping the response.
      *
-     * @var ZfExtension_Controller_Response_Http
+     * @var Benri_Controller_Response_Http
      */
     protected $_response = null;
 
@@ -81,6 +81,20 @@ abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controll
     {
         $this->getResponse()
             ->setHttpResponseCode(405);
+    }
+
+    /**
+     * Disable the view layout.
+     *
+     * @return Benri_Controller_Action
+     */
+    protected function disableLayout()
+    {
+        $this->_helper
+            ->layout()
+            ->disableLayout();
+
+        return $this;
     }
 
     /**
@@ -183,7 +197,7 @@ abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controll
     /**
      * Push a message, allowing it to be shown to clients.
      *
-     * @return ZfExtension_Controller_Action_Abstract
+     * @return Benri_Controller_Action_Abstract
      */
     protected function _pushMessage($message, $type = 'error', array $interpolateParams = array())
     {
@@ -200,7 +214,7 @@ abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controll
      *
      * @param mixed $plugin string or Zend_Controller_Plugin_Abstract
      * @param integer $stackIndex stack index for plugin
-     * @return ZfExtension_Controller_Action_Abstract
+     * @return Benri_Controller_Action_Abstract
      */
     final protected function _registerPlugin($plugin, $stackIndex = null)
     {
@@ -225,7 +239,7 @@ abstract class ZfExtension_Controller_Action_Abstract extends Zend_Rest_Controll
      * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
-     * @return ZfExtension_Controller_Action_Abstract
+     * @return Benri_Controller_Action_Abstract
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {

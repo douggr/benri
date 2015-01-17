@@ -1,10 +1,10 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
@@ -13,7 +13,7 @@
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html Zend_Auth
  */
-class ZfExtension_Auth extends Zend_Auth
+class Benri_Auth extends Zend_Auth
 {
     /**
      * Authenticates against the supplied adapter.
@@ -48,9 +48,9 @@ class ZfExtension_Auth extends Zend_Auth
 
 
     /**
-     * Returns an instance of ZfExtension_Auth.
+     * Returns an instance of Benri_Auth.
      *
-     * @return ZfExtension_Auth
+     * @return Benri_Auth
      */
     public static function getInstance()
     {

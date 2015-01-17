@@ -1,19 +1,19 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
- * The ZfExtension_Db_Table_Abstract class is an object-oriented interface to
+ * The Benri_Db_Table class is an object-oriented interface to
  * database tables. It provides methods for many common operations on tables.
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.db.table.html Zend_Db_Table
  */
-abstract class ZfExtension_Db_Table_Abstract extends Zend_Db_Table
+class Benri_Db_Table extends Zend_Db_Table
 {
     /**
      * The primary key column or columns.
@@ -29,9 +29,9 @@ abstract class ZfExtension_Db_Table_Abstract extends Zend_Db_Table
      * Classname for row
      *
      * @var string
-     * @see ZfExtension_Db_Table_Row
+     * @see Benri_Db_Table_Row
      */
-    protected $_rowClass = 'ZfExtension_Db_Table_Row';
+    protected $_rowClass = 'Benri_Db_Table_Row';
 
     /**
      * Fetches all rows.
@@ -39,7 +39,7 @@ abstract class ZfExtension_Db_Table_Abstract extends Zend_Db_Table
      * @param integer $currentPage An SQL LIMIT offset
      * @param integer $pageSize An SQL LIMIT count
      * @param string|array $order An SQL ORDER clause
-     * @return ZfExtension_Db_Table_Row The row results
+     * @return Benri_Db_Table_Row The row results
      */
     public static function all($currentPage = 1, $pageSize = 10, $order = null)
     {
@@ -55,7 +55,7 @@ abstract class ZfExtension_Db_Table_Abstract extends Zend_Db_Table
      * Fetches a new blank row (not from the database).
      *
      * @param array $data Data to populate in the new row
-     * @return ZfExtension_Db_Table_Row
+     * @return Benri_Db_Table_Row
      */
     public static function create($data = array())
     {
@@ -64,12 +64,12 @@ abstract class ZfExtension_Db_Table_Abstract extends Zend_Db_Table
     }
 
     /**
-     * Fetches one row in an object of type ZfExtension_Db_Table_Row, or returns
+     * Fetches one row in an object of type Benri_Db_Table_Row, or returns
      * null if no row matches the specified criteria.
      *
      * @param string $column The sql `where` clause
      * @param mixed $value The value to use against the `where` clause
-     * @return ZfExtension_Db_Table_Row or null The row results, or null if no row
+     * @return Benri_Db_Table_Row or null The row results, or null if no row
      *  found
      */
     public static function locate($column, $value)

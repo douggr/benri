@@ -1,18 +1,18 @@
 <?php
 /**
- * douggr/zf-extension
+ * douggr/benri
  *
  * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/zf-extension
- * @version 2.1.0
+ * @link    https://github.com/douggr/benri
+ * @version 1.0.0
  */
 
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
- * @link ZfExtension_Controller_Action_Abstract.html ZfExtension_Controller_Action_Abstract
+ * @link Benri_Controller_Abstract.html Benri_Controller_Abstract
  */
-abstract class ZfExtension_Controller_Action extends ZfExtension_Controller_Action_Abstract
+abstract class Benri_Controller_Action extends Benri_Controller_Abstract
 {
     /**
      * Layout used by this controller.
@@ -44,20 +44,6 @@ abstract class ZfExtension_Controller_Action extends ZfExtension_Controller_Acti
      * @var string
      */
     protected $_pjaxTemplate;
-
-    /**
-     * Disable the view layout.
-     *
-     * @return ZfExtension_Controller_Action
-     */
-    public function disableLayout()
-    {
-        $this->_helper
-            ->layout()
-            ->disableLayout();
-
-        return $this;
-    }
 
     /**
      * Used as the index page.
@@ -109,7 +95,8 @@ abstract class ZfExtension_Controller_Action extends ZfExtension_Controller_Acti
         if ($this->view instanceof Zend_View_Interface) {
             // allow the programmer to use any partial view located in
             // '/views/scripts/components'.
-            $this->view->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
+            $this->view
+                ->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
 
             $contentType = 'text/html';
 
@@ -117,10 +104,10 @@ abstract class ZfExtension_Controller_Action extends ZfExtension_Controller_Acti
             $this->view
                 ->assign(array(
                     'controller'    => $this->getParam('controller'),
-                    'identity'      => ZfExtension_Auth::getInstance()->getIdentity(),
+                    'identity'      => Benri_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
-                    'pageTitle'     => $this->_pageTitle,
+                    'pageTitle'     => $this->_pageTitle
                 ));
 
             // XMLHttpRequest requests should not render the entire layout,
@@ -141,10 +128,7 @@ abstract class ZfExtension_Controller_Action extends ZfExtension_Controller_Acti
                         ->viewRenderer($pjaxTemplate);
                     
                 } else {
-                    $this->view
-                        ->assign(array(
-                            'pjaxTemplate' => "{$pjaxTemplate}.phtml",
-                        ));
+                    $this->view->pjaxTemplate = "{$pjaxTemplate}.phtml";
 
                     $this->_helper
                         ->viewRenderer($this->_mainTemplate);
