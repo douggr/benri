@@ -16,6 +16,13 @@
 class Benri_Db_Table extends Zend_Db_Table
 {
     /**
+     * The configuration entry to use when `multidb` is registered.
+     *
+     * @var string
+     */
+    protected $_connection;
+
+    /**
      * The primary key column or columns.
      *
      * A compound key should be declared as an array. You may declare a
@@ -104,16 +111,5 @@ class Benri_Db_Table extends Zend_Db_Table
     public function toJson()
     {
         return json_encode($this->toArray(), JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * Initialize database adapter.
-     *
-     * @return void
-     * @throws Zend_Db_Table_Exception
-     */
-    protected function _setupDatabaseAdapter()
-    {
-        $this->_setAdapter(Zend_Registry::get('multidb'));
     }
 }
