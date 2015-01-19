@@ -43,17 +43,17 @@ class Benri_Db_Table extends Zend_Db_Table
     /**
      * Fetches all rows.
      *
-     * @param int $currentPage An SQL LIMIT offset
+     * @param int $pageNumber An SQL LIMIT offset
      * @param int $pageSize An SQL LIMIT count
      * @param string|array $order An SQL ORDER clause
      * @return Benri_Db_Table_Row The row results
      */
-    public static function all($currentPage = 1, $pageSize = 10, $order = null)
+    public static function all($pageNumber = 1, $pageSize = 10, $order = null)
     {
         $table  = new static();
         $select = $table->select()
             ->order($order)
-            ->limitPage($currentPage, $pageSize);
+            ->limitPage($pageNumber, $pageSize);
 
         return $table->fetchAll($select);
     }
