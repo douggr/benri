@@ -42,7 +42,7 @@ class Benri_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      * It accepts ints (0, 1) or bool (true, false) parameters.
      *
      * @internal
-     * @param int|bool $flag
+     * @param int $flag
      * @return Benri_Auth_Adapter_DbTable
      */
     public function setAmbiguityIdentity($flag)
