@@ -112,4 +112,19 @@ class Benri_Db_Table extends Zend_Db_Table
     {
         return json_encode($this->toArray(), JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK);
     }
+
+    /**
+     * Initialize database adapter.
+     *
+     * @return void
+     * @throws Zend_Db_Table_Exception
+     */
+    protected function _setupDatabaseAdapter()
+    {
+        if (Zend_Registry::isRegistered('multidb')) {
+            $this->_setAdapter(Zend_Registry::get('multidb')->getDb($this->_connection));
+        } else {
+            parent::_setupDatabaseAdapter();
+        }
+    }
 }
