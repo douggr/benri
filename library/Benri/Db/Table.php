@@ -43,8 +43,8 @@ class Benri_Db_Table extends Zend_Db_Table
     /**
      * Fetches all rows.
      *
-     * @param integer $currentPage An SQL LIMIT offset
-     * @param integer $pageSize An SQL LIMIT count
+     * @param int $currentPage An SQL LIMIT offset
+     * @param int $pageSize An SQL LIMIT count
      * @param string|array $order An SQL ORDER clause
      * @return Benri_Db_Table_Row The row results
      */
@@ -92,7 +92,7 @@ class Benri_Db_Table extends Zend_Db_Table
     /**
      * Returns an instance of a Zend_Db_Table_Select object.
      *
-     * @param boolean $withFromPart Whether or not to include the from part of
+     * @param bool $withFromPart Whether or not to include the from part of
      *  the select based on the table
      * @return Zend_Db_Table_Select
      * @see http://framework.zend.com/manual/1.12/en/zend.db.select.html Zend_Db_Select

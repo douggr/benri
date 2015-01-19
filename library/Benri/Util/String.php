@@ -46,7 +46,7 @@ class Benri_Util_String
      * Returns given string as a camelCased word.
      *
      * @param string $str
-     * @param boolean $ucfirst wheter to uppercase the first character
+     * @param bool $ucfirst wheter to uppercase the first character
      * @return string
      */
     public static function camelize($str, $ucfirst = false)
@@ -136,7 +136,7 @@ class Benri_Util_String
      * Returns a random string with the given length and given string of
      * allowed characters.
      *
-     * @param integer $length The length of the random string
+     * @param int $length The length of the random string
      * @param string $allowedChars Allowed chars
      * @return string
      */
@@ -170,7 +170,7 @@ class Benri_Util_String
      *
      * @param string $raw The password in raw format
      * @param string $hash A hash created by Benri_Util_String::password()
-     * @return boolean `true` if the password and hash match, or `false`
+     * @return bool `true` if the password and hash match, or `false`
      *  otherwise
      */
     public static function verifyPassword($raw, $hash)

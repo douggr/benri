@@ -37,7 +37,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by GET?
      *
-     * @return boolean
+     * @return bool
      */
     public function isGet()
     {
@@ -47,7 +47,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by DELETE?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDelete()
     {
@@ -57,7 +57,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by HEAD?
      *
-     * @return boolean
+     * @return bool
      */
     public function isHead()
     {
@@ -67,7 +67,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by OPTIONS?
      *
-     * @return boolean
+     * @return bool
      */
     public function isOptions()
     {
@@ -77,7 +77,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by PATCH?
      *
-     * @return boolean
+     * @return bool
      */
     public function isPatch()
     {
@@ -89,7 +89,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
      *
      * Should work with jQuery, Prototype, possibly others.
      *
-     * @return boolean
+     * @return bool
      */
     public function isPjaxRequest()
     {
@@ -99,7 +99,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by POST?
      *
-     * @return boolean
+     * @return bool
      */
     public function isPost()
     {
@@ -109,7 +109,7 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     /**
      * Was the request made by PUT?
      *
-     * @return boolean
+     * @return bool
      */
     public function isPut()
     {

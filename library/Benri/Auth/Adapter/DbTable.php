@@ -38,18 +38,8 @@ class Benri_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
     protected $_credentialColumn = 'password';
 
     /**
-     * Returns the database adapter.
-     *
-     * @return Zend_Db_Adapter_Abstract
-     */
-    public function getDbAdapter()
-    {
-        return $this->_zendDb;
-    }
-
-    /**
      * Sets a flag for usage of identical identities with unique credentials.
-     * It accepts integers (0, 1) or boolean (true, false) parameters.
+     * It accepts ints (0, 1) or bool (true, false) parameters.
      *
      * @internal
      * @param int|bool $flag

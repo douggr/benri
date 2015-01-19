@@ -74,7 +74,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * loaded from the database.
      *
      * @param string $column
-     * @return boolean
+     * @return bool
      */
     public function isDirty($column)
     {
@@ -84,7 +84,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     /**
      * Returns true if this is a new record on the database.
      *
-     * @return boolean
+     * @return bool
      */
     public function isNewRecord()
     {
@@ -207,7 +207,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * Checks for a column uniqueness value.
      *
      * @param string $column The column to check against
-     * @return boolean
+     * @return bool
      */
     final protected function _checkUniqueness($column)
     {

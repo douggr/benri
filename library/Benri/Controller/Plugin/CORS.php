@@ -28,7 +28,7 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      * request it indicates that the actual request can include user
      * credentials.
      *
-     * @var boolean
+     * @var bool
      */
     private $_credentials = true;
 
@@ -62,7 +62,7 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      * Indicates how long the results of a preflight request can be cached in
      * a preflight result cache.
      *
-     * @var integer
+     * @var int
      */
     private $_maxAge = 86400;
 
@@ -92,12 +92,12 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     }
 
     /**
-     * @param boolean $credentials
+     * @param bool $credentials
      * @return Benri_Controller_Plugin_CORS
      */
     public function setCredentials($credentials = true)
     {
-        $this->_credentials = (boolean) $credentials;
+        $this->_credentials = (bool) $credentials;
 
         return $this;
     }
@@ -114,7 +114,7 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     }
 
     /**
-     * @param integer $deltaSeconds
+     * @param int $deltaSeconds
      * @return Benri_Controller_Plugin_CORS
      */
     public function setMaxAge($deltaSeconds = 86400)

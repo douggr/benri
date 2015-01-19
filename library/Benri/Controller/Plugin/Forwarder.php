@@ -16,7 +16,7 @@ class Benri_Controller_Plugin_Forwarder extends Zend_Controller_Plugin_Abstract
 {
     /**
      * @internal
-     * @var integer
+     * @var int
      */
     private static $_forwardStack = -1;
 

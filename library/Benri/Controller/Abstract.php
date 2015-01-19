@@ -197,7 +197,10 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Push a message, allowing it to be shown to clients.
      *
-     * @return Benri_Controller_Action_Abstract
+     * @param string $message
+     * @param string $type Type of the message (info, warning, error, etc)
+     * @param array $interpolateParams Params to interpolate within $message
+     * @return Benri_Controller_Abstract
      */
     protected function _pushMessage($message, $type = 'error', array $interpolateParams = array())
     {
@@ -213,8 +216,8 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * Register a plugin.
      *
      * @param mixed $plugin string or Zend_Controller_Plugin_Abstract
-     * @param integer $stackIndex stack index for plugin
-     * @return Benri_Controller_Action_Abstract
+     * @param int $stackIndex stack index for plugin
+     * @return Benri_Controller_Abstract
      */
     final protected function _registerPlugin($plugin, $stackIndex = null)
     {
@@ -239,7 +242,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
-     * @return Benri_Controller_Action_Abstract
+     * @return Benri_Controller_Abstract
      */
     protected function _pushError($resource, $field, $title, $message = '')
     {
