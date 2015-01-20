@@ -9,10 +9,10 @@
 
 /**
  * Error handler.
- 
+ *
  * @link Benri_Controller_Abstract.html Benri_Controller_Abstract
  */
-class Error extends Benri_Controller_Action
+class Benri_Controller_Error extends Benri_Controller_Action
 {
     public function errorAction()
     {
