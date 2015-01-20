@@ -107,6 +107,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
                     'identity'      => Benri_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
+                    'now'           => new Benri_Util_DateTime(),
                     'pageTitle'     => $this->_pageTitle
                 ));
 
