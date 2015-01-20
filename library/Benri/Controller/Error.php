@@ -44,7 +44,7 @@ class Benri_Controller_Error extends Benri_Controller_Action
             $log->log('Request Parameters', $priority, $errors->request->getParams());
         }
 
-        if ($this->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXMLHttpRequest()) {
             // This will match the response data just like in
             // Benri_Rest_Controller
             $response = array(
@@ -56,7 +56,6 @@ class Benri_Controller_Error extends Benri_Controller_Action
             $this->getResponse()
                 ->setHeader('Content-Type', 'application/json; charset=utf-8')
                 ->setBody(json_encode($response, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
-
         } else {
             if ($this->getInvokeArg('displayExceptions') == true) {
                 // Some huuuuuuge objects
