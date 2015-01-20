@@ -26,7 +26,7 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      *
      * @var mixed
      */
-    private $_data;
+    protected $_data;
 
     /**
      * Initialize object.
@@ -51,10 +51,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
             ->setNoRender(true);
 
         $this->_input   = new StdClass();
-        $this->_data    = array(
-            'messages'  => array(),
-            'data'      => null
-        );
     }
 
     /**
@@ -67,15 +63,15 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      */
     public function postDispatch()
     {
-        $this->_data['messages'] = $this->_messages;
-
-        if (count($this->_errors)) {
-            $this->_data['errors'] = $this->_errors;
-        }
+        $response = array(
+            'data'      => $this->_data,
+            'errors'    => $this->_errors,
+            'messages'  => $this->_messages,
+        );
 
         $this->getResponse()
             ->setHeader('Content-Type', 'application/json; charset=utf-8')
-            ->setBody(json_encode($this->_data, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
+            ->setBody(json_encode($response, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
     }
 
     /**
@@ -132,22 +128,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
 
             $this->_pushMessage($ex->getMessage(), 'danger');
         }
-
-        return $this;
-    }
-
-    /**
-     * Prepare the response.
-     *
-     * Response data in REST requests are send together with `messages` and
-     * `errors`.
-     *
-     * @param mixed $data Data to send along with `messages` and `errors`
-     * @return Benri_Controller_Rest
-     */
-    protected function setResponseData($data)
-    {
-        $this->_data['data'] = $data;
 
         return $this;
     }
