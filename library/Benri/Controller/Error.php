@@ -47,15 +47,19 @@ class Benri_Controller_Error extends Benri_Controller_Action
         if ($this->getRequest()->isXMLHttpRequest()) {
             // This will match the response data just like in
             // Benri_Rest_Controller
+            $this->_pushMessage($errors->exception->getMessage(), 'danger');
             $response = array(
                 'data'      => null,
-                'errors'    => null,
-                'messages'  => $errors->exception->getMessage(),
+                'errors'    => $this->_errors,
+                'messages'  => $this->_messages,
             );
 
             $this->getResponse()
                 ->setHeader('Content-Type', 'application/json; charset=utf-8')
-                ->setBody(json_encode($response, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
+                ->setBody(json_encode($response, JSON_NUMERIC_CHECK | JSON_HEX_AMP))
+                ->sendResponse();
+
+            exit(0);
         } else {
             if ($this->getInvokeArg('displayExceptions') == true) {
                 // Some huuuuuuge objects
