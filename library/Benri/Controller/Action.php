@@ -103,6 +103,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
             // Common variables used in all views.
             $this->view
                 ->assign(array(
+                    'action'        => $this->getParam('action'),
                     'controller'    => $this->getParam('controller'),
                     'identity'      => Benri_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
