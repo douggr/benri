@@ -105,6 +105,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
                 ->assign(array(
                     'action'        => $this->getParam('action'),
                     'controller'    => $this->getParam('controller'),
+                    'errors'        => $this->_errors,
                     'identity'      => Benri_Auth::getInstance()->getIdentity(),
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
