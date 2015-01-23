@@ -244,13 +244,10 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * @param string $message A friendly message
      * @return Benri_Controller_Abstract
      */
-    protected function _pushError($resource, $field, $title, $message = '')
+    protected function _pushError($resource, $code, $title, $message = '')
     {
-        $this->getResponse()
-            ->setHttpResponseCode(422);
-
         $this->_errors[] = array(
-            'field'     => $field,
+            'code'      => $code,
             'message'   => $message,
             'resource'  => $resource,
             'title'     => $title
