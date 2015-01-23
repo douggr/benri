@@ -8,46 +8,61 @@
  */
 
 /**
- * Error handler.
+ * Provides a plugin for handling exceptions thrown by the application,
+ * including those resulting from missing controllers or actions.
  *
- * @link Benri_Controller_Abstract.html Benri_Controller_Abstract
+ * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html#zend.controller.plugins.standard.errorhandler Zend_Controller_Plugin_ErrorHandler
  */
 class Benri_Controller_Error extends Benri_Controller_Action
 {
+    /**
+     * @internal
+     */
     public function errorAction()
     {
-        $errors = $this->_getParam('error_handler');
+        $error      = $this->_getParam('error_handler');
+        $exception  = $error->exception;
+        $request    = $error->request;
+        $field      = implode('/', array(
+            $request->getParam('module'),
+            $request->getParam('controller'),
+            $request->getParam('action')
+        ));
 
-        if (!$errors || !$errors instanceof ArrayObject) {
-            $this->view->message = 'You have reached the error page';
-            return;
-        }
-
-        switch ($errors->type) {
+        switch ($error->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
+
+                $message  = 'Page not found.';
                 $priority = Zend_Log::NOTICE;
+                $code     = static::ERROR_MISSING;
                 break;
+
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
+
+                $message  = 'Looks like something went wrong!';
                 $priority = Zend_Log::CRIT;
+                $code     = static::ERROR_UNKNOWN;
                 break;
         }
 
         // Log exception, if logger available
         if ($log = $this->getLog()) {
-            $log->log('Exception data', $priority, $errors->exception);
-            $log->log('Request Parameters', $priority, $errors->request->getParams());
+            $log->log('Exception data', $priority, $error->exception);
+            $log->log('Request Parameters', $priority, $error->request->getParams());
         }
+
+        $this->_pushMessage($message, 'danger')
+            ->_pushError('controller', $code, $message, $exception->getMessage());
 
         if ($this->getRequest()->isXMLHttpRequest()) {
             // This will match the response data just like in
             // Benri_Rest_Controller
-            $this->_pushMessage($errors->exception->getMessage(), 'danger');
             $response = array(
                 'data'      => null,
                 'errors'    => $this->_errors,
@@ -61,20 +76,20 @@ class Benri_Controller_Error extends Benri_Controller_Action
 
             exit(0);
         } else {
-            if ($this->getInvokeArg('displayExceptions') == true) {
+            if ($this->getInvokeArg('displayExceptions')) {
                 // Some huuuuuuge objects
-                $this->view->exception = $errors->exception;
-                $this->view->request   = $errors->request;
+                $this->view->exception = $error->exception;
+                $this->view->request   = $error->request;
             }
-
-            $this->view->code    = $errors->exception->getCode();
-            $this->view->message = $errors->exception->getMessage();
 
             $this->getResponse()
                 ->setHeader('Content-Type', 'text/html; charset=utf-8');
         }
     }
 
+    /**
+     * @internal
+     */
     public function getLog()
     {
         $bootstrap = $this->getInvokeArg('bootstrap');
