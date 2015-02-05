@@ -80,6 +80,19 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
     }
 
     /**
+     * Pre-dispatch routines
+     *
+     * @return void
+     */
+    public function preDispatch()
+    {
+        // allow the programmer to use any partial view located in
+        // '/views/scripts/components'.
+        $this->view
+            ->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
+    }
+
+    /**
      * Post-dispatch routines.
      *
      * Common usages for `postDispatch()` include rendering content in a
@@ -93,11 +106,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
         $contentType = 'application/json';
 
         if ($this->view instanceof Zend_View_Interface) {
-            // allow the programmer to use any partial view located in
-            // '/views/scripts/components'.
-            $this->view
-                ->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
-
             $contentType = 'text/html';
 
             // Common variables used in all views.
@@ -129,7 +137,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
                 if ($request->isPjaxRequest()) {
                     $this->_helper
                         ->viewRenderer($pjaxTemplate);
-                    
+
                 } else {
                     $this->view->pjaxTemplate = "{$pjaxTemplate}.phtml";
 
