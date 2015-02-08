@@ -41,6 +41,13 @@ class Benri_Db_Table extends Zend_Db_Table
     protected $_rowClass = 'Benri_Db_Table_Row';
 
     /**
+     * Classname for rowset
+     *
+     * @var string
+     */
+    protected $_rowsetClass = 'Benri_Db_Table_Rowset';
+
+    /**
      * Fetches all rows.
      *
      * @param int $pageNumber An SQL LIMIT offset
@@ -50,12 +57,9 @@ class Benri_Db_Table extends Zend_Db_Table
      */
     public static function all($pageNumber = 1, $pageSize = 10, $order = null)
     {
-        $table  = new static();
-        $select = $table->select()
-            ->order($order)
-            ->limitPage($pageNumber, $pageSize);
+        $table = new static();
 
-        return $table->fetchAll($select);
+        return $table->fetchAll(null, $pageNumber, $pageSize, $order);
     }
 
     /**
