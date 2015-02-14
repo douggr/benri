@@ -148,6 +148,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
         }
 
         $this->getResponse()
-            ->setHeader('Content-Type', "{$contentType}; charset=utf-8");
+            ->setHeader('Content-Type', "{$contentType}; charset=utf-8", true);
     }
 }
