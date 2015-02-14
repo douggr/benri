@@ -61,11 +61,9 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
      */
     public function init()
     {
-        if ($this->_layoutEnabled()) {
-            $this->_helper
-                ->layout
-                ->setLayout($this->_layout);
-        }
+        $this->_helper
+            ->layout
+            ->setLayout($this->_layout);
 
         $request = $this->getRequest();
         $action  = $request->getParam('action');
@@ -88,12 +86,10 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
      */
     public function preDispatch()
     {
-        if ($this->_layoutEnabled()) {
-            // allow the programmer to use any partial view located in
-            // '/views/scripts/components'.
-            $this->view
-                ->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
-        }
+        // allow the programmer to use any partial view located in
+        // '/views/scripts/components'.
+        $this->view
+            ->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
     }
 
     /**
@@ -109,7 +105,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
         $request     = $this->getRequest();
         $contentType = 'application/json';
 
-        if ($this->_layoutEnabled()) {
+        if ($this->view instanceof Zend_View_Interface) {
             $contentType = 'text/html';
 
             // Common variables used in all views.
