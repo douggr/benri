@@ -63,14 +63,14 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      */
     public function postDispatch()
     {
-        $response = array(
+        $response = (object) array(
             'data'      => $this->_data,
             'errors'    => $this->_errors,
             'messages'  => $this->_messages,
         );
 
         $this->getResponse()
-            ->setHeader('Content-Type', 'application/json; charset=utf-8')
+            ->setHeader('Content-Type', 'application/json; charset=utf-8', true)
             ->setBody(json_encode($response, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
     }
 
@@ -95,7 +95,7 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
             if (JSON_ERROR_NONE !== json_last_error()) {
                 $this->getResponse()
                     ->setHttpResponseCode(400)
-                    ->setHeader('Content-Type', 'text/plain; charset=utf-8')
+                    ->setHeader('Content-Type', 'text/plain; charset=utf-8', true)
                     ->setBody(json_last_error_msg())
                     ->sendResponse();
 
@@ -126,7 +126,7 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
                 );
             }
 
-            $this->_pushMessage($ex->getMessage(), 'danger');
+            $this->_pushMessage($ex->getMessage(), 'error');
         }
 
         return $this;

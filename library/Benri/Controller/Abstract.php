@@ -80,7 +80,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     public function deleteAction()
     {
         $this->getResponse()
-            ->setHttpResponseCode(405);
+            ->setHttpResponseCode(404);
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     public function getAction()
     {
         $this->getResponse()
-            ->setHttpResponseCode(405);
+            ->setHttpResponseCode(404);
     }
 
     /**
@@ -127,7 +127,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     public function indexAction()
     {
         $this->getResponse()
-            ->setHttpResponseCode(405);
+            ->setHttpResponseCode(404);
     }
 
     /**
@@ -152,7 +152,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     public function postAction()
     {
         $this->getResponse()
-            ->setHttpResponseCode(405);
+            ->setHttpResponseCode(404);
     }
 
     /**
@@ -166,7 +166,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     public function putAction()
     {
         $this->getResponse()
-            ->setHttpResponseCode(405);
+            ->setHttpResponseCode(404);
     }
 
     /**
