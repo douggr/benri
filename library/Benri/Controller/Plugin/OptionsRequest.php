@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * OPTIONS request method represents a request for information about the
  * communication options available on the request/response chain identified
  * by the Request-URI. This method allows the client to determine the options

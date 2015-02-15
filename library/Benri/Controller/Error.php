@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * Provides a plugin for handling exceptions thrown by the application,
  * including those resulting from missing controllers or actions.
  *

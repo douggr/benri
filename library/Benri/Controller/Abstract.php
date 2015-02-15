@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * Used to implement Action Controllers for use with the Front Controller.
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.front.html Zend_Controller_Front

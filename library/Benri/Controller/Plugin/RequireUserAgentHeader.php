@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * Validates the presence of the User-Agent header.
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.plugins.html Zend_Controller_Plugin_Abstract

@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * Representation of date and time.
  *
  * @link https://php.net/manual/en/class.datetime.php DateTime

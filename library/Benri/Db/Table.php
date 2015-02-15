@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * The Benri_Db_Table class is an object-oriented interface to
  * database tables. It provides methods for many common operations on tables.
  *

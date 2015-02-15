@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * Used to implement Action Controllers for use with the Front Controller.
  *
  * @link Benri_Controller_Abstract.html Benri_Controller_Abstract

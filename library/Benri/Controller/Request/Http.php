@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * HTTP request object for use with Benri_Controller family.
  *
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Http

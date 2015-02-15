@@ -1,13 +1,5 @@
 <?php
 /**
- * douggr/benri
- *
- * @license http://opensource.org/license/MIT
- * @link    https://github.com/douggr/benri
- * @version 1.0.0
- */
-
-/**
  * Contains an individual row of a Benri_Db_Table object.
  *
  * This is a class that contains an individual row of a Benri_Db_Table object.
