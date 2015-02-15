@@ -15,5 +15,4 @@ class Benri_Db_Table_Rowset extends Zend_Db_Table_Rowset
     {
         return json_encode($this->toArray(), JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK);
     }
-
 }
