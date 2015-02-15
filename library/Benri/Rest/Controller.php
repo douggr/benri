@@ -99,25 +99,8 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      * @param Benri_Db_Table_Row
      * @return Benri_Controller_Rest
      */
-    protected function _saveModel(Benri_Db_Table_Row &$model)
+    protected function _saveModel(Benri_Db_Table_Row &$model, $data = null)
     {
-        try {
-            $model->normalizeInput($this->_input)
-                ->save();
-
-        } catch (Zend_Db_Table_Row_Exception $ex) {
-            foreach ($model->getErrors() as $error) {
-                $this->_pushError(
-                    $error['resource'],
-                    $error['field'],
-                    $error['title'],
-                    $error['message']
-                );
-            }
-
-            $this->_pushMessage($ex->getMessage(), 'error');
-        }
-
-        return $this;
+        return parent::_saveModel($model, $this->_input);
     }
 }

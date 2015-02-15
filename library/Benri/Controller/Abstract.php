@@ -247,4 +247,32 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 
         return $this;
     }
+
+    /**
+     * General method to save models (Benri_Db_Table_Row).
+     *
+     * @param Benri_Db_Table_Row
+     * @return Benri_Controller_Rest
+     */
+    protected function _saveModel(Benri_Db_Table_Row &$model, $data = null)
+    {
+        try {
+            $model->normalizeInput($data)
+                ->save();
+
+        } catch (Zend_Db_Table_Row_Exception $ex) {
+            foreach ($model->getErrors() as $error) {
+                $this->_pushError(
+                    $error['resource'],
+                    $error['field'],
+                    $error['title'],
+                    $error['message']
+                );
+            }
+
+            $this->_pushMessage($ex->getMessage(), 'error');
+        }
+
+        return $this;
+    }
 }
