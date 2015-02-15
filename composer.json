@@ -6,7 +6,7 @@
   },
   "keywords": ["framework", "handy", "rest", "zend", "zf1"],
   "license": "MIT",
-  "name": "Benri",
+  "name": "douggr/benri",
   "require": {
     "zendframework/zendframework1": "^1.12"
   },
