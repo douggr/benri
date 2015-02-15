@@ -76,12 +76,9 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
         $error   = null;
         $request = $this->getRequest();
 
-        // we don't need this good guy no anymore…
-        unset($_POST);
-
         if (!$request->isGet() && !$request->isHead()) {
             // … we read data from the request body.
-            $this->_input = json_decode(file_get_contents('php://input'));
+            $this->_input = json_decode($request->getRawBody());
 
             /// Sending invalid JSON will result in a `400 Bad Request` response.
             if (JSON_ERROR_NONE !== json_last_error()) {
