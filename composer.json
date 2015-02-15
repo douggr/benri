@@ -1,34 +1,14 @@
 {
-  "authors": [
-    {
-      "name": "Douglas G.R.",
-      "homepage": "http://github.com/douggr"
-    }
-  ],
   "autoload": {
     "psr-0": {
       "Benri_": "library/"
     }
   },
-  "canonical": "https://github.com/douggr/benri",
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.1-dev"
-    }
-  },
-  "homepage": "https://github.com/douggr/benri",
-  "keywords": [
-    "framework",
-    "handy",
-    "rest",
-    "zend",
-    "zf1"
-  ],
+  "keywords": ["framework", "handy", "rest", "zend", "zf1"],
   "license": "MIT",
-  "minimum-stability": "stable",
-  "name": "douggr/benri",
+  "name": "Benri",
   "require": {
-    "zendframework/zendframework1": "~1.12"
+    "zendframework/zendframework1": "^1.12"
   },
   "type": "extension"
 }
