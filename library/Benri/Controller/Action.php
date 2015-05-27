@@ -53,22 +53,11 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
      */
     public function init()
     {
+        parent:: init();
+
         $this->_helper
             ->layout
             ->setLayout($this->_layout);
-
-        $request = $this->getRequest();
-        $action  = $request->getParam('action');
-
-        if (!in_array($action, array('delete', 'index', 'get', 'patch', 'post', 'put'))) {
-            if ($request->isGet()) {
-                $action = $request->getParam('id') ? 'get' : 'index';
-            } else {
-                $action = strtolower($request->getMethod());
-            }
-
-            $request->setParam('action', $action);
-        }
     }
 
     /**

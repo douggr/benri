@@ -27,6 +27,8 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      */
     public function init()
     {
+        parent::init();
+
         $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
         $this->_registerPlugin(new Benri_Controller_Plugin_CORS());
         $this->_registerPlugin(new Benri_Controller_Plugin_RequireUserAgentHeader());

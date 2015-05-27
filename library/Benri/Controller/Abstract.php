@@ -65,6 +65,27 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     protected $_response = null;
 
     /**
+     * Force the request action parameter.
+     *
+     * @see https://github.com/douggr/benri/issues/10
+     */
+    public function init()
+    {
+        $request = $this->getRequest();
+        $action  = $request->getParam('action');
+
+        if (!in_array($action, array('delete', 'index', 'get', 'patch', 'post', 'put'))) {
+            if ($request->isGet()) {
+                $action = $request->getParam('id') ? 'get' : 'index';
+            } else {
+                $action = strtolower($request->getMethod());
+            }
+
+            $request->setParam('action', $action);
+        }
+    }
+
+    /**
      * Used for deleting resources.
      *
      * @return void
