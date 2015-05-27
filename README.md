@@ -2,7 +2,8 @@
 Extension to build faster applications with Zend Framework 1.12
 
 ## Usage
-[douggr/benri-app-example](https://github.com/douggr/benri-app-example)
+Simple: [douggr/benri-app-example](https://github.com/douggr/benri-app-example)
+Full: [douggr/ravio](https://github.com/douggr/ravio)
 
 ## Features
 To be written
