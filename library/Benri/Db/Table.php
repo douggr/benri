@@ -51,7 +51,7 @@ class Benri_Db_Table extends Zend_Db_Table
     {
         $table = new static();
 
-        return $table->fetchAll(null, $pageNumber, $pageSize, $order);
+        return $table->fetchAll(null, $order, $pageSize, $pageNumber);
     }
 
     /**
