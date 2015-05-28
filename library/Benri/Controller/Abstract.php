@@ -290,8 +290,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
                     $error['message']
                 );
             }
-
-            $this->_pushMessage($ex->getMessage(), 'error');
         }
 
         return $this;
