@@ -103,6 +103,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      */
     protected function _saveModel(Benri_Db_Table_Row &$model, $data = null)
     {
-        return parent::_saveModel($model, $this->_input);
+        return parent::_saveModel($model, $data ?: $this->_input);
     }
 }
