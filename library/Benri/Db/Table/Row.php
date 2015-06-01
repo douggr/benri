@@ -184,6 +184,9 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
 
         /// Run post-SAVE logic
         $this->_postSave();
+
+        /// chain
+        return $this;
     }
 
     /**
