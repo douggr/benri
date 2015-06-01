@@ -147,7 +147,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
                     $value = new Benri_Util_DateTime($value->format('U'));
                 }
 
-                $value->setFormat('Y:m:d H:i:s');
+                $value->setFormat('Y-m-d H:i:s');
             }
         }
 
@@ -162,7 +162,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
         if ($this->isNewRecord()) {
             if ($this->offsetExists('created_at')) {
                 $this->created_at = new Benri_Util_DateTime();
-                $this->created_at->setFormat('Y:m:d H:i:s');
+                $this->created_at->setFormat('Y-m-d H:i:s');
             }
 
             if ($this->offsetExists('created_by') && !$this->created_by) {
@@ -172,7 +172,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
 
         if ($this->offsetExists('updated_at')) {
             $this->updated_at = new Benri_Util_DateTime();
-            $this->updated_at->setFormat('Y:m:d H:i:s');
+            $this->updated_at->setFormat('Y-m-d H:i:s');
         }
 
         if ($this->offsetExists('updated_by') && !$this->updated_by) {
