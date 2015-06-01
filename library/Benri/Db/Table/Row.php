@@ -279,12 +279,12 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * @param string $message A friendly message
      * @return Benri_Db_Table_Row
      */
-    protected function _pushError($resource, $field, $title, $message = '')
+    protected function _pushError($field, $code, $title, $message = '')
     {
         $this->_errors[] = array(
             'field'     => $field,
             'message'   => $message,
-            'resource'  => $resource,
+            'code'      => $code,
             'title'     => $title
         );
 

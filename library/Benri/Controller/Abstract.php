@@ -251,7 +251,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * If resources have custom validation errors, they should be documented
      * with the resource.
      *
-     * @param string $field The erroneous field or column
+     * @param string $resource The erroneous resource
      * @param string $code One of the ERROR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
@@ -284,10 +284,10 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
         } catch (Zend_Db_Table_Row_Exception $ex) {
             foreach ($model->getErrors() as $error) {
                 $this->_pushError(
-                    $error['resource'],
-                    $error['field'],
-                    $error['title'],
-                    $error['message']
+                    $resource = $error['field'],
+                    $code     = $error['code'],
+                    $title    = $error['title'],
+                    $message  = $error['message']
                 );
             }
         }
