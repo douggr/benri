@@ -51,9 +51,9 @@ class Benri_Util_String
 
         if (!$ucfirst) {
             return lcfirst($replace);
-        } else {
-            return $replace;
         }
+
+        return $replace;
     }
 
     /**
@@ -154,7 +154,7 @@ class Benri_Util_String
      */
     public static function password($raw)
     {
-        return md5($raw);
+        return password_hash($raw, PASSWORD_BCRYPT);
     }
 
     /**
@@ -167,6 +167,6 @@ class Benri_Util_String
      */
     public static function verifyPassword($raw, $hash)
     {
-        return $hash === md5($raw);
+        return password_verify($raw, $hash);
     }
 }
