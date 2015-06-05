@@ -47,7 +47,7 @@ class Benri_Db_Table extends Zend_Db_Table
      * @param string|array $order An SQL ORDER clause
      * @return Benri_Db_Table_Row The row results
      */
-    public static function all($pageNumber = 1, $pageSize = 10, $order = null)
+    public static function all($pageNumber = 0, $pageSize = 10, $order = null)
     {
         $table = new static();
 
