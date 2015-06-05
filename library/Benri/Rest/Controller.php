@@ -23,7 +23,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
     /**
      * Initialize object.
      *
-     * @return void
      */
     public function init()
     {
@@ -53,7 +52,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      * Common usages for `postDispatch()` include rendering content in a
      * sitewide template, link url correction, setting headers, etc.
      *
-     * @return void
      */
     public function postDispatch()
     {
@@ -71,7 +69,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
     /**
      * Pre-dispatch routines.
      *
-     * @return void
      */
     public function preDispatch()
     {

@@ -7,7 +7,6 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     /**
      * Initialize rest routes.
      *
-     * @return void
      */
     protected function _initRestRoute()
     {
@@ -23,7 +22,6 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     /**
      * Initialize the database resource.
      *
-     * @return void
      */
     protected function _initDbResource()
     {
@@ -50,7 +48,6 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     /**
      * Initialize multidb resources.
      *
-     * @return void
      */
     protected function _initMultiDbResources()
     {

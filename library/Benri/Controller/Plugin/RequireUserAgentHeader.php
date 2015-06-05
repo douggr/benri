@@ -23,7 +23,6 @@ class Benri_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Plu
      *
      * @internal
      * @param Zend_Controller_Request_Abstract $request
-     * @return void
      * @see http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Abstract
      */
     public function routeStartup(Zend_Controller_Request_Abstract $request)

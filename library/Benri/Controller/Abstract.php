@@ -88,7 +88,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Used for deleting resources.
      *
-     * @return void
      */
     public function deleteAction()
     {
@@ -113,7 +112,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Used for retrieving resources.
      *
-     * @return void
      */
     public function getAction()
     {
@@ -124,7 +122,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Issued against any resource to get just the HTTP header info.
      *
-     * @return void
      */
     final public function headAction()
     {
@@ -135,7 +132,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Used for retrieving resources.
      *
-     * @return void
      */
     public function indexAction()
     {
@@ -150,7 +146,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * resource. PATCH is a relatively new and uncommon HTTP verb, so resource
      * endpoints also accept PUT requests.
      *
-     * @return void
      */
     final public function patchAction()
     {
@@ -160,7 +155,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Used for creating resources, or performing custom actions.
      *
-     * @return void
      */
     public function postAction()
     {
@@ -174,7 +168,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * For PUT requests with no body attribute, be sure to set the
      * `Content-Length` header to zero.
      *
-     * @return void
      */
     public function putAction()
     {

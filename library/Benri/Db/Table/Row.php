@@ -103,7 +103,6 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * Reset the value to the given column to its defaults.
      *
      * @param string $column
-     * @return void
      */
     final public function reset($column)
     {
@@ -262,7 +261,6 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     /**
      * Allows post-save logic to be applied to row.
      *
-     * @return void
      * @throws Zend_Db_Table_Row_Exception
      */
     protected function _postSave()
@@ -297,7 +295,6 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     /**
      * Allows pre-save logic to be applied to row.
      *
-     * @return void
      * @throws Zend_Db_Table_Row_Exception
      */
     protected function _save()
@@ -312,7 +309,6 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * - data        = values of columns in this row.
      *
      * @param array $config OPTIONAL Array of user-specified config options
-     * @return void
      * @throws Zend_Db_Table_Row_Exception
      */
     final public function __construct(array $config = array())

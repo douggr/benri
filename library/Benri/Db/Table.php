@@ -112,7 +112,6 @@ class Benri_Db_Table extends Zend_Db_Table
     /**
      * Initialize database adapter.
      *
-     * @return void
      * @throws Zend_Db_Table_Exception
      */
     protected function _setupDatabaseAdapter()

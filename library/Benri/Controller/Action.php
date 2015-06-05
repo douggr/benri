@@ -40,7 +40,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
     /**
      * Used as the index page.
      *
-     * @return void
      */
     public function indexAction()
     {
@@ -49,7 +48,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
     /**
      * Initialize object.
      *
-     * @return void
      */
     public function init()
     {
@@ -63,7 +61,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
     /**
      * Pre-dispatch routines
      *
-     * @return void
      */
     public function preDispatch()
     {
@@ -79,7 +76,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
      * Common usages for `postDispatch()` include rendering content in a
      * sitewide template, link url correction, setting headers, etc.
      *
-     * @return void
      */
     public function postDispatch()
     {

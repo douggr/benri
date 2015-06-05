@@ -19,7 +19,6 @@ class Benri_Controller_Plugin_Forwarder extends Zend_Controller_Plugin_Abstract
      *
      * @internal
      * @param Zend_Controller_Request_Abstract $request
-     * @return void
      * @see http://framework.zend.com/manual/1.12/en/zend.controller.request.html Zend_Controller_Request_Abstract
      */
     public function routeShutdown(Zend_Controller_Request_Abstract $request)
