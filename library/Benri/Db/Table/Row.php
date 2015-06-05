@@ -198,24 +198,6 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
         return json_encode($this->toArray(), JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK);
     }
 
-
-    /**
-     * Checks for a column uniqueness value.
-     *
-     * @param string $column The column to check against
-     * @return bool
-     */
-    final protected function _checkUniqueness($column)
-    {
-        $select = $this->select()
-            ->where("$column = ?", $this->__get($column))
-            ->limit(1);
-
-        $model  = $this->getTable()->fetchRow($select);
-
-        return !$model || $model->id === $this->id;
-    }
-
     /**
      * @return mixed The primary key value(s), as an associative array if the
      *  key is compound, or a scalar if the key is single-column
