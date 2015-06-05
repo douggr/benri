@@ -79,7 +79,7 @@ class Benri_Db_Table extends Zend_Db_Table
     {
         $table  = new static();
         $select = $table->select()
-            ->where("{$column} = ?", $value)
+            ->where("{$table->getAdapter()->quoteIdentifier($column)} = ?", $value)
             ->limit(1);
 
         return $table->fetchRow($select);
