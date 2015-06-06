@@ -162,7 +162,7 @@ class Benri_Db_Table extends Zend_Db_Table
             );
 
         // Ready?
-        $stmt = $adapter->prepare($sql)
+        $stmt = $adapter->prepare($sql);
 
         //
         // Fight!
