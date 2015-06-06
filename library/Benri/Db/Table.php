@@ -234,10 +234,22 @@ class Benri_Db_Table extends Zend_Db_Table
         // PHP's black magic
         extract($matches);
 
-        $table  = new static();
-        $select = $table->select();
-        $column = $table->getAdapter()
+        $table   = new static();
+        $select  = $table->select();
+        $options = [];
+        $column  = $table->getAdapter()
             ->quoteIdentifier(Benri_Util_String::dasherize($column));
+
+        foreach ($args as $key => $arg) {
+            if (is_array($arg)) {
+                $options = $arg;
+                unset($args[$key]);
+            }
+        }
+
+        foreach ($options as $method => $value) {
+            call_user_func_array([$select, $method], (array) $value);
+        }
 
         if ('IsNull' === $operator) {
             return $table->fetchAll($select->where("{$column} IS NULL"));
