@@ -85,6 +85,95 @@ class Benri_Db_Table extends Zend_Db_Table
         return $table->fetchRow($select);
     }
 
+
+    /**
+     * Create table rows in bulk mode.
+     *
+     * @param array $batch and array of column-value pairs.
+     * @return int The number of affected rows.
+     * @throws Zend_Db_Adapter_Exception
+     */
+    public static function bulkInsert(array $batch)
+    {
+        $table = new static();
+
+        if (1 === sizeof($batch)) {
+            return $table->insert(array_shift($batch));
+        }
+
+        $adapter    = $table->getAdapter();
+        $counter    = 0;
+        $sqlBinds   = [];
+        $values     = [];
+
+        //
+        // Do some voodoo here...
+        foreach ($batch as $i => $row) {
+            $placeholders = [];
+
+            foreach ($row as $column => $value) {
+                $counter++;
+
+                if ($adapter->supportsParameters('positional')) {
+                    $placeholders[] = '?';
+                    $values[]       = $value;
+
+                } elseif ($adapter->supportsParameters('named')) {
+                    $name           = ":col{$i}{$counter}";
+                    $placeholders[] = $name;
+                    $values[$name]  = $value;
+
+                } else {
+                    throw new Zend_Db_Adapter_Exception(sprintf(
+                            '%s doesn\'t support positional or named binding',
+                            get_class($table)
+                        ));
+                }
+            }
+
+            //
+            // and more blacky magic over here...
+            $sqlBinds[] = '(' . implode(',', $placeholders) . ')';
+        }
+
+        //
+        // extract column names...
+        $columns = array_keys($row);
+
+        //
+        // and quoteIdentifier() them.
+        array_walk($columns, function (&$index) use ($adapter) {
+                $index = $adapter->quoteIdentifier($index, true);
+            });
+
+        //
+        // Shit, shit, shit! F U ZF.
+        $spec = $adapter->quoteIdentifier(
+                ($table->_schema ? "{$table->_schema}." : '') . $table->_name
+            );
+
+        //
+        // Build the SQL using the placeholders...
+        $sql = sprintf(
+                'INSERT INTO %s (%s) VALUES %s',
+                $spec,                  // fully table name
+                implode(',', $columns), // column names
+                implode(',', $sqlBinds) // placeholders
+            );
+
+        // Ready?
+        $stmt = $adapter->prepare($sql)
+
+        //
+        // Fight!
+        $stmt->execute($values);
+
+        //
+        // aaaaaaand voilá!
+        return $stmt->rowCount();
+    }
+
+
     /**
      * Returns an instance of a Zend_Db_Table_Select object.
      *
