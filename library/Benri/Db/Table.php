@@ -109,6 +109,89 @@ class Benri_Db_Table extends Zend_Db_Table
         return json_encode($this->toArray(), JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK);
     }
 
+
+    /**
+     * Create dynamic finders.
+     *
+     * Dynamic finders ease your life in a way to do queries quickly without
+     * having to event instantiate a `Benri_Db_Table` class.
+     *
+     * <code>
+     * // `where name = ?, "douggr"`
+     * Person::whereNameEq('douggr');
+     *
+     * // `where phone IS NULL`
+     * Person::wherePhoneIsNull();
+     *
+     * // `where id IN (?), $values`
+     * SomeModel::whereIdIn(1, 2, 3, 4);
+     * </code>
+     *
+     * @internal
+     * @return Benri_Db_Table_Rowset
+     * @throws Zend_Db_Table_Exception if invalid query
+     */
+    public static function __callStatic($method, array $args = [])
+    {
+        preg_match("/where(?P<column>[a-zA-Z]+)(?P<operator>Lt|Le|Gt|Ge|Eq|Ne|In|IsNull|IsNotNull)+/", $method, $matches);
+
+        if (!$matches) {
+            throw new Zend_Db_Table_Exception(sprintf(
+                'Call to undefined method %s::%s()', get_called_class(), $method
+            ));
+        }
+
+        //
+        // PHP's black magic
+        extract($matches);
+
+        $table  = new static();
+        $select = $table->select();
+        $column = $table->getAdapter()
+            ->quoteIdentifier(Benri_Util_String::dasherize($column));
+
+        if ('IsNull' === $operator) {
+            return $table->fetchAll($select->where("{$column} IS NULL"));
+        }
+
+        if ('IsNotNull' === $operator) {
+            return $table->fetchAll($select->where("{$column} IS NOT NULL"));
+        }
+
+        switch ($operator) {
+            case 'Lt':
+                $operator = "< ?";
+                break;
+
+            case 'Le':
+                $operator = '<= ?';
+                break;
+
+            case 'Gt':
+                $operator = '> ?';
+                break;
+
+            case 'Ge':
+                $operator = '>= ?';
+                break;
+
+            case 'Eq':
+                $operator = '= ?';
+                break;
+
+            case 'Ne':
+                $operator = '<> ?';
+                break;
+
+            case 'In':
+                $operator = 'IN (?)';
+                break;
+        }
+
+        return $table->fetchAll($select->where("{$column} {$operator}", $args));
+    }
+
+
     /**
      * Initialize database adapter.
      *
