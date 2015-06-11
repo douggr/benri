@@ -266,7 +266,9 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * General method to save models (Benri_Db_Table_Row).
      *
      * @param Benri_Db_Table_Row
+     * @param mixed Data to normalize and save into the model
      * @return Benri_Controller_Rest
+     * @throws Zend_Db_Table_Row_Exception
      */
     protected function _saveModel(Benri_Db_Table_Row &$model, $data = null)
     {
@@ -283,6 +285,8 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
                     $message  = $error['message']
                 );
             }
+
+            throw $ex;
         }
 
         return $this;
