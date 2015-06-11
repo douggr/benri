@@ -86,11 +86,16 @@ class Benri_Util_DateTime extends DateTime
     */
     public function __construct($time = 'now', DateTimeZone $timezone = null)
     {
-        if (preg_match('/[\d+]{10}/', $time)) {
-            return static::createFromFormat('U', $time, $timezone);
-        } else {
-            return parent::__construct($time, $timezone);
+        // PHP 5.6
+        if (!$timezone) {
+            $timezone = new DateTimeZone('UTC');
         }
+
+        if (preg_match('/[\d+]{10}/', $time)) {
+            $time = "@{$time}";
+        }
+
+        parent::__construct($time, $timezone);
     }
 
     /**
