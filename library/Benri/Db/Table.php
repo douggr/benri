@@ -50,9 +50,15 @@ class Benri_Db_Table extends Zend_Db_Table
     public static function all($pageNumber = 0, $pageSize = 10, $order = null)
     {
         $table  = new static();
-        $select = $table->select()
-            ->limitPage($pageNumber, $pageSize)
-            ->order($order);
+        $select = $table->select();
+
+        if ($pageSize) {
+            $select->limitPage($pageNumber, $pageSize);
+        }
+
+        if ($order) {
+            $select->order($order);
+        }
 
         return $table->fetchAll($select);
     }
