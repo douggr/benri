@@ -313,14 +313,53 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
+     * Returns the column/value data as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+	$data = (array) $this->_data;
+
+	foreach ($data as $column => $value) {
+	    $data[$column] = $this->__get($column);
+	}
+
+	return $data;
+    }
+
+
+    /**
+     * Retrieve a row field value
+     *
+     * @param string The user-specified column name.
+     * @return mixed The corresponding column value.
+     * @throws Zend_Db_Table_Row_Exception if the $columnName is not a column
+     *      in the row.
+     * @internal
+     */
+    public function __get($columnName)
+    {
+	$getter = Benri_Util_String::camelize($columnName, true);
+
+	if (method_exists($this, $getter = "get{$getter}")) {
+	    return call_user_func_array(array($this, $getter), []);
+	}
+
+	return parent::__get($columnName);
+    }
+
+    /**
+     * Set a row field value.
+     *
      * @internal
      */
     public function __set($columnName, $value)
     {
         $setter = Benri_Util_String::camelize($columnName, true);
 
-        if (method_exists($this, "set{$setter}")) {
-            $value = call_user_func_array(array($this, "set{$setter}"), array($value));
+	if (method_exists($this, $setter = "set{$setter}")) {
+	    $value = call_user_func_array(array($this, $setter), array($value));
         }
 
         return parent::__set($columnName, $value);
