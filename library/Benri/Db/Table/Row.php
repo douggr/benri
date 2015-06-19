@@ -319,13 +319,13 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      */
     public function toArray()
     {
-	$data = (array) $this->_data;
+	    $data = (array) $this->_data;
 
-	foreach ($data as $column => $value) {
-	    $data[$column] = $this->__get($column);
-	}
+	    foreach ($data as $column => $value) {
+	        $data[$column] = $this->__get($column);
+	    }
 
-	return $data;
+	    return $data;
     }
 
 
@@ -340,13 +340,13 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      */
     public function __get($columnName)
     {
-	$getter = Benri_Util_String::camelize($columnName, true);
+        $getter = Benri_Util_String::camelize($columnName, true);
 
-	if (method_exists($this, $getter = "get{$getter}")) {
-	    return call_user_func_array(array($this, $getter), []);
-	}
+        if (method_exists($this, $getter = "get{$getter}")) {
+            return call_user_func_array(array($this, $getter), []);
+        }
 
-	return parent::__get($columnName);
+        return parent::__get($columnName);
     }
 
     /**
@@ -358,8 +358,8 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     {
         $setter = Benri_Util_String::camelize($columnName, true);
 
-	if (method_exists($this, $setter = "set{$setter}")) {
-	    $value = call_user_func_array(array($this, $setter), array($value));
+        if (method_exists($this, $setter = "set{$setter}")) {
+            $value = call_user_func_array(array($this, $setter), array($value));
         }
 
         return parent::__set($columnName, $value);
