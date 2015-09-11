@@ -8,8 +8,7 @@
   "license": "MIT",
   "name": "douggr/benri",
   "require": {
-    "php": ">=5.5.0",
-    "zendframework/zendframework1": "^1.12"
+    "php": ">=5.5.0"
   },
   "type": "extension"
 }
