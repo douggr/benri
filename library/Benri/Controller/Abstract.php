@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
@@ -43,12 +44,12 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * @var array
      */
-    protected $_errors = array();
+    protected $_errors = [];
 
     /**
      * @var array
      */
-    protected $_messages = array();
+    protected $_messages = [];
 
     /**
      * Benri_Controller_Request_Http object wrapping the request environment.
@@ -74,7 +75,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
         $request = $this->getRequest();
         $action  = $request->getParam('action');
 
-        if (!in_array($action, array('delete', 'index', 'get', 'patch', 'post', 'put'))) {
+        if (!in_array($action, ['delete', 'index', 'get', 'patch', 'post', 'put'])) {
             if ($request->isGet()) {
                 $action = $request->getParam('id') ? 'get' : 'index';
             } else {
@@ -87,7 +88,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for deleting resources.
-     *
      */
     public function deleteAction()
     {
@@ -111,7 +111,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for retrieving resources.
-     *
      */
     public function getAction()
     {
@@ -121,7 +120,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 
     /**
      * Issued against any resource to get just the HTTP header info.
-     *
      */
     final public function headAction()
     {
@@ -131,7 +129,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for retrieving resources.
-     *
      */
     public function indexAction()
     {
@@ -145,7 +142,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * A PATCH request may accept one or more of the attributes to update the
      * resource. PATCH is a relatively new and uncommon HTTP verb, so resource
      * endpoints also accept PUT requests.
-     *
      */
     final public function patchAction()
     {
@@ -154,7 +150,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
 
     /**
      * Used for creating resources, or performing custom actions.
-     *
      */
     public function postAction()
     {
@@ -167,7 +162,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      *
      * For PUT requests with no body attribute, be sure to set the
      * `Content-Length` header to zero.
-     *
      */
     public function putAction()
     {
@@ -208,12 +202,12 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      * @param array $interpolateParams Params to interpolate within $message
      * @return Benri_Controller_Abstract
      */
-    protected function _pushMessage($message, $type = 'error', array $interpolateParams = array())
+    protected function _pushMessage($message, $type = 'error', array $interpolateParams = [])
     {
-        $this->_messages[] = array(
+        $this->_messages[] = [
             'message'   => vsprintf($message, $interpolateParams),
-            'type'      => $type
-        );
+            'type'      => $type,
+        ];
 
         return $this;
     }
@@ -228,7 +222,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     final protected function _registerPlugin($plugin, $stackIndex = null)
     {
         if (is_string($plugin)) {
-            $plugin = new $plugin;
+            $plugin = new $plugin();
         }
 
         Zend_Controller_Front::getInstance()
@@ -252,12 +246,12 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      */
     protected function _pushError($resource, $code, $title, $message = '')
     {
-        $this->_errors[] = array(
+        $this->_errors[] = [
             'code'      => $code,
             'message'   => $message,
             'resource'  => $resource,
-            'title'     => $title
-        );
+            'title'     => $title,
+        ];
 
         return $this;
     }
@@ -275,7 +269,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
         try {
             $model->normalizeInput($data)
                 ->save();
-
         } catch (Zend_Db_Table_Row_Exception $ex) {
             foreach ($model->getErrors() as $error) {
                 $this->_pushError(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
@@ -22,7 +23,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
 
     /**
      * Initialize object.
-     *
      */
     public function init()
     {
@@ -51,7 +51,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      *
      * Common usages for `postDispatch()` include rendering content in a
      * sitewide template, link url correction, setting headers, etc.
-     *
      */
     public function postDispatch()
     {
@@ -80,7 +79,6 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
 
     /**
      * Pre-dispatch routines.
-     *
      */
     public function preDispatch()
     {

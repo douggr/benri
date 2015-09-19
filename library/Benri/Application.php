@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @link http://framework.zend.com/manual/1.12/en/zend.application.html Zend_Application
  */
 class Benri_Application extends Zend_Application
 {
     /**
-     * Singleton instance
+     * Singleton instance.
      *
      * @var Benri_Application
      */
@@ -13,7 +14,7 @@ class Benri_Application extends Zend_Application
 
 
     /**
-     * Returns an instance of Benri_Application
+     * Returns an instance of Benri_Application.
      *
      * Singleton pattern implementation
      *
@@ -26,7 +27,7 @@ class Benri_Application extends Zend_Application
 
 
     /**
-     * Create and returns an instance of Benri_Application
+     * Create and returns an instance of Benri_Application.
      */
     public static function createInstance($environment, $options = null)
     {

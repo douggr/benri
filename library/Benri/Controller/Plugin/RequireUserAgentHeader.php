@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Validates the presence of the User-Agent header.
  *
@@ -10,10 +11,10 @@ class Benri_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Plu
      * @internal
      * @var array
      */
-    static private $_errMessage = array(
+    private static $_errMessage = [
         'Request forbidden by administrative rules.',
-        'Please make sure your request has a User-Agent header.'
-    );
+        'Please make sure your request has a User-Agent header.',
+    ];
 
     /**
      * Validates the current request.

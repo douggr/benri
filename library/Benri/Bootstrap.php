@@ -1,4 +1,5 @@
 <?php
+
 /**
  * {@inheritdoc}
  */
@@ -6,7 +7,6 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     /**
      * Initialize rest routes.
-     *
      */
     protected function _initRestRoute()
     {
@@ -21,7 +21,6 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     /**
      * Initialize the database resource.
-     *
      */
     protected function _initDbResource()
     {
@@ -47,7 +46,6 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     /**
      * Initialize multidb resources.
-     *
      */
     protected function _initMultiDbResources()
     {
@@ -89,7 +87,7 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     private function _parseDsn($dsn)
     {
         $dsn = parse_url($dsn);
-        $cfg = array();
+        $cfg = [];
 
         //
         // Some drivers (a.k.a. PDO_PGSQL) complains if the port is set
@@ -98,11 +96,11 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $cfg['port'] = $dsn['port'];
         }
 
-        return $cfg + array(
+        return $cfg + [
             'dbname'    => isset($dsn['path']) ? trim($dsn['path'], '/') : null,
             'host'      => isset($dsn['host']) ? $dsn['host']            : null,
             'password'  => isset($dsn['pass']) ? $dsn['pass']            : null,
             'username'  => isset($dsn['user']) ? $dsn['user']            : null,
-        );
+        ];
     }
 }

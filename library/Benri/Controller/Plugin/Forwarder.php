@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Emulates hierarquical inheritance for routes.
  *

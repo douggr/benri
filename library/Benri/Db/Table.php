@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The Benri_Db_Table class is an object-oriented interface to
  * database tables. It provides methods for many common operations on tables.
@@ -22,10 +23,10 @@ class Benri_Db_Table extends Zend_Db_Table
      *
      * @var mixed
      */
-    protected $_primary = array('id');
+    protected $_primary = ['id'];
 
     /**
-     * Classname for row
+     * Classname for row.
      *
      * @var string
      * @see Benri_Db_Table_Row
@@ -33,7 +34,7 @@ class Benri_Db_Table extends Zend_Db_Table
     protected $_rowClass = 'Benri_Db_Table_Row';
 
     /**
-     * Classname for rowset
+     * Classname for rowset.
      *
      * @var string
      */
@@ -69,9 +70,10 @@ class Benri_Db_Table extends Zend_Db_Table
      * @param array $data Data to populate in the new row
      * @return Benri_Db_Table_Row
      */
-    public static function create($data = array())
+    public static function create($data = [])
     {
         $table = new static();
+
         return $table->createRow((array) $data);
     }
 
@@ -121,17 +123,15 @@ class Benri_Db_Table extends Zend_Db_Table
             $placeholders = [];
 
             foreach ($row as $column => $value) {
-                $counter++;
+                ++$counter;
 
                 if ($adapter->supportsParameters('positional')) {
                     $placeholders[] = '?';
                     $values[]       = $value;
-
                 } elseif ($adapter->supportsParameters('named')) {
                     $name           = ":col{$i}{$counter}";
                     $placeholders[] = $name;
                     $values[$name]  = $value;
-
                 } else {
                     throw new Zend_Db_Adapter_Exception(sprintf(
                             '%s doesn\'t support positional or named binding',
@@ -231,7 +231,7 @@ class Benri_Db_Table extends Zend_Db_Table
      */
     public static function __callStatic($method, array $args = [])
     {
-        preg_match("/where(?P<column>[a-zA-Z]+)(?P<operator>Lt|Le|Gt|Ge|Eq|Ne|In|IsNull|IsNotNull)+/", $method, $matches);
+        preg_match('/where(?P<column>[a-zA-Z]+)(?P<operator>Lt|Le|Gt|Ge|Eq|Ne|In|IsNull|IsNotNull)+/', $method, $matches);
 
         if (!$matches) {
             throw new Zend_Db_Table_Exception(sprintf(
@@ -270,7 +270,7 @@ class Benri_Db_Table extends Zend_Db_Table
 
         switch ($operator) {
             case 'Lt':
-                $operator = "< ?";
+                $operator = '< ?';
                 break;
 
             case 'Le':

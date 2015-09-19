@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Remove the same origin restriction from API calls.
  *
@@ -30,14 +31,14 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      *
      * @var array
      */
-    private $_methods = array(
+    private $_methods = [
         'DELETE',
         'GET',
         'OPTIONS',
         'PATCH',
         'POST',
-        'PUT'
-    );
+        'PUT',
+    ];
 
     /**
      * Indicates, as part of the response to a preflight request, which header
@@ -45,10 +46,10 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
      *
      * @var array
      */
-    private $_headers = array(
+    private $_headers = [
         'Authorization',
         'Content-Type',
-    );
+    ];
 
     /**
      * Indicates how long the results of a preflight request can be cached in

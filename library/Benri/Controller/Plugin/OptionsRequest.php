@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OPTIONS request method represents a request for information about the
  * communication options available on the request/response chain identified
@@ -12,7 +13,7 @@
 class Benri_Controller_Plugin_OptionsRequest extends Zend_Controller_Plugin_Abstract
 {
     /**
-     * Send an empty response and exit
+     * Send an empty response and exit.
      *
      * @internal
      * @param Zend_Controller_Request_Abstract $request

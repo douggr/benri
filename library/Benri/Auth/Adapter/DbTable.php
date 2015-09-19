@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Provides the ability to authenticate against credentials stored in a database
  * table.

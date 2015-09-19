@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HTTP response for controllers.
  *
@@ -10,7 +11,7 @@ class Benri_Controller_Response_Http extends Zend_Controller_Response_Http
      * @internal
      * @var array
      */
-    private static $_messages = array(
+    private static $_messages = [
         // Informational 1xx
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -62,8 +63,8 @@ class Benri_Controller_Response_Http extends Zend_Controller_Response_Http
         503 => 'Service Unavailable',
         504 => 'Gateway Timeout',
         505 => 'HTTP Version Not Supported',
-        509 => 'Bandwidth Limit Exceeded'
-    );
+        509 => 'Bandwidth Limit Exceeded',
+    ];
 
     /**
      * Send all headers.

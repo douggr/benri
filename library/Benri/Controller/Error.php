@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Provides a plugin for handling exceptions thrown by the application,
  * including those resulting from missing controllers or actions.
@@ -15,11 +16,11 @@ class Benri_Controller_Error extends Benri_Controller_Action
         $error      = $this->_getParam('error_handler');
         $exception  = $error->exception;
         $request    = $error->request;
-        $field      = implode('/', array(
+        $field      = implode('/', [
             $request->getParam('module'),
             $request->getParam('controller'),
-            $request->getParam('action')
-        ));
+            $request->getParam('action'),
+        ]);
 
         switch ($error->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
@@ -55,11 +56,11 @@ class Benri_Controller_Error extends Benri_Controller_Action
         if ($this->getRequest()->isXMLHttpRequest()) {
             // This will match the response data just like in
             // Benri_Rest_Controller
-            $response = array(
+            $response = [
                 'data'      => null,
                 'errors'    => $this->_errors,
                 'messages'  => $this->_messages,
-            );
+            ];
 
             $this->getResponse()
                 ->setHeader('Content-Type', 'application/json; charset=utf-8')

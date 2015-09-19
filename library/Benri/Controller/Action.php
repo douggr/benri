@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Used to implement Action Controllers for use with the Front Controller.
  *
@@ -39,7 +40,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
 
     /**
      * Used as the index page.
-     *
      */
     public function indexAction()
     {
@@ -47,7 +47,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
 
     /**
      * Initialize object.
-     *
      */
     public function init()
     {
@@ -59,8 +58,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
     }
 
     /**
-     * Pre-dispatch routines
-     *
+     * Pre-dispatch routines.
      */
     public function preDispatch()
     {
@@ -75,7 +73,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
      *
      * Common usages for `postDispatch()` include rendering content in a
      * sitewide template, link url correction, setting headers, etc.
-     *
      */
     public function postDispatch()
     {
@@ -87,7 +84,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
 
             // Common variables used in all views.
             $this->view
-                ->assign(array(
+                ->assign([
                     'action'        => $this->getParam('action'),
                     'controller'    => $this->getParam('controller'),
                     'errors'        => $this->_errors,
@@ -95,8 +92,8 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
                     'messages'      => $this->_messages,
                     'module'        => $this->getParam('module'),
                     'now'           => new Benri_Util_DateTime(),
-                    'pageTitle'     => $this->_pageTitle
-                ));
+                    'pageTitle'     => $this->_pageTitle,
+                ]);
 
             // XMLHttpRequest requests should not render the entire layout,
             // only the correct templates related to the action.
@@ -114,7 +111,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
                 if ($request->isPjaxRequest()) {
                     $this->_helper
                         ->viewRenderer($pjaxTemplate);
-
                 } else {
                     $this->view->pjaxTemplate = "{$pjaxTemplate}.phtml";
 

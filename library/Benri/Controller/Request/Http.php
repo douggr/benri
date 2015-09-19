@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HTTP request object for use with Benri_Controller family.
  *

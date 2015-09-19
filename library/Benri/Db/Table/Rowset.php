@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reference concrete class that extends Zend_Db_Table_Rowset_Abstract.
  *

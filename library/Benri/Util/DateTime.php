@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Representation of date and time.
  *
@@ -55,6 +56,7 @@ class Benri_Util_DateTime extends DateTime
     public static function secondsToInterval($seconds)
     {
         $epoch = new static('@0');
+
         return $epoch->diff(new static("@$seconds"));
     }
 

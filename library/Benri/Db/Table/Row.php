@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains an individual row of a Benri_Db_Table object.
  *
@@ -49,7 +50,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      *
      * @var array
      */
-    private $_errors = array();
+    private $_errors = [];
 
     /**
      * Returns the errors found while saving this object.
@@ -84,7 +85,6 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     }
 
     /**
-     *
      * @param $input
      * @return Benri_Db_Table_Row
      */
@@ -127,7 +127,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
             throw new Zend_Db_Table_Row_Exception('This row has been marked read-only.');
         }
 
-        /**
+        /*
          * Allows pre-save logic to be applied to any row.
          *
          * Zend_Db_Table_Row only uses to do it on _insert OR _update,
@@ -248,12 +248,12 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      */
     protected function _pushError($field, $code, $title, $message = '')
     {
-        $this->_errors[] = array(
+        $this->_errors[] = [
             'field'     => $field,
             'message'   => $message,
             'code'      => $code,
-            'title'     => $title
-        );
+            'title'     => $title,
+        ];
 
         return $this;
     }
@@ -277,10 +277,10 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * @param array $config OPTIONAL Array of user-specified config options
      * @throws Zend_Db_Table_Row_Exception
      */
-    final public function __construct(array $config = array())
+    final public function __construct(array $config = [])
     {
         if (isset($config['table']) && $config['table'] instanceof Zend_Db_Table_Abstract) {
-            $this->_table = $config['table'];
+            $this->_table      = $config['table'];
             $this->_tableClass = get_class($this->_table);
         } elseif ($this->_tableClass !== null) {
             $this->_table = $this->_getTableFromString($this->_tableClass);
@@ -292,7 +292,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
             }
 
             $this->setFromArray($this->_data = $config['data']);
-            $this->_modifiedFields = array();
+            $this->_modifiedFields = [];
         }
 
         if (isset($config['stored']) && $config['stored'] === true) {
@@ -305,7 +305,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
 
         // Retrieve primary keys from table schema
         if (($table = $this->_getTable())) {
-            $info = $table->info();
+            $info           = $table->info();
             $this->_primary = (array) $info['primary'];
         }
 
@@ -319,18 +319,18 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      */
     public function toArray()
     {
-	    $data = (array) $this->_data;
+        $data = (array) $this->_data;
 
-	    foreach ($data as $column => $value) {
-	        $data[$column] = $this->__get($column);
-	    }
+        foreach ($data as $column => $value) {
+            $data[$column] = $this->__get($column);
+        }
 
-	    return $data;
+        return $data;
     }
 
 
     /**
-     * Retrieve a row field value
+     * Retrieve a row field value.
      *
      * @param string The user-specified column name.
      * @return mixed The corresponding column value.
@@ -343,7 +343,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
         $getter = Benri_Util_String::camelize($columnName, true);
 
         if (method_exists($this, $getter = "get{$getter}")) {
-            return call_user_func_array(array($this, $getter), []);
+            return call_user_func_array([$this, $getter], []);
         }
 
         return parent::__get($columnName);
@@ -359,7 +359,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
         $setter = Benri_Util_String::camelize($columnName, true);
 
         if (method_exists($this, $setter = "set{$setter}")) {
-            $value = call_user_func_array(array($this, $setter), array($value));
+            $value = call_user_func_array([$this, $setter], [$value]);
         }
 
         return parent::__set($columnName, $value);

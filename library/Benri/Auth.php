@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Provides an API for authentication and includes concrete authentication
  * adapters for common use case scenarios.
@@ -20,7 +21,7 @@ class Benri_Auth extends Zend_Auth
         // Authenticates against the supplied adapter.
         $result = $adapter->authenticate();
 
-        /**
+        /*
          * ZF-7546 - prevent multiple succesive calls from storing inconsistent
          * results.
          *
