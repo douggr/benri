@@ -43,7 +43,7 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
             ->viewRenderer
             ->setNoRender(true);
 
-        $this->_input   = new StdClass();
+        $this->_input = new StdClass();
     }
 
     /**
@@ -55,11 +55,23 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
      */
     public function postDispatch()
     {
-        $response = (object) array(
-            'data'      => $this->_data,
-            'errors'    => $this->_errors,
-            'messages'  => $this->_messages,
-        );
+        $respond  = false;
+        $response = (object) [];
+
+        if ($this->_data) {
+            $respond            = true;
+            $response->data     = $this->_data;
+        }
+
+        if ($this->_errors) {
+            $respond            = true;
+            $response->errors   = $this->_errors;
+        }
+
+        if ($this->_messages) {
+            $respond            = true;
+            $response->messages = $this->_messages;
+        }
 
         $this->getResponse()
             ->setHeader('Content-Type', 'application/json; charset=utf-8', true)
