@@ -300,9 +300,9 @@ class Benri_Db_Table extends Zend_Db_Table
     protected function _setupDatabaseAdapter()
     {
         if (Zend_Registry::isRegistered('multidb')) {
-            $this->_setAdapter(Zend_Registry::get('multidb')->getDb($this->_connection));
-        } else {
-            parent::_setupDatabaseAdapter();
+            return $this->_setAdapter(Zend_Registry::get('multidb')->getDb($this->_connection));
         }
+
+        return parent::_setupDatabaseAdapter();
     }
 }
