@@ -85,14 +85,10 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
             // Common variables used in all views.
             $this->view
                 ->assign([
-                    'action'        => $this->getParam('action'),
-                    'controller'    => $this->getParam('controller'),
-                    'errors'        => $this->_errors,
-                    'identity'      => Benri_Auth::getInstance()->getIdentity(),
-                    'messages'      => $this->_messages,
-                    'module'        => $this->getParam('module'),
-                    'now'           => new Benri_Util_DateTime(),
-                    'pageTitle'     => $this->_pageTitle,
+                    'errors'    => $this->_errors,
+                    'messages'  => $this->_messages,
+                    'now'       => new Benri_Util_DateTime(),
+                    'pageTitle' => $this->_pageTitle,
                 ]);
 
             // XMLHttpRequest requests should not render the entire layout,

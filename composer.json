@@ -4,11 +4,20 @@
       "Benri_": "library/"
     }
   },
-  "keywords": ["framework", "handy", "rest", "zend", "zf1"],
+  "keywords": [
+    "framework",
+    "handy",
+    "rest",
+    "zend",
+    "zf1"
+  ],
   "license": "MIT",
   "name": "douggr/benri",
   "require": {
     "php": ">=5.5.0"
+  },
+  "require-dev": {
+    "fabpot/php-cs-fixer": "~1.10"
   },
   "type": "extension"
 }

@@ -13,7 +13,7 @@ class Benri_Db_Table extends Zend_Db_Table
      *
      * @var string
      */
-    protected $_connection;
+    protected $_connection = 'default';
 
     /**
      * The primary key column or columns.
@@ -50,18 +50,21 @@ class Benri_Db_Table extends Zend_Db_Table
      */
     public static function all($pageNumber = 0, $pageSize = 10, $order = null)
     {
-        $table  = new static();
-        $select = $table->select();
-
-        if ($pageSize) {
-            $select->limitPage($pageNumber, $pageSize);
-        }
-
-        if ($order) {
-            $select->order($order);
-        }
-
-        return $table->fetchAll($select);
+        return (new static())
+            ->fetchAll(null, $order, $pageSize, $pageNumber);
+        //
+        // $table  = new static();
+        // $select = $table->select();
+        //
+        // if ($pageSize) {
+        //     $select->limitPage($pageNumber, $pageSize);
+        // }
+        //
+        // if ($order) {
+        //     $select->order($order);
+        // }
+        //
+        // return $table->fetchAll($select);
     }
 
     /**

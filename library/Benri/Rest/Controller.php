@@ -28,10 +28,11 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
     {
         parent::init();
 
-        $this->_registerPlugin(new Zend_Controller_Plugin_PutHandler());
-        $this->_registerPlugin(new Benri_Controller_Plugin_CORS());
-        $this->_registerPlugin(new Benri_Controller_Plugin_RequireUserAgentHeader());
-        $this->_registerPlugin(new Benri_Controller_Plugin_OptionsRequest());
+        Zend_Controller_Front::getInstance()
+            ->registerPlugin(new Zend_Controller_Plugin_PutHandler())
+            ->registerPlugin(new Benri_Controller_Plugin_CORS())
+            ->registerPlugin(new Benri_Controller_Plugin_RequireUserAgentHeader())
+            ->registerPlugin(new Benri_Controller_Plugin_OptionsRequest());
 
         try {
             $this->disableLayout();

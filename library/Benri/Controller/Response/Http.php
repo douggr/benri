@@ -77,9 +77,9 @@ class Benri_Controller_Response_Http extends Zend_Controller_Response_Http
     public function sendHeaders()
     {
         // Only check if we can send headers if we have headers to send
-        if (count($this->_headersRaw) || count($this->_headers) || (200 != $this->_httpResponseCode)) {
+        if (count($this->_headersRaw) || count($this->_headers) || (200 !== $this->_httpResponseCode)) {
             $this->canSendHeaders(true);
-        } elseif (200 == $this->_httpResponseCode) {
+        } elseif (200 === $this->_httpResponseCode) {
             // Haven't changed the response code, and we have no headers
             return $this;
         }

@@ -75,7 +75,8 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
         $request = $this->getRequest();
         $action  = $request->getParam('action');
 
-        if (!in_array($action, ['delete', 'index', 'get', 'patch', 'post', 'put'])) {
+        // limit Actions to HTTP common verbs
+        if (!in_array($action, ['delete', 'get', 'patch', 'post', 'put'], true)) {
             if ($request->isGet()) {
                 $action = $request->getParam('id') ? 'get' : 'index';
             } else {
@@ -160,38 +161,13 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     /**
      * Used for replacing resources or collections.
      *
-     * For PUT requests with no body attribute, be sure to set the
+     * @NOTE For PUT requests with no body attribute, be sure to set the
      * `Content-Length` header to zero.
      */
     public function putAction()
     {
         $this->getResponse()
             ->setHttpResponseCode(404);
-    }
-
-    /**
-     * Retrieve a plugin or plugins by class.
-     *
-     * @param string $class
-     * @return mixed `false` if no one plugin is loaded,
-     *  `Zend_Controller_Plugin_Abstract` if then given $class is registered
-     *  as a plugin or `Zend_Controller_Plugin_Abstract[]` if $class is null
-     */
-    final protected function _getPlugin($class)
-    {
-        return Zend_Controller_Front::getInstance()
-            ->getPlugin($class);
-    }
-
-    /**
-     * Retrieve all registered plugins.
-     *
-     * @return array An array of `Zend_Controller_Plugin_Abstract`
-     */
-    final protected function _getPlugins()
-    {
-        return Zend_Controller_Front::getInstance()
-            ->getPlugins();
     }
 
     /**
@@ -208,25 +184,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
             'message'   => vsprintf($message, $interpolateParams),
             'type'      => $type,
         ];
-
-        return $this;
-    }
-
-    /**
-     * Register a plugin.
-     *
-     * @param mixed $plugin string or Zend_Controller_Plugin_Abstract
-     * @param int $stackIndex stack index for plugin
-     * @return Benri_Controller_Abstract
-     */
-    final protected function _registerPlugin($plugin, $stackIndex = null)
-    {
-        if (is_string($plugin)) {
-            $plugin = new $plugin();
-        }
-
-        Zend_Controller_Front::getInstance()
-            ->registerPlugin($plugin, $stackIndex);
 
         return $this;
     }
