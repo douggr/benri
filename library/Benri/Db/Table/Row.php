@@ -15,35 +15,40 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     /**
      * This means a required resource does not exist.
      */
-    const ERROR_MISSING         = 'missing';
+    const ERR_MISSING         = 'missing';
 
     /**
      * This means a required field on a resource has not been set.
      */
-    const ERROR_MISSING_FIELD   = 'missing_field';
+    const ERR_MISSING_FIELD   = 'missing_field';
 
     /**
      * This means the formatting of a field is invalid. The documentation for
      * that resource should be able to give you more specific information.
      */
-    const ERROR_INVALID         = 'invalid';
+    const ERR_INVALID         = 'invalid';
 
     /**
      * This means another resource has the same value as this field. This can
      * happen in resources that must have some unique key (such as Label or
      * Locale names).
      */
-    const ERROR_ALREADY_EXISTS  = 'already_exists';
+    const ERR_ALREADY_EXISTS  = 'already_exists';
 
     /**
      * This means an uncommon error.
      */
-    const ERROR_UNCATEGORIZED   = 'uncategorized';
+    const ERR_UNCATEGORIZED   = 'uncategorized';
+
+    /**
+     * For the cases this model is set as read only.
+     */
+    const ERR_READ_ONLY       = 'read only';
 
     /**
      * For the rare case an exception occurred and we couldn't recover.
      */
-    const ERROR_UNKNOWN         = 'unknown';
+    const ERR_UNKNOWN         = 'unknown';
 
     /**
      * Hold the errors while saving this object.
@@ -123,9 +128,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      */
     final public function save()
     {
-        if (true === $this->_readOnly) {
-            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only.');
-        }
+        $this->checkReadOnly();
 
         /*
          * Allows pre-save logic to be applied to any row.
@@ -189,9 +192,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     final protected function _doInsert()
     {
         /// A read-only row cannot be saved.
-        if ($this->_readOnly === true) {
-            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
-        }
+        $this->checkReadOnly();
 
         /// Run pre-INSERT logic
         $this->_insert();
@@ -210,9 +211,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
     final protected function _doUpdate()
     {
         /// A read-only row cannot be saved.
-        if ($this->_readOnly === true) {
-            throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
-        }
+        $this->checkReadOnly();
 
         /// Run pre-UPDATE logic
         $this->_update();
@@ -241,7 +240,7 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
      * with the resource.
      *
      * @param string $field The erroneous field or column
-     * @param string $code One of the ERROR_* codes contants
+     * @param string $code One of the ERR_* codes contants
      * @param string $title A title for this error
      * @param string $message A friendly message
      * @return Benri_Db_Table_Row
@@ -295,11 +294,11 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
             $this->_modifiedFields = [];
         }
 
-        if (isset($config['stored']) && $config['stored'] === true) {
+        if (isset($config['stored']) && true === $config['stored']) {
             $this->_cleanData = $this->_data;
         }
 
-        if (isset($config['readOnly']) && $config['readOnly'] === true) {
+        if (isset($config['readOnly']) && true === $config['readOnly']) {
             $this->setReadOnly(true);
         }
 
@@ -363,5 +362,25 @@ class Benri_Db_Table_Row extends Zend_Db_Table_Row
         }
 
         return parent::__set($columnName, $value);
+    }
+
+    /**
+     * Check if this model is set as a read-only model.
+     *
+     * @return bool
+     */
+    private function checkReadOnly()
+    {
+        if (true === $this->_readOnly) {
+            $this->_pushError(
+                '',
+                self::ERR_READ_ONLY,
+                'This row has been marked read-only'
+            );
+
+            return false;
+        }
+
+        return true;
     }
 }

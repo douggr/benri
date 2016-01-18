@@ -52,19 +52,6 @@ class Benri_Db_Table extends Zend_Db_Table
     {
         return (new static())
             ->fetchAll(null, $order, $pageSize, $pageNumber);
-        //
-        // $table  = new static();
-        // $select = $table->select();
-        //
-        // if ($pageSize) {
-        //     $select->limitPage($pageNumber, $pageSize);
-        // }
-        //
-        // if ($order) {
-        //     $select->order($order);
-        // }
-        //
-        // return $table->fetchAll($select);
     }
 
     /**
@@ -215,7 +202,7 @@ class Benri_Db_Table extends Zend_Db_Table
      * Create dynamic finders.
      *
      * Dynamic finders ease your life in a way to do queries quickly without
-     * having to event instantiate a `Benri_Db_Table` class.
+     * having to eventually instantiate a `Benri_Db_Table` class.
      *
      * <code>
      * // `where name = ?, "douggr"`
