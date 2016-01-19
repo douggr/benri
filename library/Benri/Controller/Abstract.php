@@ -196,10 +196,10 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
         } catch (Zend_Db_Table_Row_Exception $ex) {
             foreach ($model->getErrors() as $error) {
                 $this->_pushError(
-                    $resource = $error['field'],
-                    $code     = $error['code'],
-                    $title    = $error['title'],
-                    $message  = $error['message']
+                    $error['field'],
+                    $error['code'],
+                    $error['title'],
+                    $error['message']
                 );
             }
 
