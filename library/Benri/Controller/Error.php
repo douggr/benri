@@ -22,25 +22,21 @@ class Benri_Controller_Error extends Benri_Controller_Action
             $request->getParam('action'),
         ]);
 
-        switch ($error->type) {
+        switch ($code = $error->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
 
-                $message  = 'Page not found.';
                 $priority = Zend_Log::NOTICE;
-                $code     = static::ERROR_MISSING;
                 break;
 
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
 
-                $message  = 'Looks like something went wrong!';
                 $priority = Zend_Log::CRIT;
-                $code     = static::ERROR_UNKNOWN;
                 break;
         }
 
@@ -51,7 +47,7 @@ class Benri_Controller_Error extends Benri_Controller_Action
         }
 
         $this->_pushMessage($message, 'danger')
-            ->_pushError('controller', $code, $message, $exception->getMessage());
+            ->_pushError('controller', $code, $exception->getMessage());
 
         if ($this->getRequest()->isXMLHttpRequest()) {
             // This will match the response data just like in
