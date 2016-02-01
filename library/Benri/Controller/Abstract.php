@@ -26,13 +26,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     protected $_request = null;
 
     /**
-     * Zend_Controller_Response_Abstract object wrapping the response.
-     *
-     * @var Benri_Controller_Response_Http
-     */
-    protected $_response = null;
-
-    /**
      * Force the request action parameter.
      *
      * @see https://github.com/douggr/benri/issues/10
