@@ -46,8 +46,7 @@ class Benri_Controller_Error extends Benri_Controller_Action
             $log->log('Request Parameters', $priority, $error->request->getParams());
         }
 
-        $this->_pushMessage($message, 'danger')
-            ->_pushError('controller', $code, $exception->getMessage());
+        $this->_pushError('controller', $code, $exception->getMessage());
 
         if ($this->getRequest()->isXMLHttpRequest()) {
             // This will match the response data just like in
@@ -55,7 +54,7 @@ class Benri_Controller_Error extends Benri_Controller_Action
             $response = [
                 'data'      => null,
                 'errors'    => $this->_errors,
-                'messages'  => $this->_messages,
+                'messages'  => null,
             ];
 
             $this->getResponse()
