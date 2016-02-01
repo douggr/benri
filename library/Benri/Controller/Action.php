@@ -12,7 +12,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
      *
      * @var string
      */
-    protected $_layout = 'default/layout';
+    protected $_layout;
 
     /**
      * Used to override default templates. If this is set, the controller will
@@ -52,20 +52,10 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
     {
         parent:: init();
 
-        $this->_helper
-            ->layout
-            ->setLayout($this->_layout);
-    }
-
-    /**
-     * Pre-dispatch routines.
-     */
-    public function preDispatch()
-    {
-        // allow the programmer to use any partial view located in
-        // '/views/scripts/components'.
-        $this->view
-            ->addScriptPath(APPLICATION_PATH . '/views/scripts/components');
+        if ($this->_layout) {
+            $this->getHelper('layout')
+                ->setLayout($this->_layout);
+        }
     }
 
     /**
@@ -98,8 +88,7 @@ abstract class Benri_Controller_Action extends Benri_Controller_Abstract
             }
 
             if ($this->_mainTemplate) {
-                $this->_helper
-                    ->ViewRenderer
+                $this->getHelper('viewRenderer')
                     ->setNoController(true);
 
                 $pjaxTemplate = "{$this->getParam('controller')}/{$this->getParam('action')}";
