@@ -59,17 +59,14 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
         $response = (object) [];
 
         if ($this->_data) {
-            $respond            = true;
             $response->data     = $this->_data;
         }
 
         if ($this->_errors) {
-            $respond            = true;
             $response->errors   = $this->_errors;
         }
 
         if ($this->_messages) {
-            $respond            = true;
             $response->messages = $this->_messages;
         }
 
