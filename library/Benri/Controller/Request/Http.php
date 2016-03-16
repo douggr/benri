@@ -22,7 +22,13 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
      */
     public function getParam($key, $default = null)
     {
-        return trim(parent::getParam($key, $default));
+        $param = parent::getParam($key, $default);
+
+        if (is_string($param)) {
+            return trim($param);
+        }
+
+        return $param;
     }
 
     /**
@@ -125,20 +131,5 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     public function isPut()
     {
         return 'PUT' === $this->getMethod();
-    }
-
-    /**
-     * Set a userland parameter
-     *
-     * Uses $key to set a userland parameter. If $key is an alias, the actual
-     * key will be retrieved and used to set the parameter.
-     *
-     * @param mixed $key
-     * @param mixed $value
-     * @return Benri_Controller_Request_Http
-     */
-    public function setParam($key, $value)
-    {
-        return parent::setParam($key, trim($value));
     }
 }
