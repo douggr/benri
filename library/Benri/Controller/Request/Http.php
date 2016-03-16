@@ -8,6 +8,24 @@
 class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
 {
     /**
+     * Retrieve a parameter
+     *
+     * Retrieves a parameter from the instance. Priority is in the order of
+     * userland parameters (see {@link setParam()}), $_GET, $_POST. If a
+     * parameter matching the $key is not found, null is returned.
+     *
+     * If the $key is an alias, the actual key aliased will be used.
+     *
+     * @param mixed $key
+     * @param mixed $default Default value to use if key not found
+     * @return mixed
+     */
+    public function getParam($key, $default = null)
+    {
+        return trim(parent::getParam($key, $default));
+    }
+
+    /**
      * Returns the REQUEST_METHOD header.
      *
      * @return string
@@ -107,5 +125,20 @@ class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
     public function isPut()
     {
         return 'PUT' === $this->getMethod();
+    }
+
+    /**
+     * Set a userland parameter
+     *
+     * Uses $key to set a userland parameter. If $key is an alias, the actual
+     * key will be retrieved and used to set the parameter.
+     *
+     * @param mixed $key
+     * @param mixed $value
+     * @return Benri_Controller_Request_Http
+     */
+    public function setParam($key, $value)
+    {
+        return parent::setParam($key, trim($value));
     }
 }
