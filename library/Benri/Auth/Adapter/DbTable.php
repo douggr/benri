@@ -97,15 +97,15 @@ class Benri_Auth_Adapter_DbTable extends Zend_Auth_Adapter_DbTable
      * @return Zend_Auth_Result
      * @see http://framework.zend.com/manual/1.12/en/zend.auth.introduction.html#zend.auth.introduction.results Zend_Auth_Result
      */
-    protected function _authenticateValidateResult(array $resultIdentity)
+    protected function _authenticateValidateResult($resultIdentity)
     {
-        if (!Benri_Util_String::verifyPassword($this->_credential, $resultIdentity[$this->_credentialColumn])) {
-            $code             = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
-            $message          = 'Supplied credential is invalid.';
-        } else {
-            $this->_resultRow = $resultIdentity;
+        $code    = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+        $message = 'Supplied credential is invalid.';
+
+        if (Benri_Util_String::verifyPassword($this->_credential, $resultIdentity[$this->_credentialColumn])) {
             $code             = Zend_Auth_Result::SUCCESS;
             $message          = 'Authentication successful.';
+            $this->_resultRow = $resultIdentity;
         }
 
         $this->_authenticateResultInfo['code']       = $code;
