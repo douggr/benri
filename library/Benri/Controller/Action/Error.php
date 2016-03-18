@@ -44,6 +44,18 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
             ]);
         }
 
+        if ($error = $this->getParam('error_handler')) {
+            $this->view->assign([
+                'exception' => $error->exception,
+                'request'   => $error->request,
+            ])
+        }
+
+        $this->view->assign([
+            'errors'    => $this->_errors,
+            'messages'  => $this->_messages,
+        ]);
+
         $this->getResponse()->setHeader('Content-Type', 'text/html; charset=utf-8');
     }
 
