@@ -22,9 +22,7 @@ class Benri_Controller_Plugin_OptionsRequest extends Zend_Controller_Plugin_Abst
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
         if ($request->isOptions()) {
-            $this->getResponse()
-                ->sendResponse();
-
+            $this->getResponse()->sendResponse();
             exit(0);
         }
     }

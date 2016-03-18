@@ -165,7 +165,7 @@ class Benri_Controller_Plugin_CORS extends Zend_Controller_Plugin_Abstract
     }
 
     /**
-     * 
+     * @internal
      */
     private function unsetFromArray($name, array &$array)
     {

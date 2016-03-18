@@ -5,21 +5,20 @@
  *
  * @link Benri_Controller_Abstract.html Benri_Controller_Abstract
  */
-class Benri_Rest_Controller extends Benri_Controller_Abstract
+class Benri_Rest_Controller_Action extends Benri_Controller_Action_Abstract
 {
     /**
      * Request data.
-     *
      * @var StdClass
      */
     protected $_input;
 
     /**
      * Response data.
-     *
      * @var mixed
      */
     protected $_data;
+
 
     /**
      * Initialize object.
@@ -35,14 +34,12 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
             ->registerPlugin(new Benri_Controller_Plugin_OptionsRequest());
 
         try {
-            $this->disableLayout();
+            $this->getHelper('layout')->disableLayout();
         } catch (Zend_Controller_Action_Exception $e) {
             // If the Layout helper isn't enabled, just ignore and continue.
         }
 
-        $this->_helper
-            ->viewRenderer
-            ->setNoRender(true);
+        $this->getHelper('viewRenderer')->setNoRender(true);
 
         $this->_input = new StdClass();
     }
@@ -59,18 +56,19 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
         $response = (object) [];
 
         if ($this->_data) {
-            $response->data     = $this->_data;
+            $response->data = $this->_data;
         }
 
         if ($this->_errors) {
-            $response->errors   = $this->_errors;
+            $response->errors = $this->_errors;
         }
 
         if ($this->_messages) {
             $response->messages = $this->_messages;
         }
 
-        $this->getResponse()
+        $this
+            ->getResponse()
             ->setHeader('Content-Type', 'application/json; charset=utf-8', true)
             ->setBody(json_encode($response, JSON_NUMERIC_CHECK | JSON_HEX_AMP));
     }
@@ -84,19 +82,22 @@ class Benri_Rest_Controller extends Benri_Controller_Abstract
         $request = $this->getRequest();
 
         if (!$request->isGet() && !$request->isHead()) {
-            // … we read data from the request body.
+            // read data from the request body.
             $this->_input = json_decode($request->getRawBody());
 
-            /// Sending invalid JSON will result in a `400 Bad Request` response.
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                $this->getResponse()
-                    ->setHttpResponseCode(400)
-                    ->setHeader('Content-Type', 'text/plain; charset=utf-8', true)
-                    ->setBody(json_last_error_msg())
-                    ->sendResponse();
-
-                exit(400);
+            if (JSON_ERROR_NONE === json_last_error()) {
+                return;
             }
+
+            // Sending invalid JSON will result in a `400 Bad Request` response.
+            $this
+                ->getResponse()
+                ->setHttpResponseCode(400)
+                ->setHeader('Content-Type', 'text/plain; charset=utf-8', true)
+                ->setBody(json_last_error_msg())
+                ->sendResponse();
+
+            exit(400);
         }
     }
 

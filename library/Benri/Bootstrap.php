@@ -14,8 +14,7 @@ class Benri_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $front->setResponse(new Benri_Controller_Response_Http());
         $front->setRequest(new Benri_Controller_Request_Http());
 
-        $front->getRouter()
-            ->addRoute('benri-application', new Zend_Rest_Route($front));
+        $front->getRouter()->addRoute('benri-app', new Zend_Rest_Route($front));
     }
 
 

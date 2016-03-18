@@ -6,7 +6,7 @@
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.front.html Zend_Controller_Front
  * @link http://framework.zend.com/manual/1.12/en/zend.controller.action.html Zend_Controller_Action
  */
-abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
+abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
 {
     /**
      * @var array
@@ -18,33 +18,25 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
      */
     protected $_messages = [];
 
-    /**
-     * Benri_Controller_Request_Http object wrapping the request environment.
-     *
-     * @var Benri_Controller_Request_Http
-     */
-    protected $_request = null;
 
     /**
      * Force the request action parameter.
-     *
-     * @see https://github.com/douggr/benri/issues/10
      */
     public function init()
     {
         $request = $this->getRequest();
-        $action  = $request->getParam('action');
 
-        // limit Actions to HTTP common verbs
-        if (!in_array($action, ['delete', 'get', 'patch', 'post', 'put'], true)) {
-            if ($request->isGet()) {
-                $action = $request->getParam('id') ? 'get' : 'index';
-            } else {
-                $action = strtolower($request->getMethod());
-            }
-
-            $request->setParam('action', $action);
+        // limit actions to HTTP common verbs
+        if ($request->isGet()) {
+            $action = $this->getParam('id') ? 'get' : 'index';
+        } else {
+            $action = $this->getParam('x-method', $request->getMethod());
         }
+
+        $request
+            ->setActionName($action)
+            ->setDispatched(false)
+            ->setParam('action', $action);
     }
 
     /**
@@ -54,20 +46,6 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     {
         $this->getResponse()
             ->setHttpResponseCode(404);
-    }
-
-    /**
-     * Disable the view layout.
-     *
-     * @return self
-     */
-    protected function disableLayout()
-    {
-        $this->_helper
-            ->layout()
-            ->disableLayout();
-
-        return $this;
     }
 
     /**
@@ -184,8 +162,7 @@ abstract class Benri_Controller_Abstract extends Zend_Rest_Controller
     protected function _saveModel(Benri_Db_Table_Row &$model, $data = null)
     {
         try {
-            $model->normalizeInput($data)
-                ->save();
+            $model->normalizeInput($data)->save();
         } catch (Zend_Db_Table_Row_Exception $ex) {
             foreach ($model->getErrors() as $error) {
                 $this->_pushError(

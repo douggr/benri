@@ -29,7 +29,8 @@ class Benri_Controller_Plugin_RequireUserAgentHeader extends Zend_Controller_Plu
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
         if (!$request->getHeader('User-Agent')) {
-            $this->getResponse()
+            $this
+                ->getResponse()
                 ->setHttpResponseCode(403)
                 ->setHeader('Content-Type', 'text/plain; charset=utf-8')
                 ->setBody(implode("\n", self::$_errMessage))

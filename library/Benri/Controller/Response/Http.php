@@ -66,6 +66,20 @@ class Benri_Controller_Response_Http extends Zend_Controller_Response_Http
         509 => 'Bandwidth Limit Exceeded',
     ];
 
+
+    /**
+     * Return the message related to `$code`.
+     *
+     * @param int
+     * @return string
+     */
+    public function getMessageFromCode($code)
+    {
+        if (array_key_exists($code, self::$_messages)) {
+            return self::$_messages[$code];
+        }
+    }
+
     /**
      * Send all headers.
      *

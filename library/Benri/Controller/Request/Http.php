@@ -8,7 +8,7 @@
 class Benri_Controller_Request_Http extends Zend_Controller_Request_Http
 {
     /**
-     * Retrieve a parameter
+     * Retrieve a parameter.
      *
      * Retrieves a parameter from the instance. Priority is in the order of
      * userland parameters (see {@link setParam()}), $_GET, $_POST. If a
