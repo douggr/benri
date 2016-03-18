@@ -19,6 +19,14 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
     /**
      * @internal
      */
+    public function notFoundAction()
+    {
+        $this->getResponse()->setHttpResponseCode(404);
+    }
+
+    /**
+     * @internal
+     */
     public function init()
     {
     }
@@ -68,7 +76,7 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
-                $this->getResponse()->setHttpResponseCode(404);
+                $this->forward('not-found');
         }
     }
 
