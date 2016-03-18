@@ -48,7 +48,7 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
             $this->view->assign([
                 'exception' => $error->exception,
                 'request'   => $error->request,
-            ])
+            ]);
         }
 
         $this->view->assign([
