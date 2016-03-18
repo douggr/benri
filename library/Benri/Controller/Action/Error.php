@@ -13,7 +13,6 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
      */
     public function errorAction()
     {
-        $this->getResponse()->setHttpResponseCode(500);
     }
 
     /**
@@ -21,7 +20,6 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
      */
     public function notFoundAction()
     {
-        $this->getResponse()->setHttpResponseCode(404);
     }
 
     /**
@@ -54,6 +52,8 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
      */
     public function preDispatch()
     {
+        $this->getResponse()->setHttpResponseCode(500);
+
         if (!$error = $this->getParam('error_handler')) {
             return;
         }
@@ -76,7 +76,9 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
-                $this->forward('not-found');
+                $this->getRequest()->setActionName('not-found');
+                $this->getResponse()->setHttpResponseCode(404);
+                break;
         }
     }
 
