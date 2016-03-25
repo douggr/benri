@@ -44,8 +44,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function deleteAction()
     {
-        $this->getResponse()
-            ->setHttpResponseCode(404);
+        throw new Zend_Controller_Exception('Method Not Allowed', 405);
     }
 
     /**
@@ -53,8 +52,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function getAction()
     {
-        $this->getResponse()
-            ->setHttpResponseCode(404);
+        throw new Zend_Controller_Exception('Method Not Allowed', 405);
     }
 
     /**
@@ -62,11 +60,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     final public function headAction()
     {
-        $this->getResponse()
-            ->setHttpResponseCode(204);
-
-        $this->getHelper('layout')->disableLayout();
-        $this->getHelper('viewRenderer')->setNoRender(true);
+        throw new Zend_Controller_Exception('No Content', 204);
     }
 
     /**
@@ -74,8 +68,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function indexAction()
     {
-        $this->getResponse()
-            ->setHttpResponseCode(404);
+        throw new Zend_Controller_Exception('Method Not Allowed', 405);
     }
 
     /**
@@ -95,8 +88,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function postAction()
     {
-        $this->getResponse()
-            ->setHttpResponseCode(404);
+        throw new Zend_Controller_Exception('Method Not Allowed', 405);
     }
 
     /**
@@ -107,8 +99,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function putAction()
     {
-        $this->getResponse()
-            ->setHttpResponseCode(404);
+        throw new Zend_Controller_Exception('Method Not Allowed', 405);
     }
 
     /**
