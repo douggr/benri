@@ -79,8 +79,8 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
         if ($callback) {
             $this->getResponse()->setHttpResponseCode($code);
 
-            if (method_exists($this, $action = "{$callback}Action")) {
-                return call_user_func_array([$this, $action], []);
+            if (method_exists($this, "{$callback}Action")) {
+                return $this->getRequest()->setActionName($callback);
             }
         } else {
             switch ($error->type) {
@@ -88,7 +88,7 @@ class Benri_Controller_Action_Error extends Benri_Controller_Action_Abstract
                 case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
                 case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
                     $this->getResponse()->setHttpResponseCode(404);
-                    $this->notFoundAction();
+                    $this->getRequest()->setActionName('not-found');
                     break;
             }
         }
