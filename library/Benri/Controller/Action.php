@@ -21,13 +21,6 @@ abstract class Benri_Controller_Action extends Benri_Controller_Action_Abstract
 
 
     /**
-     * Used as the index page.
-     */
-    public function indexAction()
-    {
-    }
-
-    /**
      * Initialize object.
      */
     public function init()

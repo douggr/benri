@@ -52,7 +52,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function getAction()
     {
-        throw new Zend_Controller_Exception('Method Not Allowed', 405);
+        throw new Zend_Controller_Exception('Not Found', 404);
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class Benri_Controller_Action_Abstract extends Zend_Rest_Controller
      */
     public function indexAction()
     {
-        throw new Zend_Controller_Exception('Method Not Allowed', 405);
+        throw new Zend_Controller_Exception('Not Found', 404);
     }
 
     /**
